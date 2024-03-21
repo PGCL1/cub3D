@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 11:26:53 by glacroix          #+#    #+#             */
-/*   Updated: 2024/02/19 16:38:14 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/21 14:23:03 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	*ft_memmove(void *dst, const void *src, size_t len);
 void	*ft_memchr(const void *s, int c, size_t n);
 int		ft_memcmp(const void *s1, const void *s2, size_t n);
 void	ft_bzero(void *str, size_t n);
+void	*ft_free(char **ptr);
 
 //conversions
 char	*ft_itoa(int n);

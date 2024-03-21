@@ -6,7 +6,7 @@
 #    By: glacroix <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 16:34:00 by glacroix          #+#    #+#              #
-#    Updated: 2024/03/18 16:40:37 by glacroix         ###   ########.fr        #
+#    Updated: 2024/03/21 16:43:43 by glacroix         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,8 +27,8 @@ NAME		= cub3D
 
 #SRC & OBJS Details
 # **************************************************************************** #
-SRCS		= src/test.c\
-			  src/main.c
+SRCS		= src/main.c\
+			  src/utils.c
 				
 OBJS		= $(SRCS:%.c=objs/%.o)
 
@@ -39,7 +39,7 @@ CC			= gcc
 CFLAGS		= -Wall -Werror -Wextra -Imlx
 CFLAGS		+= -I include
 CFLAGS		+= -I libft -g3 -O2 -DSTRINGPUTX11
-MINI		= -lmlx -framework OpenGL -framework AppKit -g3 #-fsanitize=address
+MINI		= -lmlx -framework OpenGL -framework AppKit -g3 -fsanitize=address
 
 #SRC Execution
 # **************************************************************************** #
