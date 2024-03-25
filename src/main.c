@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/25 16:41:35 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:32:34 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,47 +49,6 @@ void ft_leaks()
 }
 
 
-int line_error(char *item, size_t len)
-{
-	printf("\nline = %s", item);
-	size_t i = 0;
-	while (i < len)
-	{
-		if (item[i] == '1' || item[i] == ' ')
-			i++;
-		else
-			return (1);
-	}
-	return (0);
-}
-
-int map_checker(t_array copy)
-{
-	size_t i = 1;
-	size_t j = 0;
-	//top and bottom line check
-	if (line_error(copy.items[0], copy.items_len[0]) == 1)
-		return (1);
-	if (line_error(copy.items[copy.len - 2], copy.items_len[copy.len - 2]) == 1)
-		return (1);
-	while (i < copy.len - 2)
-	{
-		size_t len = copy.items_len[i] - 1; 
-		j = 0;
-		while (j < copy.items_len[i] && ft_isspace(copy.items[i][j]))
-			j++;
-		if (j < copy.items_len[i] && copy.items[i][j] != '1')
-			return (printf("1|| %lu 0 len = %lu | line = %s",i, copy.items_len[i], copy.items[i]), 1);
-		if (copy.items[i][len] != '1')
-			return (printf("error at %lu %lu %c\n", i, len, copy.items[i][len]), 1);
-		i++;
-	}
-	return (0);
-}
-
-
-
-
 //TODO: check that argv[1] ends in .cub
 int main(int argc, char **argv)
 {
@@ -114,7 +73,7 @@ int main(int argc, char **argv)
 		printf("len = %lu | %s", map.items_len[i], map.items[i]);
 	//printf("\n");	
 	//map_checker
-	int err = map_checker(map);
+	int err = map_check_borders(map);
 	if (err != 0)
 		return (printf("Error: map was invalid\n"), 1);
 	else

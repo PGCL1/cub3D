@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 18:11:28 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/25 11:53:37 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:28:39 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,15 @@ typedef struct s_array
 	size_t	len;
 }	t_array;
 
+/*------------------------------Utils----------------------------------------*/
 void	*ft_realloc(void *ptr, size_t len, size_t size);
 void	ms_array_append(t_array *arr, char *item);
 t_array	ms_array_init(void);
 size_t	line_len(char *item);
+
+
+/*------------------------------Parsing---------------------------------------*/
+int		line_error(char *item, size_t len);
+int		map_check_borders(t_array copy);
+
 #endif

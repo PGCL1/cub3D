@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 12:31:54 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/25 16:16:09 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:23:45 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void	ms_array_append(t_array *arr, char *item)
 			return ;
 	}
 	arr->items[arr->len] = item;
-	arr->items_len[arr->len] = 0;
 	arr->items_len[arr->len] = line_len(item);
 	arr->len += 1;
 }
