@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/25 11:50:27 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/25 16:07:11 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,60 +49,40 @@ void ft_leaks()
 }
 
 
-int change_map(t_array *copy)
+int line_error(char *item, size_t len)
 {
+	//printf("\nline = %s", item);
 	size_t i = 0;
-	size_t j = 0;
-	size_t real_len = copy->len - 2;
-	while (i <= real_len)
+	while (i < len)
 	{
-		j = 0;
-		while (copy->items[i][j] != '\n' && copy->items[i][j] != '\0')
-		{
-			if (copy->items[i][j] == ' ')
-				copy->items[i][j] = '1';
-			j++;	
-		}
-		printf("real_len = %lu | j = %lu\n", real_len, j);
-		//ms_array_append_len(&map, len);
-		i++;
+		if (item[i] == '1' || item[i] == ' ')
+			i++;
+		else
+			return (1);
 	}
 	return (0);
 }
 
-
-
-
 int map_checker(t_array copy)
 {
-	size_t i = 0;
+	size_t i = 1;
 	size_t j = 0;
-	size_t real_len = copy.len - 2;
-	printf("%d\n",change_map(&copy));
-	for (size_t a = 0; a < real_len; a++)
-		printf("line[%lu] = %s | \t\t\t\t\t\tlen = %lu\n", a + 1, copy.items[a], copy.items_len[a]);
-	while (i <= real_len)
+	//top and bottom line check
+	if (line_error(copy.items[0], copy.items_len[0]) == 1)
+		return (1);
+	if (line_error(copy.items[copy.len - 1], copy.items_len[copy.len - 1]) == 1)
+		return (1);
+	while (i < copy.len - 2)
 	{
+		size_t len = copy.items_len[i] - 1; 
 		j = 0;
-		size_t line_len = copy.items_len[i] - 2;
-		while (copy.items[i][j] != '\n' && copy.items[i][j] != '\0')
-		{
-			if (i == real_len && j == line_len)
-				break;
-			//top row is filled with 1
-			if (copy.items[0][j] != '1')
-				return (printf("1 problem at [0][%lu]\n", j), 1);
-			//bottom row is all 1s
-			if (copy.items[real_len][j] != '1')
-				return (printf("2 problem at [%lu][%lu] = `%c`\n", real_len + 1, j, copy.items[real_len][j]), 1);
-			//pos[0] of each row are 1s
-			if (copy.items[i][0] != '1')
-				return (printf("3 problem at [%lu][%lu]\n", i, j), 1);
-			//last colums are all 1s
-			if (copy.items[i][(int)line_len] != '1')
-				return (printf("4 problem at [%lu][%lu]\n", i, line_len), 1);
-			j++;	
-		}
+		while (j < copy.items_len[i] && ft_isspace(copy.items[i][j]))
+			j++;
+		if (j < copy.items_len[i] && copy.items[i][j] != '1')
+			return (printf("1|| %lu 0 len = %lu | line = %s",i, copy.items_len[i], copy.items[i]), 1);
+		//PROBLEM HERE with len and len blows up in complex map
+		if (copy.items[i][len] != '1')
+			return (printf("error at %lu %lu %c\n", i, len, copy.items[i][len]), 1);
 		i++;
 	}
 	return (0);
@@ -121,7 +101,7 @@ int main(int argc, char **argv)
 		return (ft_putstr_fd("Error: program needs one argument ending in \".cub\"\n", 2) ,1);
 	
 	//copying map
-	t_array	map;
+	t_array	map = ms_array_init();
 	int file = open(argv[1], O_RDONLY);
 	map = ms_array_init();
 	char *line = get_next_line(file);
@@ -133,8 +113,7 @@ int main(int argc, char **argv)
 	ms_array_append(&map, NULL);
 	for (size_t i = 0; i < map.len; i++)
 		printf("len = %lu | %s", map.items_len[i], map.items[i]);
-	exit(1);
-
+	//printf("\n");	
 	//map_checker
 	int err = map_checker(map);
 	if (err != 0)
