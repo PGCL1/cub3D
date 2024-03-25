@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/25 16:07:11 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/25 16:41:35 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void ft_leaks()
 
 int line_error(char *item, size_t len)
 {
-	//printf("\nline = %s", item);
+	printf("\nline = %s", item);
 	size_t i = 0;
 	while (i < len)
 	{
@@ -70,7 +70,7 @@ int map_checker(t_array copy)
 	//top and bottom line check
 	if (line_error(copy.items[0], copy.items_len[0]) == 1)
 		return (1);
-	if (line_error(copy.items[copy.len - 1], copy.items_len[copy.len - 1]) == 1)
+	if (line_error(copy.items[copy.len - 2], copy.items_len[copy.len - 2]) == 1)
 		return (1);
 	while (i < copy.len - 2)
 	{
@@ -80,7 +80,6 @@ int map_checker(t_array copy)
 			j++;
 		if (j < copy.items_len[i] && copy.items[i][j] != '1')
 			return (printf("1|| %lu 0 len = %lu | line = %s",i, copy.items_len[i], copy.items[i]), 1);
-		//PROBLEM HERE with len and len blows up in complex map
 		if (copy.items[i][len] != '1')
 			return (printf("error at %lu %lu %c\n", i, len, copy.items[i][len]), 1);
 		i++;
