@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:25:16 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/25 17:32:12 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:50:19 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int line_error(char *item, size_t len)
 {
-	printf("\nline = %s", item);
 	size_t i = 0;
 	while (i < len)
 	{

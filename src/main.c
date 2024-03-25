@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/25 17:32:34 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/25 18:01:30 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,33 @@ void ft_leaks()
 	system("leaks -q cub3D");
 }
 
+//maybe create player struct here
+int player_check_pos(t_array map)
+{
+	//char player[4] = {N, S, E, W};
+	int count = 0;
+	size_t i = 0;
+	size_t j = 0;
+	char *line;
+	while (i < map.len - 2)
+	{
+		line = map.items[i];
+		j = 0;
+		while (j < map.items_len[i])
+		{
+			if (count > 1)
+				return (1);	
+			if (line[j] != '1' && line[j] != '0' && line[j] != ' ')
+			{
+				//keep coordinates of player	
+				count += 1;
+			}
+			j++;
+		}
+		i++;
+	}
+	return (0);
+}
 
 //TODO: check that argv[1] ends in .cub
 int main(int argc, char **argv)
@@ -71,14 +98,15 @@ int main(int argc, char **argv)
 	ms_array_append(&map, NULL);
 	for (size_t i = 0; i < map.len; i++)
 		printf("len = %lu | %s", map.items_len[i], map.items[i]);
-	//printf("\n");	
-	//map_checker
-	int err = map_check_borders(map);
-	if (err != 0)
+	printf("\n");	
+	
+	//CHECKER
+	if (map_check_borders(map) != 0)
 		return (printf("Error: map was invalid\n"), 1);
+	if (player_check_pos(map) != 0)
+		return (printf("Error: player position invalid\n"), 1);
 	else
-		return (printf("All GOOD!"), 0);
-
+		return (printf("ALL GOOOD\n"), 42);
 	//free memory
 	ft_free(map.items);
 	return 0;
