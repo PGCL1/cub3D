@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/21 19:24:36 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/25 11:50:27 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ int change_map(t_array *copy)
 				copy->items[i][j] = '1';
 			j++;	
 		}
+		printf("real_len = %lu | j = %lu\n", real_len, j);
+		//ms_array_append_len(&map, len);
 		i++;
 	}
 	return (0);
@@ -85,6 +87,8 @@ int map_checker(t_array copy)
 		size_t line_len = copy.items_len[i] - 2;
 		while (copy.items[i][j] != '\n' && copy.items[i][j] != '\0')
 		{
+			if (i == real_len && j == line_len)
+				break;
 			//top row is filled with 1
 			if (copy.items[0][j] != '1')
 				return (printf("1 problem at [0][%lu]\n", j), 1);
@@ -121,17 +125,15 @@ int main(int argc, char **argv)
 	int file = open(argv[1], O_RDONLY);
 	map = ms_array_init();
 	char *line = get_next_line(file);
-	size_t len = 0;
 	while (line != NULL)
 	{
 		ms_array_append(&map, line);
-		len = ft_strlen(line);
-		ms_array_append_len(&map, len);
 		line = get_next_line(file);
 	}
 	ms_array_append(&map, NULL);
-	//for (size_t i = 0; i < map.len; i++)
-		//printf("%s", map.items[i]);
+	for (size_t i = 0; i < map.len; i++)
+		printf("len = %lu | %s", map.items_len[i], map.items[i]);
+	exit(1);
 
 	//map_checker
 	int err = map_checker(map);

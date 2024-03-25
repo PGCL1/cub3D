@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 12:31:54 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/21 18:46:26 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/25 11:54:10 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,19 @@ t_array	ms_array_init(void)
 
 	array.cap = 2;
 	array.len = 0;
-	array.len_len = 0;
 	array.items = malloc(sizeof(array.items) * array.cap);
 	array.items_len = malloc(sizeof(array.items_len) * array.cap);
 	return (array);
+}
+
+size_t	line_len(char *item)
+{
+	size_t i = 0;
+	if (!item)
+		return (0);
+	while (item[i] != '\n' && item[i] != '\0')
+		i++;
+	return (i);
 }
 
 void	ms_array_append(t_array *arr, char *item)
@@ -55,22 +64,7 @@ void	ms_array_append(t_array *arr, char *item)
 			return ;
 	}
 	arr->items[arr->len] = item;
+	arr->items_len[arr->len] = line_len(item);
 	arr->len += 1;
 }
 
-void	ms_array_append_len(t_array *arr, size_t len)
-{
-	const size_t	size = sizeof(arr->items_len);
-
-	if (!arr->items_len)
-		return ;
-	if (arr->cap == arr->len_len)
-	{
-		arr->cap *= 2;
-		arr->items = ft_realloc(arr->items_len, arr->len * size, arr->cap * size);
-		if (!arr->items_len)
-			return ;
-	}
-	arr->items_len[arr->len_len] = len;
-	arr->len_len += 1;
-}
