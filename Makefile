@@ -6,7 +6,7 @@
 #    By: glacroix <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 16:34:00 by glacroix          #+#    #+#              #
-#    Updated: 2024/03/25 17:30:14 by glacroix         ###   ########.fr        #
+#    Updated: 2024/03/26 18:42:06 by glacroix         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ CC			= gcc
 CFLAGS		= -Wall -Werror -Wextra -Imlx
 CFLAGS		+= -I include
 CFLAGS		+= -I libft -g3 -O2 -DSTRINGPUTX11
-MINI		= -lmlx -framework OpenGL -framework AppKit -g3 -fsanitize=address
+MINI		= -lmlx -framework OpenGL -framework AppKit -g3 #-fsanitize=address
 
 #SRC Execution
 # **************************************************************************** #

@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/25 18:01:30 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/26 18:51:08 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,25 +48,48 @@ void ft_leaks()
 	system("leaks -q cub3D");
 }
 
+int player_orientation(t_player *player, char c)
+{
+	char *orientation[4] = {"N", "S", "E", "W"};
+	int i = 0;
+	while (i < 4)
+	{
+		if (c == orientation[i][0])
+		{
+			player->orientation = c;
+			printf("c = %c | orientation %c\n", c, orientation[i][0]);
+			return (1);	
+		}
+		i += 1;
+	}
+	return (0);
+}
+
 //maybe create player struct here
-int player_check_pos(t_array map)
+int player_check_pos(t_array *map, t_player *player)
 {
 	//char player[4] = {N, S, E, W};
 	int count = 0;
 	size_t i = 0;
 	size_t j = 0;
 	char *line;
-	while (i < map.len - 2)
+	while (i < map->len - 2)
 	{
-		line = map.items[i];
 		j = 0;
-		while (j < map.items_len[i])
+		line = map->items[i];
+		while (j < map->items_len[i])
 		{
 			if (count > 1)
-				return (1);	
+				exit(1);
 			if (line[j] != '1' && line[j] != '0' && line[j] != ' ')
 			{
-				//keep coordinates of player	
+				player->x = i;
+				player->y = j;
+				if (player_orientation(player, line[j]) != TRUE)
+				{
+					printf("Error: The player orientation is wrong\n");	
+					exit(1);
+				}
 				count += 1;
 			}
 			j++;
@@ -80,13 +103,13 @@ int player_check_pos(t_array map)
 int main(int argc, char **argv)
 {
 #if 1
-//	atexit(ft_leaks);
+	atexit(ft_leaks);
 	//check input
 	if (argc != 2)
 		return (ft_putstr_fd("Error: program needs one argument ending in \".cub\"\n", 2) ,1);
 	
 	//copying map
-	t_array	map = ms_array_init();
+	t_array	map;
 	int file = open(argv[1], O_RDONLY);
 	map = ms_array_init();
 	char *line = get_next_line(file);
@@ -100,11 +123,13 @@ int main(int argc, char **argv)
 		printf("len = %lu | %s", map.items_len[i], map.items[i]);
 	printf("\n");	
 	
+	t_player player;
+	ft_memset(&player, 0, sizeof(player));
 	//CHECKER
 	if (map_check_borders(map) != 0)
 		return (printf("Error: map was invalid\n"), 1);
-	if (player_check_pos(map) != 0)
-		return (printf("Error: player position invalid\n"), 1);
+	if (player_check_pos(&map, &player) != 0)
+		return (printf("Error: player position invalid | player = %p\n", &player), 1);
 	else
 		return (printf("ALL GOOOD\n"), 42);
 	//free memory

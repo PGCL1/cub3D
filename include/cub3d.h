@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 18:11:28 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/25 17:28:39 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/26 18:06:15 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@
 # define BLUE			0X191970
 
 /*------------------------------Shortcuts-------------------------------------*/
+# define TRUE				1
+# define FALSE				0
 # define ESC				53
 # define W					13
 # define S					1
@@ -63,6 +65,12 @@ typedef struct s_array
 	size_t	cap;
 	size_t	len;
 }	t_array;
+
+typedef struct s_player{
+	char	orientation;
+	int		x;
+	int		y;
+}	t_player;
 
 /*------------------------------Utils----------------------------------------*/
 void	*ft_realloc(void *ptr, size_t len, size_t size);
