@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 11:26:53 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/27 11:54:14 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/27 16:46:17 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int		ft_atoi(const char *str);
 
 //string manipulations
 size_t	ft_strlen(const char *str);
+int		starts_with(const char *str, const char *find);
 int		ends_with(const char *str, const char *find);
 int		ft_strncmp(char *s1, char *s2, size_t n);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);

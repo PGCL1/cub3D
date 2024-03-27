@@ -6,23 +6,22 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 18:11:28 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/26 18:06:15 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/27 17:12:20 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
-#define CUB3D_H
-
+# define CUB3D_H
 
 /*------------------------------Libraries-------------------------------------*/
-#include "../libft/libft.h"
-#include <mlx.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/uio.h>
-#include <fcntl.h>
+# include "../libft/libft.h"
+# include <mlx.h>
+# include <stdio.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <sys/types.h>
+# include <sys/uio.h>
+# include <fcntl.h>
 
 /*------------------------------Colors----------------------------------------*/
 # define PURPLE			0XF4ECF7 
@@ -30,7 +29,7 @@
 # define RED			0X42990010
 # define GREEN			0X014421 
 # define BLACK			0X000000
-# define WHITE			0XFFF5EE
+/*# define WHITE			0XFFF5EE*/
 # define BLUE			0X191970
 
 /*------------------------------Shortcuts-------------------------------------*/
@@ -48,7 +47,8 @@
 # define PLUS				69
 # define MINUS				78
 
-typedef struct	s_data {
+typedef struct s_data
+{
 	void	*img;
 	char	*img_addr;
 	int		img_bits_per_pixel;
@@ -66,18 +66,34 @@ typedef struct s_array
 	size_t	len;
 }	t_array;
 
-typedef struct s_player{
+typedef struct s_player
+{
 	char	orientation;
 	int		x;
 	int		y;
 }	t_player;
+
+typedef struct s_colors
+{
+	int	floor[3];
+	int	ceiling[3];
+	int	count;
+}	t_colors;
+
+typedef struct s_textures
+{
+	char	*north_texture;
+	char	*south_texture;
+	char	*east_texture;
+	char	*west_texture;
+	int 	count;
+}	t_textures;
 
 /*------------------------------Utils----------------------------------------*/
 void	*ft_realloc(void *ptr, size_t len, size_t size);
 void	ms_array_append(t_array *arr, char *item);
 t_array	ms_array_init(void);
 size_t	line_len(char *item);
-
 
 /*------------------------------Parsing---------------------------------------*/
 int		line_error(char *item, size_t len);

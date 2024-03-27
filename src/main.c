@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/27 12:16:29 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/27 19:29:36 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,18 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
 	char	*pixel;
 
-	pixel = data->img_addr + (y * data->img_line_length + x * (data->img_bits_per_pixel / 8));
-	*(unsigned int*)pixel = color;
+	pixel = data->img_addr
+		+ (y * data->img_line_length + x * (data->img_bits_per_pixel / 8));
+	*(unsigned int *)pixel = color;
 }
 
-
-int ft_exit()
+int	ft_exit(void)
 {
 	ft_putstr_fd("Exited 3D, ggboiiii\n", 1);
 	exit(EXIT_SUCCESS);
 }
 
-int hook_key(int keycode)
+int	hook_key(int keycode)
 {
 	printf("keycode = %d\n", keycode);
 	if (keycode == ESC)
@@ -43,12 +43,12 @@ int hook_key(int keycode)
             //WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, RED_PIXEL);
     //return (0);
 //}
-void ft_leaks()
+void	ft_leaks(void)
 {
 	system("leaks -q cub3D");
 }
 
-int player_orientation(t_player *player, char c)
+int	player_orientation(t_player *player, char c)
 {
 	char *orientation[4] = {"N", "S", "E", "W"};
 	int i = 0;
@@ -99,23 +99,82 @@ int player_check_pos(t_array *map, t_player *player)
 	return (0);
 }
 
-
+//NOTES:	first copy textures + check
+//			second copy colors  + check
+//			third copy map      + check
 
 //TODO: norminette
 //TODO: refactor player function
 //TODO: refactor function parsing map
-//TODO: check that argv[1] ends in .cub
-//TODO: check if file exits
+//TODO: error function directly to stderr and in red
+
+char *line_meaning(char *line)
+{
+	size_t i = 0;
+	size_t j = 0;
+	char *options[6] = {"NO", "SO", "WE", "EA", "F", "C"};
+	while (line[i] && ft_isspace(line[i]))
+		i++;
+	while (j < 6)
+	{
+		if (starts_with(&line[i], options[j]) == TRUE)
+			return (options[j]);
+		j++;
+	}
+	return (NULL);
+}
+
+//t_test *test(t_test tese, options)
+//{
+	//static counter ++
+	//if (count < 6)
+		//return (&test)
+	//if (options = NO)
+		//write test.no
+	//else if (options)
+		
+//}
+
 int main(int argc, char **argv)
 {
 #if 1
-	atexit(ft_leaks);
+	//atexit(ft_leaks);
 	//check input
 	if (argc != 2)
 		return (ft_putstr_fd("Error: program needs one argument ending in \".cub\"\n", 2) ,1);
 	if (ends_with(argv[1], ".cub") != TRUE)
 		return (ft_putstr_fd("Error: first argument has to end with .cub\n", 2), 2);
-	return 0;
+	int file = open(argv[1], O_RDONLY);
+	if (file < 0)
+		return (ft_putstr_fd("Error: file doesn't exist\n", 2), 3);
+	int dir = open(argv[1], O_DIRECTORY);
+	if (dir > 0)
+		return (ft_putstr_fd("Error: cannot use a directory as map\n", 2), 4);
+
+	//copying textures
+	char *line = get_next_line(file);
+	while (line != NULL)
+	{
+		printf("result = %s | line = %s", line_meaning(line), line);
+		printf("result = %s | line = %s", line_meaning(line), line);
+	
+		line = get_next_line(file);
+	}
+	close(file);
+	return (0);
+
+
+
+
+
+
+
+
+
+
+
+
+#else
 	//copying map
 	t_array	map;
 	int file = open(argv[1], O_RDONLY);
@@ -144,7 +203,6 @@ int main(int argc, char **argv)
 	ft_free(map.items);
 	return 0;
 
-#else
 	t_data	data;
 
 	//window initialization
@@ -171,5 +229,3 @@ int main(int argc, char **argv)
 	return (0);
 #endif
 }
-
-

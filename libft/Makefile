@@ -6,7 +6,7 @@
 #    By: glacroix <glacroix@student.42madrid>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/03 12:50:33 by glacroix          #+#    #+#              #
-#    Updated: 2024/03/27 11:53:06 by glacroix         ###   ########.fr        #
+#    Updated: 2024/03/27 16:46:00 by glacroix         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,7 @@ SRCS 	=  srcs/ft_bzero.c\
         srcs/ft_memcpy.c\
         srcs/ft_memmove.c\
         srcs/ft_memset.c\
+		srcs/starts_with.c\
 		srcs/ends_with.c\
 		srcs/ft_strchr.c\
         srcs/ft_strlcat.c\
