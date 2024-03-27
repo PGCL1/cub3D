@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 17:54:49 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/25 16:12:31 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/27 11:58:29 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ static char	*move_pos_stash(char *stash)
 	size_t	len;
 	char	*str;
 
-
 	i = 0;
 	j = 0;
 	len = ft_strlen_gnl(stash);
@@ -116,4 +115,3 @@ char	*get_next_line(int fd)
 	stash[fd] = move_pos_stash(stash[fd]);
 	return (line);
 }
-

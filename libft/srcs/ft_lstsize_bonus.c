@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 14:19:55 by glacroix          #+#    #+#             */
-/*   Updated: 2024/02/19 15:48:24 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/27 12:05:17 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_lstsize(t_list *lst)
 {
-	int x;
+	int	x;
 
 	x = 0;
 	if (!lst)
@@ -24,22 +24,5 @@ int	ft_lstsize(t_list *lst)
 		lst = lst->next;
 		x++;
 	}
-	return(x);
+	return (x);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

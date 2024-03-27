@@ -6,14 +6,14 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 15:04:54 by glacroix          #+#    #+#             */
-/*   Updated: 2024/02/19 15:43:56 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/27 12:08:26 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
-void ft_lstdelone(t_list *lst, void (*del)(void*))
-{	
+void	ft_lstdelone(t_list *lst, void (*del)(void*))
+{
 	if (!lst)
 		return ;
 	if (lst)

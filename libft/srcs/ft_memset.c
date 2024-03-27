@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 18:22:49 by glacroix          #+#    #+#             */
-/*   Updated: 2024/02/19 15:54:08 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/27 12:04:26 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,6 @@ void	*ft_memset(void *str, int c, size_t n)
 	{
 		((unsigned char *)str)[i] = c;
 		i++;
-	}	
+	}
 	return (str);
 }

@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:48:13 by glacroix          #+#    #+#             */
-/*   Updated: 2024/02/19 15:48:03 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/27 12:05:42 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_list	*ft_lstnew(void *content)
 {
-	t_list *node;
+	t_list	*node;
 
 	node = malloc(sizeof(t_list));
 	if (!node)

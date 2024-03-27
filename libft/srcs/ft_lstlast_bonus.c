@@ -6,15 +6,15 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 14:35:29 by glacroix          #+#    #+#             */
-/*   Updated: 2024/02/19 15:46:04 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/27 12:07:32 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
-t_list *ft_lstlast(t_list *lst)
+t_list	*ft_lstlast(t_list *lst)
 {
-	t_list *temp;
+	t_list	*temp;
 
 	temp = lst;
 	if (!lst)

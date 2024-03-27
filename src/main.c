@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/26 18:51:08 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/27 12:16:29 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,13 @@ int player_check_pos(t_array *map, t_player *player)
 	return (0);
 }
 
+
+
+//TODO: norminette
+//TODO: refactor player function
+//TODO: refactor function parsing map
 //TODO: check that argv[1] ends in .cub
+//TODO: check if file exits
 int main(int argc, char **argv)
 {
 #if 1
@@ -107,7 +113,9 @@ int main(int argc, char **argv)
 	//check input
 	if (argc != 2)
 		return (ft_putstr_fd("Error: program needs one argument ending in \".cub\"\n", 2) ,1);
-	
+	if (ends_with(argv[1], ".cub") != TRUE)
+		return (ft_putstr_fd("Error: first argument has to end with .cub\n", 2), 2);
+	return 0;
 	//copying map
 	t_array	map;
 	int file = open(argv[1], O_RDONLY);

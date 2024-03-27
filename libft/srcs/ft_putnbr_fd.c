@@ -6,17 +6,17 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 23:05:37 by glacroix          #+#    #+#             */
-/*   Updated: 2024/02/19 15:56:49 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/27 12:04:05 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
-void ft_putnbr_fd(int n, int fd)
+void	ft_putnbr_fd(int n, int fd)
 {
 	if (n == -2147483648)
 	{
-		ft_putchar_fd('-', fd); 
+		ft_putchar_fd('-', fd);
 		ft_putchar_fd('2', fd);
 		ft_putnbr_fd(147483648, fd);
 	}

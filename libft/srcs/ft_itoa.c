@@ -6,45 +6,52 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 19:04:30 by glacroix          #+#    #+#             */
-/*   Updated: 2024/02/19 15:41:56 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/27 12:13:20 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
-static size_t ft_count(int n)
+static size_t	ft_count(int n)
 {
-	size_t len; 
+	size_t	len;
 
-	len = 1; 
-	while (n /= 10)
+	len = 0;
+	if (n <= 0)
 		len++;
+	while (n)
+	{
+		n = n / 10;
+		len++;
+	}
 	return (len);
 }
 
-char *ft_itoa(int n)
+char	*ft_itoa(int n)
 {
-	long 	num;
-	char 	*str;
-	size_t 	len;
+	char	*str;
+	size_t	length;
+	long	num;
 
+	length = ft_count(n);
 	num = n;
-	len = ft_count(n);
-	if (n < 0)
-	{
-		num *= -1;
-		len++;
-	}	
-	str = malloc(sizeof(char) * (len + 1));
+	str = malloc(sizeof(char) * (length + 1));
 	if (!str)
 		return (NULL);
-	str[len] = '\0';
-	while (len--)
+	if (num < 0)
 	{
-		str[len] = num % 10 + '0'; 
-		num = num / 10;
-	}
-	if (n < 0)
 		str[0] = '-';
+		num = -num;
+	}
+	if (num == 0)
+		str[0] = '0';
+	str[length] = '\0';
+	length--;
+	while (num)
+	{
+		str[length] = (num % 10) + '0';
+		num = num / 10;
+		length--;
+	}
 	return (str);
 }

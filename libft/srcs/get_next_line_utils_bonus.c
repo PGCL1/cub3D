@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 17:55:53 by glacroix          #+#    #+#             */
-/*   Updated: 2024/02/19 16:20:55 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/27 11:59:20 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,6 @@ size_t	ft_strlen_gnl(char *str)
 	while (str[x] != '\0')
 	{
 		x++;
-	}	
+	}
 	return (x);
 }
