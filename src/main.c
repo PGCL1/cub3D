@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/27 19:29:36 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/28 15:59:24 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,33 +108,6 @@ int player_check_pos(t_array *map, t_player *player)
 //TODO: refactor function parsing map
 //TODO: error function directly to stderr and in red
 
-char *line_meaning(char *line)
-{
-	size_t i = 0;
-	size_t j = 0;
-	char *options[6] = {"NO", "SO", "WE", "EA", "F", "C"};
-	while (line[i] && ft_isspace(line[i]))
-		i++;
-	while (j < 6)
-	{
-		if (starts_with(&line[i], options[j]) == TRUE)
-			return (options[j]);
-		j++;
-	}
-	return (NULL);
-}
-
-//t_test *test(t_test tese, options)
-//{
-	//static counter ++
-	//if (count < 6)
-		//return (&test)
-	//if (options = NO)
-		//write test.no
-	//else if (options)
-		
-//}
-
 int main(int argc, char **argv)
 {
 #if 1
@@ -150,16 +123,55 @@ int main(int argc, char **argv)
 	int dir = open(argv[1], O_DIRECTORY);
 	if (dir > 0)
 		return (ft_putstr_fd("Error: cannot use a directory as map\n", 2), 4);
+	
+	t_data	data;
+
+	//window initialization
+	data.mlx_ptr = mlx_init();
+	if (!data.mlx_ptr)
+		return (ft_putstr_fd("Error: mlx_init() failed", 2), 1);
+		data.win_ptr = mlx_new_window(data.mlx_ptr, 600, 300, "GG boiii");
+		data.img = mlx_new_image(data.mlx_ptr, 600, 300);
+		data.img_addr = mlx_get_data_addr(data.img, &data.img_bits_per_pixel, &data.img_line_length,
+				&data.img_endian);
 
 	//copying textures
 	char *line = get_next_line(file);
+	t_design test;
 	while (line != NULL)
 	{
-		printf("result = %s | line = %s", line_meaning(line), line);
-		printf("result = %s | line = %s", line_meaning(line), line);
-	
-		line = get_next_line(file);
+		printf("result = %s | empty = %d | line = `%s", line_meaning(line), line_empty(line), line);
+		//if line_meaning == NULL && line_empty == TRUE => free line and pass to next line
+		if (!line_meaning(line) && line_empty(line) == TRUE)
+		{
+			free(line);
+			line = get_next_line(file);
+			continue;	
+		}
+		else
+		{
+			int count = colors_textures(&data.mlx_ptr, line, &test);
+			if (count == 4 || count == -1)
+			{
+				free(line);	
+				break;
+			}
+			free(line);
+			line = get_next_line(file);
+		}
 	}
+	//if (count == -1)
+		////free memory?
+	printf("NORTH = %p\n", test.north_text);
+	printf("SOUTH = %p\n", test.south_text);
+	printf("EAST = %p\n", test.east_text);
+	printf("WEST = %p\n", test.west_text);
+	//printf("line = %s", get_next_line(file));
+	//printf("line = %s", get_next_line(file));
+	//printf("line = %s", get_next_line(file));
+	mlx_hook(data.win_ptr, 17, 0, ft_exit, data.mlx_ptr);
+	mlx_hook(data.win_ptr, 2, 0, hook_key, data.mlx_ptr);
+	//mlx_loop(data.mlx_ptr);
 	close(file);
 	return (0);
 
@@ -172,9 +184,9 @@ int main(int argc, char **argv)
 
 
 
-
-
 #else
+
+
 	//copying map
 	t_array	map;
 	int file = open(argv[1], O_RDONLY);

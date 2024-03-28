@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 18:11:28 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/27 17:12:20 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/28 15:58:07 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,21 +73,15 @@ typedef struct s_player
 	int		y;
 }	t_player;
 
-typedef struct s_colors
+typedef struct s_design 
 {
-	int	floor[3];
-	int	ceiling[3];
-	int	count;
-}	t_colors;
-
-typedef struct s_textures
-{
-	char	*north_texture;
-	char	*south_texture;
-	char	*east_texture;
-	char	*west_texture;
-	int 	count;
-}	t_textures;
+	int		floor[3];
+	int		ceiling[3];
+	void	*north_text;
+	void	*south_text;
+	void	*east_text;
+	void	*west_text;
+}	t_design;
 
 /*------------------------------Utils----------------------------------------*/
 void	*ft_realloc(void *ptr, size_t len, size_t size);
@@ -96,7 +90,14 @@ t_array	ms_array_init(void);
 size_t	line_len(char *item);
 
 /*------------------------------Parsing---------------------------------------*/
-int		line_error(char *item, size_t len);
-int		map_check_borders(t_array copy);
+int			map_check_borders(t_array copy);
+
+int			colors_textures(void *mlx, char *line, t_design *design);
+char		*texture_path(char *line);
+void		*get_texture(void *mlx, char *line);
+
+int			line_error(char *item, size_t len);
+int			line_empty(char *line);
+const char	*line_meaning(char *line);
 
 #endif
