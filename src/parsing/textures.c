@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:37:05 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/29 13:28:37 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/29 15:10:50 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,29 +75,4 @@ void	*get_texture(void *mlx, char *line)
 	texture = mlx_xpm_file_to_image(mlx, path_no_newline, &width, &height);
 	free(path_no_newline);
 	return (texture);
-}
-
-int	colors_textures(void *mlx, char *line, t_design *design)
-{
-	static int	count = 0; //line is empty and count < 6;
-	if (!line_meaning(line) && line_empty(line) == FALSE)
-		return (-1);
-	else
-	{
-		if (ft_strncmp((char *)line_meaning(line), "NO", 3) == 0)
-			design->north_text = get_texture(mlx, line);
-		else if (ft_strncmp((char *)line_meaning(line), "SO", 3) == 0)
-			design->south_text = get_texture(mlx, line);
-		else if (ft_strncmp((char *)line_meaning(line), "WE", 3) == 0)
-			design->west_text = get_texture(mlx, line);
-		else if (ft_strncmp((char *)line_meaning(line), "EA", 3) == 0)
-			design->east_text = get_texture(mlx, line);
-		else if (ft_strncmp((char *)line_meaning(line), "F", 2) == 0)
-			get_colors(line, design->floor);
-		else if (ft_strncmp((char *)line_meaning(line), "C", 2) == 0)
-			get_colors(line, design->ceiling);
-		count += 1;
-	}
-	printf("count = %d\n", count);
-	return (count);
 }

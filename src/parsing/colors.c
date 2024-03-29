@@ -6,13 +6,11 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 16:01:52 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/29 13:22:04 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/29 15:35:05 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "cub3d.h"
-#include <stdio.h>
-#include "../../libft/libft.h"
+#include "cub3d.h"
 
 char	*color_path(char *line)
 {
@@ -36,6 +34,20 @@ size_t	len_matrix(char **ptr)
 	return (i);
 }
 
+void	init_colors(int floor[], int ceiling[])
+{
+	int	i;
+
+	i = 0;
+	while (i < 3)
+	{
+		floor[i] = -1;
+		ceiling[i] = -1;
+		i++;
+	}
+	return ;
+}
+
 int	get_colors(char *line, int color[])
 {
 	size_t	i;
@@ -53,11 +65,7 @@ int	get_colors(char *line, int color[])
 		return (1);
 	i = -1;
 	while (++i < len)
-	{
 		color[i] = ft_atoi(numbers[i]);
-		if (color[i] < 0 || color[i] > 255)
-			return (ft_free(numbers), 1);
-	}
 	ft_free(numbers);
 	return (0);
 }

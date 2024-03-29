@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 18:11:28 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/29 13:31:20 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/29 15:37:17 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@
 # include <sys/types.h>
 # include <sys/uio.h>
 # include <fcntl.h>
+
+/*------------------------------Error_msg-------------------------------------*/
+# define RESET  		"\x1B[0m"
+# define P_RED  		"\x1B[31m"
 
 /*------------------------------Colors----------------------------------------*/
 # define PURPLE			0XF4ECF7 
@@ -93,7 +97,6 @@ size_t	line_len(char *item);
 /*------------------------------Parsing---------------------------------------*/
 int			map_check_borders(t_array copy);
 
-int			colors_textures(void *mlx, char *line, t_design *design);
 char		*texture_path(char *line);
 void		*get_texture(void *mlx, char *line);
 
@@ -101,8 +104,13 @@ int			line_error(char *item, size_t len);
 int			line_empty(char *line);
 const char	*line_meaning(char *line);
 
+void		init_colors(int floor[], int ceiling[]);
 char		*color_path(char *line);
 size_t		len_matrix(char **ptr);
 int			get_colors(char *line, int color[]);
 
+int			error_color(int color[]);
+int			error_design(t_design *design);
+int			colors_textures(void *mlx, char *line, t_design *design);
+t_design	assign_design(int file, t_data *data, int *count, char *line);
 #endif

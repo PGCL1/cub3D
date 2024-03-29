@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/29 13:38:03 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/29 15:38:00 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,11 +111,10 @@ int player_check_pos(t_array *map, t_player *player)
 int main(int argc, char **argv)
 {
 #if 1
-	//atexit(ft_leaks);
+	atexit(ft_leaks);
 	//check input
 	if (argc != 2)
 		return (error_msg("program needs one argument ending in \".cub\""),1);
-	return (0);
 	if (ends_with(argv[1], ".cub") != TRUE)
 		return (error_msg("first argument has to end with .cub"), 2);
 	int file = open(argv[1], O_RDONLY);
@@ -124,7 +123,6 @@ int main(int argc, char **argv)
 	int dir = open(argv[1], O_DIRECTORY);
 	if (dir > 0)
 		return (error_msg("cannot use a directory as map"), 4);
-	
 	t_data	data;
 
 	//window initialization
@@ -135,48 +133,18 @@ int main(int argc, char **argv)
 		data.img = mlx_new_image(data.mlx_ptr, 600, 300);
 		data.img_addr = mlx_get_data_addr(data.img, &data.img_bits_per_pixel, &data.img_line_length,
 				&data.img_endian);
-
+	
 	//copying textures
-	char *line = get_next_line(file);
-	t_design test;
-	while (line != NULL)
+	int count = 0;
+	char *line = NULL;
+	t_design test = assign_design(file, &data, &count, line);
+	if (error_design(&test) == TRUE)
 	{
-		printf("result = %s | empty = %d | line = `%s", line_meaning(line), line_empty(line), line);
-		//if line_meaning == NULL && line_empty == TRUE => free line and pass to next line
-		if (!line_meaning(line) && line_empty(line) == TRUE)
-		{
-			free(line);
-			line = get_next_line(file);
-			continue;	
-		}
-		else
-		{
-
-			int count = colors_textures(&data.mlx_ptr, line, &test);
-			if (count == 6 || count == -1)
-			{
-				free(line);	
-				break;
-			}
-			free(line);
-			line = get_next_line(file);
-		}
+		//free image, window and mlx
+		close(file);
+		close(dir);
+		return (error_msg("textures and colors were wrong"), 1);
 	}
-	//if (count == -1)
-		////free memory?
-	//printf("NORTH = %p\n", test.north_text);
-	//printf("SOUTH = %p\n", test.south_text);
-	//printf("EAST = %p\n", test.east_text);
-	//printf("WEST = %p\n", test.west_text);
-	printf("test.floor[0] = %d\n", test.floor[0]);
-	printf("test.floor[1] = %d\n", test.floor[1]);
-	printf("test.floor[2] = %d\n", test.floor[2]);
-	printf("test.ceiling[0] = %d\n", test.ceiling[0]);
-	printf("test.ceiling[1] = %d\n", test.ceiling[1]);
-	printf("test.ceiling[2] = %d\n", test.ceiling[2]);
-	printf("line = %s", get_next_line(file));
-	printf("line = %s", get_next_line(file));
-	printf("line = %s", get_next_line(file));
 	mlx_hook(data.win_ptr, 17, 0, ft_exit, data.mlx_ptr);
 	mlx_hook(data.win_ptr, 2, 0, hook_key, data.mlx_ptr);
 	//mlx_loop(data.mlx_ptr);

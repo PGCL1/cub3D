@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 12:31:54 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/29 13:34:00 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/29 14:16:07 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,6 @@ void	ms_array_append(t_array *arr, char *item)
 
 void error_msg(char *msg)
 {
-	ft_putstr_fd("Error: ", 2);
+	ft_putstr_fd(P_RED"Error: "RESET, 2);
 	ft_putendl_fd(msg, 2);
 }
