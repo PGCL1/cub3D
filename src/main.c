@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/29 13:08:22 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/29 13:38:03 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int player_check_pos(t_array *map, t_player *player)
 				player->y = j;
 				if (player_orientation(player, line[j]) != TRUE)
 				{
-					printf("Error: The player orientation is wrong\n");	
+					error_msg("player orientation is wrong");	
 					exit(1);
 				}
 				count += 1;
@@ -114,22 +114,23 @@ int main(int argc, char **argv)
 	//atexit(ft_leaks);
 	//check input
 	if (argc != 2)
-		return (ft_putstr_fd("Error: program needs one argument ending in \".cub\"\n", 2) ,1);
+		return (error_msg("program needs one argument ending in \".cub\""),1);
+	return (0);
 	if (ends_with(argv[1], ".cub") != TRUE)
-		return (ft_putstr_fd("Error: first argument has to end with .cub\n", 2), 2);
+		return (error_msg("first argument has to end with .cub"), 2);
 	int file = open(argv[1], O_RDONLY);
 	if (file < 0)
-		return (ft_putstr_fd("Error: file doesn't exist\n", 2), 3);
+		return (error_msg("file doesn't exist"), 3);
 	int dir = open(argv[1], O_DIRECTORY);
 	if (dir > 0)
-		return (ft_putstr_fd("Error: cannot use a directory as map\n", 2), 4);
+		return (error_msg("cannot use a directory as map"), 4);
 	
 	t_data	data;
 
 	//window initialization
 	data.mlx_ptr = mlx_init();
 	if (!data.mlx_ptr)
-		return (ft_putstr_fd("Error: mlx_init() failed", 2), 1);
+		return (error_msg("mlx_init() failed"), 1);
 		data.win_ptr = mlx_new_window(data.mlx_ptr, 600, 300, "GG boiii");
 		data.img = mlx_new_image(data.mlx_ptr, 600, 300);
 		data.img_addr = mlx_get_data_addr(data.img, &data.img_bits_per_pixel, &data.img_line_length,
@@ -150,6 +151,7 @@ int main(int argc, char **argv)
 		}
 		else
 		{
+
 			int count = colors_textures(&data.mlx_ptr, line, &test);
 			if (count == 6 || count == -1)
 			{
@@ -221,16 +223,6 @@ int main(int argc, char **argv)
 	ft_free(map.items);
 	return 0;
 
-	t_data	data;
-
-	//window initialization
-	data.mlx_ptr = mlx_init();
-	if (!data.mlx_ptr)
-		return (ft_putstr_fd("Error: mlx_init() failed", 2), 1);
-		data.win_ptr = mlx_new_window(data.mlx_ptr, 600, 300, "GG boiii");
-		data.img = mlx_new_image(data.mlx_ptr, 600, 300);
-		data.img_addr = mlx_get_data_addr(data.img, &data.img_bits_per_pixel, &data.img_line_length,
-				&data.img_endian);
 
 	//printing pixels to image in window
 	for (int x = 0; x < 600; x++)

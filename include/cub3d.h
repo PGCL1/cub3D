@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 18:11:28 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/29 13:03:07 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/29 13:31:20 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ typedef struct s_design
 }	t_design;
 
 /*------------------------------Utils----------------------------------------*/
+void	error_msg(char *msg);
 void	*ft_realloc(void *ptr, size_t len, size_t size);
 void	ms_array_append(t_array *arr, char *item);
 t_array	ms_array_init(void);
