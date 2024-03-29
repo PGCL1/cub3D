@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:37:05 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/28 16:00:49 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/29 13:04:16 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,14 +92,14 @@ int	colors_textures(void *mlx, char *line, t_design *design)
 			design->west_text = get_texture(mlx, line);
 		else if (ft_strncmp((char *)line_meaning(line), "EA", 3) == 0)
 			design->east_text = get_texture(mlx, line);
+		else if (ft_strncmp((char *)line_meaning(line), "F", 2) == 0)
+			get_colors(line, design->floor);
+		else if (ft_strncmp((char *)line_meaning(line), "C", 2) == 0)
+			get_colors(line, design->ceiling); 
 		count += 1;
 	}
 	printf("count = %d\n", count);
 	return (count);
 }
-//else if (line_meaning(line) == "F")
-//design->floor[3] = 
-//else if (line_meaning(line) == "C")
-//design->ceiling[3] = 
 //count +=1;
 //printf("count = %d\n", count);

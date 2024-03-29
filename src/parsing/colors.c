@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 16:01:52 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/28 18:37:40 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/29 13:02:49 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,9 @@ size_t len_matrix(char **ptr)
 }
 
 
-int get_colors(char *line, int fc_color[3])
+int get_colors(char *line, int color[])
 {
+	printf("colors %p\n", color);
 	size_t	i;
 	size_t	len;
 	char 	**numbers;
@@ -52,17 +53,12 @@ int get_colors(char *line, int fc_color[3])
 	len = len_matrix(numbers);
 	if (len > 3)
 		return (1);
-	i = 0;
-	while (i < len)
+	i = -1;
+	while (++i < len)
 	{
-		fc_color[i] = ft_atoi(numbers[i]);
-		printf("%d\n", fc_color[i]);
-		if (fc_color[i] < 0 || fc_color[i] > 255)
-		{
-			ft_free(numbers);	
-			return (1);
-		}
-		i++;
+		color[i] = ft_atoi(numbers[i]);
+		if (color[i] < 0 || color[i] > 255)
+			return (ft_free(numbers), 1);
 	}
 	ft_free(numbers);	
 	return (0);

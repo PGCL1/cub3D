@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 18:11:28 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/28 15:58:07 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/29 13:03:07 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,5 +99,9 @@ void		*get_texture(void *mlx, char *line);
 int			line_error(char *item, size_t len);
 int			line_empty(char *line);
 const char	*line_meaning(char *line);
+
+char		*color_path(char *line);
+size_t		len_matrix(char **ptr);
+int			get_colors(char *line, int color[]);
 
 #endif

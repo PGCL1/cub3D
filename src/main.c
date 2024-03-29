@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/28 15:59:24 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/29 13:08:22 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ int main(int argc, char **argv)
 		else
 		{
 			int count = colors_textures(&data.mlx_ptr, line, &test);
-			if (count == 4 || count == -1)
+			if (count == 6 || count == -1)
 			{
 				free(line);	
 				break;
@@ -162,13 +162,19 @@ int main(int argc, char **argv)
 	}
 	//if (count == -1)
 		////free memory?
-	printf("NORTH = %p\n", test.north_text);
-	printf("SOUTH = %p\n", test.south_text);
-	printf("EAST = %p\n", test.east_text);
-	printf("WEST = %p\n", test.west_text);
-	//printf("line = %s", get_next_line(file));
-	//printf("line = %s", get_next_line(file));
-	//printf("line = %s", get_next_line(file));
+	//printf("NORTH = %p\n", test.north_text);
+	//printf("SOUTH = %p\n", test.south_text);
+	//printf("EAST = %p\n", test.east_text);
+	//printf("WEST = %p\n", test.west_text);
+	printf("test.floor[0] = %d\n", test.floor[0]);
+	printf("test.floor[1] = %d\n", test.floor[1]);
+	printf("test.floor[2] = %d\n", test.floor[2]);
+	printf("test.ceiling[0] = %d\n", test.ceiling[0]);
+	printf("test.ceiling[1] = %d\n", test.ceiling[1]);
+	printf("test.ceiling[2] = %d\n", test.ceiling[2]);
+	printf("line = %s", get_next_line(file));
+	printf("line = %s", get_next_line(file));
+	printf("line = %s", get_next_line(file));
 	mlx_hook(data.win_ptr, 17, 0, ft_exit, data.mlx_ptr);
 	mlx_hook(data.win_ptr, 2, 0, hook_key, data.mlx_ptr);
 	//mlx_loop(data.mlx_ptr);
