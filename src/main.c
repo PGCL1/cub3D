@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/29 15:38:00 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/29 16:04:38 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ int player_check_pos(t_array *map, t_player *player)
 int main(int argc, char **argv)
 {
 #if 1
-	atexit(ft_leaks);
+	//atexit(ft_leaks);
 	//check input
 	if (argc != 2)
 		return (error_msg("program needs one argument ending in \".cub\""),1);
