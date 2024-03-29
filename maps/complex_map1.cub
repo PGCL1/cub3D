@@ -1,11 +1,13 @@
-NO                    ./textures/file.xpm
-NO                    ./textures/file.xpm
-SO ./textures/file.xpm
-WE ./textures/file.xpm
-EA ./textures/file.xpm
-  
+
+
 F 220,100,0
 C 225,30,0
+NO ./textures/file.xpm
+WE ./textures/file.xpm
+EA ./textures/file.xpm
+SO ./textures/file.xpm
+
+c
 
         1111111111111111111111111
         1000000000110000000000001

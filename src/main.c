@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/29 16:04:38 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/29 17:04:18 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,12 @@ int main(int argc, char **argv)
 	int count = 0;
 	char *line = NULL;
 	t_design test = assign_design(file, &data, &count, line);
-	if (error_design(&test) == TRUE)
+	//after struct is created, continue reading 
+	//if line != empty, throw error lines until you found map
+	printf("line = %s", get_next_line(file));
+	printf("line = %s", get_next_line(file));
+	printf("line = %s", get_next_line(file));
+	if (error_design(&test) == TRUE || count == -1)
 	{
 		//free image, window and mlx
 		close(file);

@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 15:08:30 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/29 16:03:43 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/29 16:51:49 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 int	error_color(int color[])
 {
-	printf("\n");
-	printf("color[0] = %d\n", color[0]);
-	printf("color[1] = %d\n", color[1]);
-	printf("color[2] = %d\n", color[2]);
+	//printf("\n");
+	//printf("color[0] = %d\n", color[0]);
+	//printf("color[1] = %d\n", color[1]);
+	//printf("color[2] = %d\n", color[2]);
 	int	i;
 
 	i = 0;
@@ -32,23 +32,22 @@ int	error_color(int color[])
 
 int	error_design(t_design *design)
 {
-	printf("\n");
-	printf("design->>north = %p\n", design->north_text);
-	printf("design->>south = %p\n", design->south_text);
-	printf("design->>west = %p\n", design->west_text);
-	printf("design->>east = %p\n", design->east_text);
-	printf("design->>floor[0] = %d\n", design->floor[0]);
-	printf("design->>floor[1] = %d\n", design->floor[1]);
-	printf("design->>floor[2] = %d\n", design->floor[2]);
-	printf("design->>ceiling[0] = %d\n", design->ceiling[0]);
-	printf("design->>ceiling[1] = %d\n", design->ceiling[1]);
-	printf("design->>ceiling[2] = %d\n", design->ceiling[2]);
+	//printf("\n");
+	//printf("design->>north = %p\n", design->north_text);
+	//printf("design->>south = %p\n", design->south_text);
+	//printf("design->>west = %p\n", design->west_text);
+	//printf("design->>east = %p\n", design->east_text);
+	//printf("design->>floor[0] = %d\n", design->floor[0]);
+	//printf("design->>floor[1] = %d\n", design->floor[1]);
+	//printf("design->>floor[2] = %d\n", design->floor[2]);
+	//printf("design->>ceiling[0] = %d\n", design->ceiling[0]);
+	//printf("design->>ceiling[1] = %d\n", design->ceiling[1]);
+	//printf("design->>ceiling[2] = %d\n", design->ceiling[2]);
 	if (!design->north_text || !design->south_text
 		|| !design->east_text || !design->west_text)
 		return (1);
 	if (error_color(design->floor) == TRUE || error_color(design->ceiling) == TRUE)
 		return (1);
-	printf("here\n");
 	return (0);
 }
 
