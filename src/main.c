@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/29 17:04:18 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/29 18:23:07 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,11 +103,9 @@ int player_check_pos(t_array *map, t_player *player)
 //			second copy colors  + check
 //			third copy map      + check
 
-//TODO: norminette
 //TODO: refactor player function
-//TODO: refactor function parsing map
-//TODO: error function directly to stderr and in red
-
+//TODO: better map error_handling
+//TODO: figure out what to do with whitespaces in map
 int main(int argc, char **argv)
 {
 #if 1
@@ -123,26 +121,21 @@ int main(int argc, char **argv)
 	int dir = open(argv[1], O_DIRECTORY);
 	if (dir > 0)
 		return (error_msg("cannot use a directory as map"), 4);
-	t_data	data;
 
 	//window initialization
+	t_data	data;
 	data.mlx_ptr = mlx_init();
 	if (!data.mlx_ptr)
 		return (error_msg("mlx_init() failed"), 1);
-		data.win_ptr = mlx_new_window(data.mlx_ptr, 600, 300, "GG boiii");
-		data.img = mlx_new_image(data.mlx_ptr, 600, 300);
-		data.img_addr = mlx_get_data_addr(data.img, &data.img_bits_per_pixel, &data.img_line_length,
-				&data.img_endian);
-	
+	data.win_ptr = mlx_new_window(data.mlx_ptr, 600, 300, "GG boiii");
+	data.img = mlx_new_image(data.mlx_ptr, 600, 300);
+	data.img_addr = mlx_get_data_addr(data.img, &data.img_bits_per_pixel, &data.img_line_length,
+			&data.img_endian);
+
 	//copying textures
 	int count = 0;
 	char *line = NULL;
 	t_design test = assign_design(file, &data, &count, line);
-	//after struct is created, continue reading 
-	//if line != empty, throw error lines until you found map
-	printf("line = %s", get_next_line(file));
-	printf("line = %s", get_next_line(file));
-	printf("line = %s", get_next_line(file));
 	if (error_design(&test) == TRUE || count == -1)
 	{
 		//free image, window and mlx
@@ -150,9 +143,36 @@ int main(int argc, char **argv)
 		close(dir);
 		return (error_msg("textures and colors were wrong"), 1);
 	}
+	
+	//copying map
+	t_array	map  = ms_array_init();
+	map_assign(&map, file);
+	for (size_t i = 0; i < map.len; i++)
+		printf("len = %lu | %s", map.items_len[i], map.items[i]);
+	printf("\n");	
+
+	//map_error_check
+	if (map_check_borders(map) != 0)
+	{
+		ft_free(map.items);
+		free(map.items_len);	
+		return (error_msg("map was invalid"), 1);
+	}
+	return (0);
+
+	//player_check
+	t_player player;
+	ft_memset(&player, 0, sizeof(player));
+	if (player_check_pos(&map, &player) != 0)
+		return (printf("Error: player position invalid | player = %p\n", &player), 1);
+	else
+		return (printf("ALL GOOOD\n"), 42);
+
+	//free memory
+	ft_free(map.items);
 	mlx_hook(data.win_ptr, 17, 0, ft_exit, data.mlx_ptr);
 	mlx_hook(data.win_ptr, 2, 0, hook_key, data.mlx_ptr);
-	//mlx_loop(data.mlx_ptr);
+	mlx_loop(data.mlx_ptr);
 	close(file);
 	return (0);
 
@@ -168,33 +188,6 @@ int main(int argc, char **argv)
 #else
 
 
-	//copying map
-	t_array	map;
-	int file = open(argv[1], O_RDONLY);
-	map = ms_array_init();
-	char *line = get_next_line(file);
-	while (line != NULL)
-	{
-		ms_array_append(&map, line);
-		line = get_next_line(file);
-	}
-	ms_array_append(&map, NULL);
-	for (size_t i = 0; i < map.len; i++)
-		printf("len = %lu | %s", map.items_len[i], map.items[i]);
-	printf("\n");	
-	
-	t_player player;
-	ft_memset(&player, 0, sizeof(player));
-	//CHECKER
-	if (map_check_borders(map) != 0)
-		return (printf("Error: map was invalid\n"), 1);
-	if (player_check_pos(&map, &player) != 0)
-		return (printf("Error: player position invalid | player = %p\n", &player), 1);
-	else
-		return (printf("ALL GOOOD\n"), 42);
-	//free memory
-	ft_free(map.items);
-	return 0;
 
 
 	//printing pixels to image in window

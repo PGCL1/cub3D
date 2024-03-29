@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:25:16 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/27 12:27:36 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/29 18:17:36 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,23 @@ int	map_check_borders(t_array copy)
 		i++;
 	}
 	return (0);
+}
+
+void map_assign(t_array *map, int file)
+{
+	char	*line;
+
+   	line = get_next_line(file);
+	while (line != NULL)
+	{
+		if (line_empty(line) == TRUE)
+		{
+			free(line);
+			line = get_next_line(file);
+			continue;
+		}
+		ms_array_append(map, line);
+		line = get_next_line(file);
+	}
+	ms_array_append(map, NULL);
 }

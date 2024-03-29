@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 18:11:28 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/29 15:37:17 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/29 18:14:45 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,13 +95,12 @@ t_array	ms_array_init(void);
 size_t	line_len(char *item);
 
 /*------------------------------Parsing---------------------------------------*/
-int			map_check_borders(t_array copy);
 
 char		*texture_path(char *line);
 void		*get_texture(void *mlx, char *line);
 
-int			line_error(char *item, size_t len);
 int			line_empty(char *line);
+int			line_error(char *item, size_t len);
 const char	*line_meaning(char *line);
 
 void		init_colors(int floor[], int ceiling[]);
@@ -113,4 +112,7 @@ int			error_color(int color[]);
 int			error_design(t_design *design);
 int			colors_textures(void *mlx, char *line, t_design *design);
 t_design	assign_design(int file, t_data *data, int *count, char *line);
+
+int			map_check_borders(t_array copy);
+void		map_assign(t_array *map, int file);
 #endif
