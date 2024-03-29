@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/29 18:23:07 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/29 19:49:32 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,60 +48,39 @@ void	ft_leaks(void)
 	system("leaks -q cub3D");
 }
 
-int	player_orientation(t_player *player, char c)
-{
-	char *orientation[4] = {"N", "S", "E", "W"};
-	int i = 0;
-	while (i < 4)
-	{
-		if (c == orientation[i][0])
-		{
-			player->orientation = c;
-			printf("c = %c | orientation %c\n", c, orientation[i][0]);
-			return (1);	
-		}
-		i += 1;
-	}
-	return (0);
-}
+//void player_orientation(char c, char *player_orientation)
+//{
+	//int			i;
+	//const char	orientation[4] = {'N', 'S', 'W', 'E'};
 
-//maybe create player struct here
-int player_check_pos(t_array *map, t_player *player)
-{
-	//char player[4] = {N, S, E, W};
-	int count = 0;
-	size_t i = 0;
-	size_t j = 0;
-	char *line;
-	while (i < map->len - 2)
-	{
-		j = 0;
-		line = map->items[i];
-		while (j < map->items_len[i])
-		{
-			if (count > 1)
-				exit(1);
-			if (line[j] != '1' && line[j] != '0' && line[j] != ' ')
-			{
-				player->x = i;
-				player->y = j;
-				if (player_orientation(player, line[j]) != TRUE)
-				{
-					error_msg("player orientation is wrong");	
-					exit(1);
-				}
-				count += 1;
-			}
-			j++;
-		}
-		i++;
-	}
-	return (0);
-}
+	//i = 0;
+	//while (i < 4)
+	//{
+		//if (c == orientation[i])
+			//*player_orientation = c;
+		//i++;
+	//}
+//}
 
-//NOTES:	first copy textures + check
-//			second copy colors  + check
-//			third copy map      + check
+//void player_init(t_player *player, const t_array map)
+//{
+	//size_t		i;
+	//size_t		j;
+	//char		*line;
+
+	//i = -1;
+	//while (++i < map.len)
+	//{
+		//j = 0;
+		//line = map.items[i];
+		//while (j < map.items_len[i])
+		//{
+			//if (line[j] != '1' && line[i] != '0')
+				//player_orientation(line[j], &player->orientation);
+		//}
+	//}
+//}
+
 
 //TODO: refactor player function
 //TODO: better map error_handling
@@ -158,16 +137,16 @@ int main(int argc, char **argv)
 		free(map.items_len);	
 		return (error_msg("map was invalid"), 1);
 	}
-	return (0);
 
 	//player_check
 	t_player player;
 	ft_memset(&player, 0, sizeof(player));
-	if (player_check_pos(&map, &player) != 0)
-		return (printf("Error: player position invalid | player = %p\n", &player), 1);
-	else
-		return (printf("ALL GOOOD\n"), 42);
+	player_init(&player, map);
 
+
+
+	//flood_fill map closed?
+	
 	//free memory
 	ft_free(map.items);
 	mlx_hook(data.win_ptr, 17, 0, ft_exit, data.mlx_ptr);

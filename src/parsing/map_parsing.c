@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:25:16 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/29 18:17:36 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/03/29 18:58:05 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,3 +71,28 @@ void map_assign(t_array *map, int file)
 	}
 	ms_array_append(map, NULL);
 }
+
+//typedef struct s_point
+	//{
+		//int	x;
+		//int y;
+	//}		t_point;
+
+//void f_fill(char **tab, t_point size, char target, int row, int col)
+//{
+	//if (col < 0 || row < 0 || col >= size.x || row >= size.y)
+		//return;
+	//if (tab[row][col] == 'F' || tab[row][col] != target)
+		//return;
+	//tab[row][col] = 'F';
+	//f_fill(tab, size, target, row + 1, col);
+	//f_fill(tab, size, target, row - 1, col);
+	//f_fill(tab, size, target, row, col + 1);
+	//f_fill(tab, size, target, row, col - 1);
+//}
+
+//void flood_fill(char **tab, t_point size, t_point begin)
+//{
+	//char target = tab[begin.y][begin.x];
+	//f_fill(tab, size, target, begin.y, begin.x);
+//}
