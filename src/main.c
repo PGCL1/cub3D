@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/01 18:01:39 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/01 20:29:09 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,8 +121,27 @@ int main(int argc, char **argv)
 	printf("player.y = %d\n", player.y);
 	printf("player.orien = %c\n", player.orientation);
 
+	//it's the final boss: is the map closed
+	//void f_fill(char **items, t_point size, char target, int row, int col)
+	//{
+		//if (col < 0 || row < 0 || col >= size.x || row >= size.y)
+			//return;
+		//if (items[row][col] == '1' || items[row][col] != target)
+			//return;
+		//items[row][col] = 'F';
+		//f_fill(items, size, target, row + 1, col);
+		//f_fill(items, size, target, row - 1, col);
+		//f_fill(items, size, target, row, col + 1);
+		//f_fill(items, size, target, row, col - 1);
+	//}
 
-	//flood_fill map closed?
+	//void flood_fill(char **items, t_point size, t_player player)
+	//{
+		//char target = items[player.y][player.x];
+		//f_fill(items, size, target, begin.y, begin.x);
+	//}
+	
+	
 	
 	//free memory
 	mlx_hook(data.win_ptr, 17, 0, ft_exit, data.mlx_ptr);

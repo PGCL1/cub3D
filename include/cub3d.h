@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 18:11:28 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/01 17:59:21 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/01 20:24:12 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ size_t	line_len(char *item);
 
 char		*texture_path(char *line);
 void		*get_texture(void *mlx, char *line);
+char		*texture_path_cleaned(char *line);
 
 int			line_empty(char *line);
 int			line_error(char *item, size_t len);
