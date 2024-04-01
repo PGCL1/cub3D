@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/29 19:49:32 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/01 18:01:39 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,38 +48,12 @@ void	ft_leaks(void)
 	system("leaks -q cub3D");
 }
 
-//void player_orientation(char c, char *player_orientation)
+//typedef struct s_player
 //{
-	//int			i;
-	//const char	orientation[4] = {'N', 'S', 'W', 'E'};
-
-	//i = 0;
-	//while (i < 4)
-	//{
-		//if (c == orientation[i])
-			//*player_orientation = c;
-		//i++;
-	//}
-//}
-
-//void player_init(t_player *player, const t_array map)
-//{
-	//size_t		i;
-	//size_t		j;
-	//char		*line;
-
-	//i = -1;
-	//while (++i < map.len)
-	//{
-		//j = 0;
-		//line = map.items[i];
-		//while (j < map.items_len[i])
-		//{
-			//if (line[j] != '1' && line[i] != '0')
-				//player_orientation(line[j], &player->orientation);
-		//}
-	//}
-//}
+	//char orientation;
+	//int x;
+	//int y;
+//}	t_player;
 
 
 //TODO: refactor player function
@@ -141,17 +115,20 @@ int main(int argc, char **argv)
 	//player_check
 	t_player player;
 	ft_memset(&player, 0, sizeof(player));
-	player_init(&player, map);
-
+	if (player_init(&player, map) == 1)
+		return (1);
+	printf("player.x = %d\n", player.x);
+	printf("player.y = %d\n", player.y);
+	printf("player.orien = %c\n", player.orientation);
 
 
 	//flood_fill map closed?
 	
 	//free memory
-	ft_free(map.items);
 	mlx_hook(data.win_ptr, 17, 0, ft_exit, data.mlx_ptr);
 	mlx_hook(data.win_ptr, 2, 0, hook_key, data.mlx_ptr);
 	mlx_loop(data.mlx_ptr);
+	ft_free(map.items);
 	close(file);
 	return (0);
 

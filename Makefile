@@ -6,7 +6,7 @@
 #    By: glacroix <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 16:34:00 by glacroix          #+#    #+#              #
-#    Updated: 2024/03/29 18:23:22 by glacroix         ###   ########.fr        #
+#    Updated: 2024/04/01 18:00:07 by glacroix         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,8 @@ SRCS		= src/main.c\
 			  src/parsing/map_parsing.c\
 			  src/parsing/textures.c\
 			  src/parsing/colors.c\
-			  src/parsing/design.c
+			  src/parsing/design.c\
+			  src/parsing/player.c
 				
 OBJS		= $(SRCS:%.c=objs/%.o)
 
@@ -43,7 +44,7 @@ CC			= gcc
 CFLAGS		= -Wall -Werror -Wextra -Imlx
 CFLAGS		+= -I include
 CFLAGS		+= -I libft -g3 -O2 -DSTRINGPUTX11
-MINI		= -lmlx -framework OpenGL -framework AppKit -g3 -fsanitize=address
+MINI		= -lmlx -framework OpenGL -framework AppKit #-g3 -fsanitize=address
 
 #SRC Execution
 # **************************************************************************** #
