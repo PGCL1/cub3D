@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 16:50:12 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/01 17:59:34 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/01 18:03:36 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int	orientation(char c, char *player_orientation)
 	const char	orientation[4] = {'N', 'S', 'W', 'E'};
 
 	i = 0;
-	printf("c = %c\n", c);
 	while (i < 4)
 	{
 		if (c == orientation[i])
