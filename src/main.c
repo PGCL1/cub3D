@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/01 20:29:09 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/02 18:53:19 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,21 +43,41 @@ int	hook_key(int keycode)
             //WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, RED_PIXEL);
     //return (0);
 //}
+//
+int exit_condition(int i, int j, t_array *map, char c)
+{
+	(void)c;
+	if ((i > (int)map->len || i < 0 || j >= (int)map->items_len[i])
+			|| (map->items[i][j] != '1' && map->items[i][j] != '0'))
+		return (1);
+	//if (map->items[i][j] != '\0' && map->items[i][j] != 'X' && map->items[i][j] != c)
+	///rreturn (1);
+	return (0);
+
+}
+
+int	test_fill(t_array *map, int i, int j, char c)
+{
+	if (exit_condition(i, j, map, c) == TRUE)
+		return (1);
+	if (map->items[i][j] == c || map->items[i][j] == '0')
+	{
+			map->items[i][j] = 'X';
+			test_fill(map, i + 1, j, c);
+			test_fill(map, i - 1, j, c);
+			test_fill(map, i, j + 1, c);
+			test_fill(map, i, j - 1, c);
+	}
+	return 0;	
+}
+
 void	ft_leaks(void)
 {
 	system("leaks -q cub3D");
 }
 
-//typedef struct s_player
-//{
-	//char orientation;
-	//int x;
-	//int y;
-//}	t_player;
 
-
-//TODO: refactor player function
-//TODO: better map error_handling
+//TODO: problem with cristian islands, need to throw error
 //TODO: figure out what to do with whitespaces in map
 int main(int argc, char **argv)
 {
@@ -111,7 +131,7 @@ int main(int argc, char **argv)
 		free(map.items_len);	
 		return (error_msg("map was invalid"), 1);
 	}
-
+	
 	//player_check
 	t_player player;
 	ft_memset(&player, 0, sizeof(player));
@@ -122,27 +142,13 @@ int main(int argc, char **argv)
 	printf("player.orien = %c\n", player.orientation);
 
 	//it's the final boss: is the map closed
-	//void f_fill(char **items, t_point size, char target, int row, int col)
-	//{
-		//if (col < 0 || row < 0 || col >= size.x || row >= size.y)
-			//return;
-		//if (items[row][col] == '1' || items[row][col] != target)
-			//return;
-		//items[row][col] = 'F';
-		//f_fill(items, size, target, row + 1, col);
-		//f_fill(items, size, target, row - 1, col);
-		//f_fill(items, size, target, row, col + 1);
-		//f_fill(items, size, target, row, col - 1);
-	//}
+	if (test_fill(&map, player.y, player.x, player.orientation) == 1)
+		return (error_msg("map is not closed"), 1);
 
-	//void flood_fill(char **items, t_point size, t_player player)
-	//{
-		//char target = items[player.y][player.x];
-		//f_fill(items, size, target, begin.y, begin.x);
-	//}
-	
-	
-	
+	printf("\n");	
+	for (size_t i = 0; i < map.len; i++)
+		printf("len = %lu | %s", map.items_len[i], map.items[i]);
+	printf("\n");	
 	//free memory
 	mlx_hook(data.win_ptr, 17, 0, ft_exit, data.mlx_ptr);
 	mlx_hook(data.win_ptr, 2, 0, hook_key, data.mlx_ptr);
@@ -150,14 +156,6 @@ int main(int argc, char **argv)
 	ft_free(map.items);
 	close(file);
 	return (0);
-
-
-
-
-
-
-
-
 
 
 #else

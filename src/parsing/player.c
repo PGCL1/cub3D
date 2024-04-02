@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 16:50:12 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/01 18:03:36 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/02 14:12:01 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int	orientation(char c, char *player_orientation)
 
 void	player_position(t_player *player, size_t i, size_t j)
 {
-	player->x = i;
-	player->y = j;
+	player->x = j;
+	player->y = i;
 }
 
 int	player_init(t_player *player, const t_array map)
