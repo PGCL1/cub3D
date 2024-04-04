@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/04 16:20:11 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/04 18:02:32 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,25 +46,23 @@ int	hook_key(int keycode)
 //}
 
 
-
-int	test_fill(t_array *map, int y, int x, char c, int *flag)
+t_array map_original_copy(t_array map)
 {
-	if ((y > (int)map->len || y < 0 || x >= (int)map->items_len[y]) || (map->items[y][x] != '1' && map->items[y][x] != '0' && map->items[y][x] != '\0' && map->items[y][x] != 'X' && map->items[y][x] != c))
-		return (*flag = 1, printf("ERROR| [%d][%d] = %c\n", x, y, map->items[y][x]), 1);
-	if ((map->items[y][x] == c || map->items[y][x] == '0') && *flag == 0)
-	{
+	size_t	i;
+	t_array	copy;
 
-		map->items[y][x] = 'X';
-		test_fill(map, y + 1, x, c, flag);
-		test_fill(map, y - 1, x, c, flag);
-		test_fill(map, y, x + 1, c, flag);
-		test_fill(map, y, x - 1, c, flag);
+	i = -1;
+	copy.len = map.len;
+	copy.items = malloc(sizeof(copy.items) * map.len);
+	copy.items_len = malloc(sizeof(copy.items_len) * map.len);
+	while (++i < copy.len)
+	{
+		copy.items[i] = ft_strdup(map.items[i]);
+		copy.items_len[i] = ft_strlen(map.items[i]);
 	}
-	else
-		return (1);
-		//return (printf(" 1 [%d][%d]", j, i), 1);
-	return *flag;	
+	return (copy);
 }
+
 
 void	ft_leaks(void)
 {
@@ -75,7 +73,7 @@ void	ft_leaks(void)
 int main(int argc, char **argv)
 {
 #if 1
-	//atexit(ft_leaks);
+	atexit(ft_leaks);
 	//check input
 	if (argc != 2)
 		return (error_msg("program needs one argument ending in \".cub\""),1);
@@ -135,21 +133,20 @@ int main(int argc, char **argv)
 
 	//it's the final boss: is the map closed
 	int flag = 0;
-	//t_array original = map_original_copy(map);
-	//printf("ori = %p | map = %p\n", original.items[0], map.items[0]);
-	//return (0);
+	t_array original = map_original_copy(map);
 	if (test_fill(&map, player.y, player.x, player.orientation, &flag) == 1)
-		return (error_msg("map is not closed"), 1);
-
-	printf("\n");	
-	for (size_t i = 0; i < map.len; i++)
-		printf("len = %lu | %s", map.items_len[i], map.items[i]);
+		return (/*free original*/error_msg("map is not closed"), 1);
+	for (size_t i = 0; i < original.len; i++)
+		printf("len = %lu | %s", original.items_len[i], original.items[i]);
 	printf("\n");	
 	//free memory
 	mlx_hook(data.win_ptr, 17, 0, ft_exit, data.mlx_ptr);
 	mlx_hook(data.win_ptr, 2, 0, hook_key, data.mlx_ptr);
 	mlx_loop(data.mlx_ptr);
 	ft_free(map.items);
+	free(map.items_len);
+	ft_free(original.items);
+	free(original.items_len);
 	close(file);
 	return (0);
 

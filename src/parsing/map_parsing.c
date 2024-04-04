@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:25:16 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/04 15:14:09 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/04 16:23:29 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,27 +72,22 @@ void map_assign(t_array *map, int file)
 	ms_array_append(map, NULL);
 }
 
-//typedef struct s_point
-	//{
-		//int	x;
-		//int y;
-	//}		t_point;
 
-//void f_fill(char **tab, t_point size, char target, int row, int col)
-//{
-	//if (col < 0 || row < 0 || col >= size.x || row >= size.y)
-		//return;
-	//if (tab[row][col] == 'F' || tab[row][col] != target)
-		//return;
-	//tab[row][col] = 'F';
-	//f_fill(tab, size, target, row + 1, col);
-	//f_fill(tab, size, target, row - 1, col);
-	//f_fill(tab, size, target, row, col + 1);
-	//f_fill(tab, size, target, row, col - 1);
-//}
+int	test_fill(t_array *map, int y, int x, char c, int *flag)
+{
+	if ((y > (int)map->len || y < 0 || x >= (int)map->items_len[y]) || (map->items[y][x] != '1' && map->items[y][x] != '0' && map->items[y][x] != '\0' && map->items[y][x] != 'X' && map->items[y][x] != c))
+		return (*flag = 1, printf("ERROR| [%d][%d] = %c\n", x, y, map->items[y][x]), 1);
+	if ((map->items[y][x] == c || map->items[y][x] == '0') && *flag == 0)
+	{
 
-//void flood_fill(char **tab, t_point size, t_point begin)
-//{
-	//char target = tab[begin.y][begin.x];
-	//f_fill(tab, size, target, begin.y, begin.x);
-//}
+		map->items[y][x] = 'X';
+		test_fill(map, y + 1, x, c, flag);
+		test_fill(map, y - 1, x, c, flag);
+		test_fill(map, y, x + 1, c, flag);
+		test_fill(map, y, x - 1, c, flag);
+	}
+	else
+		return (1);
+		//return (printf(" 1 [%d][%d]", j, i), 1);
+	return *flag;	
+}
