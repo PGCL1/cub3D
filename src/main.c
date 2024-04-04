@@ -6,11 +6,12 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/04 15:15:08 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/04 16:20:11 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
@@ -43,40 +44,26 @@ int	hook_key(int keycode)
             //WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, RED_PIXEL);
     //return (0);
 //}
-//
-//int exit_condition(int i, int j, t_array *map, char c)
-//{
-	//return (0);
 
-//}
 
-//int playeVr_surronded(t_array *map)
-//{
-	//size_t i = 0;
-	//size_t j = 0;
-	//if (map)
-//}
 
-int	test_fill(t_array *map, int i, int j, char c)
+int	test_fill(t_array *map, int y, int x, char c, int *flag)
 {
-	//if (exit_condition(i, j, map, c) == TRUE)
-		//return (1);
-	//return (printf(" 1 [%d][%d]", j, i), 1);
-	if ((i > (int)map->len || i < 0 || j >= (int)map->items_len[i]) || (map->items[i][j] != '1' && map->items[i][j] != '0' && map->items[i][j] != '\0' && map->items[i][j] != 'X' && map->items[i][j] != c))
-		return (printf("[%d][%d] = %c\n", j, i, map->items[i][j]), 1);
-	if (map->items[i][j] == c || map->items[i][j] == '0')
+	if ((y > (int)map->len || y < 0 || x >= (int)map->items_len[y]) || (map->items[y][x] != '1' && map->items[y][x] != '0' && map->items[y][x] != '\0' && map->items[y][x] != 'X' && map->items[y][x] != c))
+		return (*flag = 1, printf("ERROR| [%d][%d] = %c\n", x, y, map->items[y][x]), 1);
+	if ((map->items[y][x] == c || map->items[y][x] == '0') && *flag == 0)
 	{
 
-		map->items[i][j] = 'X';
-		test_fill(map, i + 1, j, c);
-		test_fill(map, i - 1, j, c);
-		test_fill(map, i, j + 1, c);
-		test_fill(map, i, j - 1, c);
+		map->items[y][x] = 'X';
+		test_fill(map, y + 1, x, c, flag);
+		test_fill(map, y - 1, x, c, flag);
+		test_fill(map, y, x + 1, c, flag);
+		test_fill(map, y, x - 1, c, flag);
 	}
-	//else
-		//return (1);
+	else
+		return (1);
 		//return (printf(" 1 [%d][%d]", j, i), 1);
-	return 0;	
+	return *flag;	
 }
 
 void	ft_leaks(void)
@@ -126,9 +113,9 @@ int main(int argc, char **argv)
 	//copying map
 	t_array	map  = ms_array_init();
 	map_assign(&map, file);
-	for (size_t i = 0; i < map.len; i++)
-		printf("len = %lu | %s", map.items_len[i], map.items[i]);
-	printf("\n");	
+	//for (size_t i = 0; i < map.len; i++)
+		//printf("len = %lu | %s", map.items_len[i], map.items[i]);
+	//printf("\n");	
 
 	//map_error_check
 	if (map_check_borders(map) != 0)
@@ -143,12 +130,15 @@ int main(int argc, char **argv)
 	ft_memset(&player, 0, sizeof(player));
 	if (player_init(&player, map) == 1)
 		return (1);
-	printf("player.x = %d\n", player.x);
-	printf("player.y = %d\n", player.y);
-	printf("player.orien = %c\n", player.orientation);
+	if (player.x == 0 && player.y == 0)
+		return (error_msg("the map has to have a player"), 1);
 
 	//it's the final boss: is the map closed
-	if (test_fill(&map, player.y, player.x, player.orientation) == 1)
+	int flag = 0;
+	//t_array original = map_original_copy(map);
+	//printf("ori = %p | map = %p\n", original.items[0], map.items[0]);
+	//return (0);
+	if (test_fill(&map, player.y, player.x, player.orientation, &flag) == 1)
 		return (error_msg("map is not closed"), 1);
 
 	printf("\n");	
