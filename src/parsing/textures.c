@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:37:05 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/04 14:50:06 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/04 15:07:48 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,18 +61,15 @@ char	*texture_path_cleaned(char *line)
 {
 	size_t	i;
 	size_t	len;
-	char	*path_no_newline;
-	//char	*path_no_space;
+	char	*path_cleaned;
 	
 	len = ft_strlen(line);
 	line = texture_path(line);
 	i = 2;
 	while (i < len && ft_isspace(line[i]))
 		i++;
-	//path_no_space = ft_strtrim(&line[i], " \n");
-	path_no_newline = ft_strtrim(&line[i], "\n");
-	//free(path_no_space);
-	return (path_no_newline);
+	path_cleaned = ft_strtrim(&line[i], " \n");
+	return (path_cleaned);
 }
 
 void	*get_texture(void *mlx, char *line)
