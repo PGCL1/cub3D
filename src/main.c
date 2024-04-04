@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/04 15:08:56 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/04 15:15:08 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,11 @@ void	ft_leaks(void)
 	system("leaks -q cub3D");
 }
 
-//TODO: problem with cristian islands, need to throw error
 //TODO: figure out what to do with whitespaces in map
 int main(int argc, char **argv)
 {
 #if 1
-	atexit(ft_leaks);
+	//atexit(ft_leaks);
 	//check input
 	if (argc != 2)
 		return (error_msg("program needs one argument ending in \".cub\""),1);

@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:25:16 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/04 15:02:34 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/04 15:14:09 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void map_assign(t_array *map, int file)
    	line = get_next_line(file);
 	while (line != NULL)
 	{
-		if (line_empty(line) == TRUE)
+		if (line_empty(line) == TRUE && map->len == 0)
 		{
 			free(line);
 			line = get_next_line(file);
