@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/02 18:53:19 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/04 15:02:30 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,30 +44,38 @@ int	hook_key(int keycode)
     //return (0);
 //}
 //
-int exit_condition(int i, int j, t_array *map, char c)
-{
-	(void)c;
-	if ((i > (int)map->len || i < 0 || j >= (int)map->items_len[i])
-			|| (map->items[i][j] != '1' && map->items[i][j] != '0'))
-		return (1);
-	//if (map->items[i][j] != '\0' && map->items[i][j] != 'X' && map->items[i][j] != c)
-	///rreturn (1);
-	return (0);
+//int exit_condition(int i, int j, t_array *map, char c)
+//{
+	//return (0);
 
-}
+//}
+
+//int playeVr_surronded(t_array *map)
+//{
+	//size_t i = 0;
+	//size_t j = 0;
+	//if (map)
+//}
 
 int	test_fill(t_array *map, int i, int j, char c)
 {
-	if (exit_condition(i, j, map, c) == TRUE)
-		return (1);
+	//if (exit_condition(i, j, map, c) == TRUE)
+		//return (1);
+	//return (printf(" 1 [%d][%d]", j, i), 1);
+	if ((i > (int)map->len || i < 0 || j >= (int)map->items_len[i]) || (map->items[i][j] != '1' && map->items[i][j] != '0' && map->items[i][j] != '\0' && map->items[i][j] != 'X' && map->items[i][j] != c))
+		return (printf("[%d][%d] = %c\n", j, i, map->items[i][j]), 1);
 	if (map->items[i][j] == c || map->items[i][j] == '0')
 	{
-			map->items[i][j] = 'X';
-			test_fill(map, i + 1, j, c);
-			test_fill(map, i - 1, j, c);
-			test_fill(map, i, j + 1, c);
-			test_fill(map, i, j - 1, c);
+
+		map->items[i][j] = 'X';
+		test_fill(map, i + 1, j, c);
+		test_fill(map, i - 1, j, c);
+		test_fill(map, i, j + 1, c);
+		test_fill(map, i, j - 1, c);
 	}
+	//else
+		//return (1);
+		//return (printf(" 1 [%d][%d]", j, i), 1);
 	return 0;	
 }
 
@@ -76,7 +84,7 @@ void	ft_leaks(void)
 	system("leaks -q cub3D");
 }
 
-
+//TODO: problem when there is only one line separating textures and map
 //TODO: problem with cristian islands, need to throw error
 //TODO: figure out what to do with whitespaces in map
 int main(int argc, char **argv)
@@ -116,7 +124,6 @@ int main(int argc, char **argv)
 		close(dir);
 		return (error_msg("textures and colors were wrong"), 1);
 	}
-	
 	//copying map
 	t_array	map  = ms_array_init();
 	map_assign(&map, file);

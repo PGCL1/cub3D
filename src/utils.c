@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 12:31:54 by glacroix          #+#    #+#             */
-/*   Updated: 2024/03/29 14:16:07 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/04 15:01:45 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,9 @@ void	ms_array_append(t_array *arr, char *item)
 		arr->cap *= 2;
 		arr->items = ft_realloc(arr->items, arr->len * size, arr->cap * size);
 		if (!arr->items)
+			return ;
+		arr->items_len = ft_realloc(arr->items_len, arr->len * size, arr->cap * size);
+		if (!arr->items_len)
 			return ;
 	}
 	arr->items[arr->len] = item;
