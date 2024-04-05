@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:25:16 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/04 16:23:29 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/05 18:04:57 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,10 @@ void map_assign(t_array *map, int file)
 int	test_fill(t_array *map, int y, int x, char c, int *flag)
 {
 	if ((y > (int)map->len || y < 0 || x >= (int)map->items_len[y]) || (map->items[y][x] != '1' && map->items[y][x] != '0' && map->items[y][x] != '\0' && map->items[y][x] != 'X' && map->items[y][x] != c))
-		return (*flag = 1, printf("ERROR| [%d][%d] = %c\n", x, y, map->items[y][x]), 1);
+		return (*flag = 1, 1);
 	if ((map->items[y][x] == c || map->items[y][x] == '0') && *flag == 0)
 	{
-
+		printf("map->items[y] = %p\n", map->items[y]);
 		map->items[y][x] = 'X';
 		test_fill(map, y + 1, x, c, flag);
 		test_fill(map, y - 1, x, c, flag);
@@ -88,6 +88,5 @@ int	test_fill(t_array *map, int y, int x, char c, int *flag)
 	}
 	else
 		return (1);
-		//return (printf(" 1 [%d][%d]", j, i), 1);
 	return *flag;	
 }

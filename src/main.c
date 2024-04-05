@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/04 18:02:32 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/05 18:20:40 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,23 +44,30 @@ int	hook_key(int keycode)
             //WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, RED_PIXEL);
     //return (0);
 //}
+void	free_t_array(t_array *arr)
+{
+	ft_free(arr->items);
+	free(arr->items_len);
+}
 
-
-t_array map_original_copy(t_array map)
+void	*map_original_copy(t_array map, t_array *original)
 {
 	size_t	i;
-	t_array	copy;
 
 	i = -1;
-	copy.len = map.len;
-	copy.items = malloc(sizeof(copy.items) * map.len);
-	copy.items_len = malloc(sizeof(copy.items_len) * map.len);
-	while (++i < copy.len)
+	original->len = map.len;
+	original->items = malloc(sizeof(original->items) * map.len);
+	if (!original->items)
+		return (NULL);
+	original->items_len = malloc(sizeof(original->items_len) * map.len);
+	if (!original->items_len)
+		return (NULL);
+	while (++i < original->len)
 	{
-		copy.items[i] = ft_strdup(map.items[i]);
-		copy.items_len[i] = ft_strlen(map.items[i]);
+		original->items[i] = ft_strdup(map.items[i]);
+		original->items_len[i] = ft_strlen(map.items[i]);
 	}
-	return (copy);
+	return (original);
 }
 
 
@@ -69,105 +76,41 @@ void	ft_leaks(void)
 	system("leaks -q cub3D");
 }
 
-//TODO: figure out what to do with whitespaces in map
 int main(int argc, char **argv)
 {
-#if 1
 	atexit(ft_leaks);
-	//check input
+	t_game	game;
+	int		file;
+	int		dir;
+
 	if (argc != 2)
-		return (error_msg("program needs one argument ending in \".cub\""),1);
+		return (error_msg("program needs one arg ending in \".cub\""),1);
 	if (ends_with(argv[1], ".cub") != TRUE)
-		return (error_msg("first argument has to end with .cub"), 2);
-	int file = open(argv[1], O_RDONLY);
+		return (error_msg("first arg has to end with .cub"), 2);
+	file = open(argv[1], O_RDONLY);
 	if (file < 0)
 		return (error_msg("file doesn't exist"), 3);
-	int dir = open(argv[1], O_DIRECTORY);
+	dir = open(argv[1], O_DIRECTORY);
 	if (dir > 0)
 		return (error_msg("cannot use a directory as map"), 4);
-
-	//window initialization
-	t_data	data;
-	data.mlx_ptr = mlx_init();
-	if (!data.mlx_ptr)
-		return (error_msg("mlx_init() failed"), 1);
-	data.win_ptr = mlx_new_window(data.mlx_ptr, 600, 300, "GG boiii");
-	data.img = mlx_new_image(data.mlx_ptr, 600, 300);
-	data.img_addr = mlx_get_data_addr(data.img, &data.img_bits_per_pixel, &data.img_line_length,
-			&data.img_endian);
-
-	//copying textures
-	int count = 0;
-	char *line = NULL;
-	t_design test = assign_design(file, &data, &count, line);
-	if (error_design(&test) == TRUE || count == -1)
+	close(dir);
+	if (game_init(&game, file) != 0)
 	{
-		//free image, window and mlx
-		close(file);
-		close(dir);
-		return (error_msg("textures and colors were wrong"), 1);
-	}
-
-	//copying map
-	t_array	map  = ms_array_init();
-	map_assign(&map, file);
-	//for (size_t i = 0; i < map.len; i++)
-		//printf("len = %lu | %s", map.items_len[i], map.items[i]);
-	//printf("\n");	
-
-	//map_error_check
-	if (map_check_borders(map) != 0)
-	{
-		ft_free(map.items);
-		free(map.items_len);	
-		return (error_msg("map was invalid"), 1);
-	}
-	
-	//player_check
-	t_player player;
-	ft_memset(&player, 0, sizeof(player));
-	if (player_init(&player, map) == 1)
+		free_t_array(&game.map);
+		free(game.design.north_text);
+		free(game.design.south_text);
+		free(game.design.east_text);
+		free(game.design.west_text);
+		mlx_destroy_image (game.data.mlx_ptr, game.data.img );
+		free(game.data.mlx_ptr);
 		return (1);
-	if (player.x == 0 && player.y == 0)
-		return (error_msg("the map has to have a player"), 1);
-
-	//it's the final boss: is the map closed
-	int flag = 0;
-	t_array original = map_original_copy(map);
-	if (test_fill(&map, player.y, player.x, player.orientation, &flag) == 1)
-		return (/*free original*/error_msg("map is not closed"), 1);
-	for (size_t i = 0; i < original.len; i++)
-		printf("len = %lu | %s", original.items_len[i], original.items[i]);
-	printf("\n");	
+	}
 	//free memory
-	mlx_hook(data.win_ptr, 17, 0, ft_exit, data.mlx_ptr);
-	mlx_hook(data.win_ptr, 2, 0, hook_key, data.mlx_ptr);
-	mlx_loop(data.mlx_ptr);
-	ft_free(map.items);
-	free(map.items_len);
-	ft_free(original.items);
-	free(original.items_len);
+	mlx_hook(game.data.win_ptr, 17, 0, ft_exit, game.data.mlx_ptr);
+	mlx_hook(game.data.win_ptr, 2, 0, hook_key, game.data.mlx_ptr);
+	mlx_loop(game.data.mlx_ptr);
+	ft_free(game.map.items);
+	free(game.map.items_len);
 	close(file);
 	return (0);
-
-
-#else
-
-
-
-
-	//printing pixels to image in window
-	for (int x = 0; x < 600; x++)
-	{
-		for (int y = 0; y < 300; y++)	
-			my_mlx_pixel_put(&data, x, y, RED);
-	}
-	mlx_put_image_to_window(data.mlx_ptr, data.win_ptr, data.img, 0, 0);
-
-	//keyhooks
-	mlx_hook(data.win_ptr, 17, 0, ft_exit, data.mlx_ptr);
-	mlx_hook(data.win_ptr, 2, 0, hook_key, data.mlx_ptr);
-	mlx_loop(data.mlx_ptr);
-	return (0);
-#endif
 }

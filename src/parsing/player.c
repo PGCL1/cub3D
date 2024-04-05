@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 16:50:12 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/02 14:12:01 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/05 15:57:48 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	player_position(t_player *player, size_t i, size_t j)
 	player->y = i;
 }
 
-int	player_init(t_player *player, const t_array map)
+int	player_start(t_player *player, const t_array map)
 {
 	size_t		i;
 	size_t		j;

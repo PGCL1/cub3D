@@ -6,7 +6,7 @@
 #    By: glacroix <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 16:34:00 by glacroix          #+#    #+#              #
-#    Updated: 2024/04/04 17:31:42 by glacroix         ###   ########.fr        #
+#    Updated: 2024/04/05 15:45:25 by glacroix         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,8 @@ SRCS		= src/main.c\
 			  src/parsing/textures.c\
 			  src/parsing/colors.c\
 			  src/parsing/design.c\
-			  src/parsing/player.c
+			  src/parsing/player.c\
+			  src/init.c
 				
 OBJS		= $(SRCS:%.c=objs/%.o)
 
