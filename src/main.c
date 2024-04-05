@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/05 18:20:40 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/05 19:51:41 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ int main(int argc, char **argv)
 		free(game.design.west_text);
 		mlx_destroy_image (game.data.mlx_ptr, game.data.img );
 		free(game.data.mlx_ptr);
+		close(file);
 		return (1);
 	}
 	//free memory

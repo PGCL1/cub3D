@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 18:11:28 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/05 17:49:48 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/05 19:25:52 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ t_design	assign_design(int file, t_data *data, int *count, char *line);
 
 int			map_check_borders(t_array copy);
 void		map_assign(t_array *map, int file);
-int			test_fill(t_array *map, int y, int x, char c, int *flag);
+int			map_fill(t_array *map, int y, int x, int *flag);
 
 int			orientation(char c, char *player_orientation);
 int			player_start(t_player *player, const t_array map);

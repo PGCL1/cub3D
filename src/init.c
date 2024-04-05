@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 15:13:20 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/05 17:59:26 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/05 19:47:39 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int design_init(t_design *design, t_data *data, int file)
 	{
 		//free image, window and mlx
 		close(file);
-		return (error_msg("textures and colors were wrong"), 1);
+		return (error_msg("wrong textures or colors"), 1);
 	}
 	return (0);
 }
@@ -49,7 +49,7 @@ int map_init(t_array *map, int file)
 	{
 		ft_free(map->items);
 		free(map->items_len);	
-		return (error_msg("map was invalid"), 1);
+		return (error_msg("invalid map"), 1);
 	}
 	return (0);
 }
@@ -80,13 +80,11 @@ int	game_init(t_game *game, int file)
 		return (1);
 	if (map_original_copy(game->map, &original) == NULL)
 		return (1);
-	if (test_fill(&game->map, game->player.y, game->player.x,
-				game->player.orientation, &flag) == 1)
+	if (map_fill(&game->map, game->player.y, game->player.x, &flag) == 1)
 	{
 		free_t_array(&original);
 		return (error_msg("map is not closed"), 1);
 	}
-	exit(1);
 	free_t_array(&game->map);
 	game->map = original;	
 	return (0);	
