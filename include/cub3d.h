@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 18:11:28 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/04 18:00:20 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/06 11:53:40 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,12 +87,21 @@ typedef struct s_design
 	void	*west_text;
 }	t_design;
 
+typedef struct s_game
+{
+	t_data data;
+	t_array map;
+	t_player player;
+	t_design design;
+}	t_game;
+
 /*------------------------------Utils----------------------------------------*/
 void	error_msg(char *msg);
 void	*ft_realloc(void *ptr, size_t len, size_t size);
 void	ms_array_append(t_array *arr, char *item);
 t_array	ms_array_init(void);
 size_t	line_len(char *item);
+void	free_t_array(t_array *arr);
 
 /*------------------------------Parsing---------------------------------------*/
 
@@ -116,10 +125,25 @@ t_design	assign_design(int file, t_data *data, int *count, char *line);
 
 int			map_check_borders(t_array copy);
 void		map_assign(t_array *map, int file);
-int			test_fill(t_array *map, int y, int x, char c, int *flag);
+int			map_fill(t_array *map, int y, int x, int *flag);
 
 int			orientation(char c, char *player_orientation);
-int			player_init(t_player *player, const t_array map);
+int			player_start(t_player *player, const t_array map);
 void		player_position(t_player *player, size_t i, size_t j);
+
+/*-----------------------------------Init-------------------------------------*/
+
+int			window_init(t_data *data);
+int			design_init(t_design *design, t_data *data, int file);
+int			map_init(t_array *map, int file);
+int			player_init(t_player *player, const t_array *map);
+int			game_init(t_game *game, int file);
+
+void		*map_original_copy(t_array map, t_array *original);
+
+
+
+
+
 
 #endif

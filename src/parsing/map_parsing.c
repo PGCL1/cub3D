@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:25:16 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/04 16:23:29 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/06 12:04:03 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,22 +72,24 @@ void map_assign(t_array *map, int file)
 	ms_array_append(map, NULL);
 }
 
-
-int	test_fill(t_array *map, int y, int x, char c, int *flag)
+int	map_fill(t_array *map, int y, int x, int *flag)
 {
+	int static count = 0;
+	char c;
+	if (count == 0)
+		c = map->items[y][x];
+	count += 1;
 	if ((y > (int)map->len || y < 0 || x >= (int)map->items_len[y]) || (map->items[y][x] != '1' && map->items[y][x] != '0' && map->items[y][x] != '\0' && map->items[y][x] != 'X' && map->items[y][x] != c))
-		return (*flag = 1, printf("ERROR| [%d][%d] = %c\n", x, y, map->items[y][x]), 1);
-	if ((map->items[y][x] == c || map->items[y][x] == '0') && *flag == 0)
+		return (*flag = 1, 1);
+	if (((map->items[y][x] == c) || map->items[y][x] == '0') && *flag == 0)
 	{
-
 		map->items[y][x] = 'X';
-		test_fill(map, y + 1, x, c, flag);
-		test_fill(map, y - 1, x, c, flag);
-		test_fill(map, y, x + 1, c, flag);
-		test_fill(map, y, x - 1, c, flag);
+		map_fill(map, y + 1, x, flag);
+		map_fill(map, y - 1, x, flag);
+		map_fill(map, y, x + 1, flag);
+		map_fill(map, y, x - 1, flag);
 	}
 	else
 		return (1);
-		//return (printf(" 1 [%d][%d]", j, i), 1);
-	return *flag;	
+	return (*flag);
 }
