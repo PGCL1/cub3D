@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/06 11:38:03 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/06 12:26:06 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,27 +50,6 @@ void	free_t_array(t_array *arr)
 	free(arr->items_len);
 }
 
-void	*map_original_copy(t_array map, t_array *original)
-{
-	size_t	i;
-
-	i = -1;
-	original->len = map.len;
-	original->items = malloc(sizeof(original->items) * map.len);
-	if (!original->items)
-		return (NULL);
-	original->items_len = malloc(sizeof(original->items_len) * map.len);
-	if (!original->items_len)
-		return (NULL);
-	while (++i < original->len)
-	{
-		original->items[i] = ft_strdup(map.items[i]);
-		original->items_len[i] = ft_strlen(map.items[i]);
-	}
-	return (original);
-}
-
-
 void	ft_leaks(void)
 {
 	system("leaks -q cub3D");
@@ -78,7 +57,7 @@ void	ft_leaks(void)
 
 int main(int argc, char **argv)
 {
-//	atexit(ft_leaks);
+	atexit(ft_leaks);
 	t_game	game;
 	int		file;
 	int		dir;
@@ -109,7 +88,6 @@ int main(int argc, char **argv)
 	mlx_hook(game.data.win_ptr, 17, 0, ft_exit, game.data.mlx_ptr);
 	mlx_hook(game.data.win_ptr, 2, 0, hook_key, game.data.mlx_ptr);
 	mlx_loop(game.data.mlx_ptr);
-	ft_free(game.map.items);
-	free(game.map.items_len);
+	free_t_array(&game.map);
 	return (0);
 }

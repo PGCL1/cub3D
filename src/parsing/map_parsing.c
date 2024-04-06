@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:25:16 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/06 12:04:03 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/06 12:14:11 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,4 +92,25 @@ int	map_fill(t_array *map, int y, int x, int *flag)
 	else
 		return (1);
 	return (*flag);
+}
+
+
+void	*map_original_copy(t_array map, t_array *original)
+{
+	size_t	i;
+
+	i = -1;
+	original->len = map.len;
+	original->items = malloc(sizeof(original->items) * map.len);
+	if (!original->items)
+		return (NULL);
+	original->items_len = malloc(sizeof(original->items_len) * map.len);
+	if (!original->items_len)
+		return (NULL);
+	while (++i < original->len)
+	{
+		original->items[i] = ft_strdup(map.items[i]);
+		original->items_len[i] = ft_strlen(map.items[i]);
+	}
+	return (original);
 }
