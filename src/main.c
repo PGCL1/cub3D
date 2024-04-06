@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/05 19:51:41 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/06 11:38:03 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	ft_leaks(void)
 
 int main(int argc, char **argv)
 {
-	atexit(ft_leaks);
+//	atexit(ft_leaks);
 	t_game	game;
 	int		file;
 	int		dir;
@@ -103,7 +103,6 @@ int main(int argc, char **argv)
 		free(game.design.west_text);
 		mlx_destroy_image (game.data.mlx_ptr, game.data.img );
 		free(game.data.mlx_ptr);
-		close(file);
 		return (1);
 	}
 	//free memory
@@ -112,6 +111,5 @@ int main(int argc, char **argv)
 	mlx_loop(game.data.mlx_ptr);
 	ft_free(game.map.items);
 	free(game.map.items_len);
-	close(file);
 	return (0);
 }

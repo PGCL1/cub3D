@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 15:13:20 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/05 19:47:39 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/06 11:53:33 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int map_init(t_array *map, int file)
 		free(map->items_len);	
 		return (error_msg("invalid map"), 1);
 	}
+	close(file);
 	return (0);
 }
 
@@ -87,5 +88,6 @@ int	game_init(t_game *game, int file)
 	}
 	free_t_array(&game->map);
 	game->map = original;	
+	printf("game->map = %p | original = %p\n", &game->map, &original);
 	return (0);	
 }

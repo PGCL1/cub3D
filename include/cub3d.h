@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 18:11:28 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/05 19:25:52 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/06 11:53:40 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,4 +140,10 @@ int			player_init(t_player *player, const t_array *map);
 int			game_init(t_game *game, int file);
 
 void		*map_original_copy(t_array map, t_array *original);
+
+
+
+
+
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:25:16 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/05 19:49:16 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/06 12:04:03 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,18 +72,16 @@ void map_assign(t_array *map, int file)
 	ms_array_append(map, NULL);
 }
 
-
 int	map_fill(t_array *map, int y, int x, int *flag)
 {
-	if ((y > (int)map->len || y < 0 || x >= (int)map->items_len[y])
-		|| (map->items[y][x] != '1' && map->items[y][x] != '0'
-				&& map->items[y][x] != '\0' && map->items[y][x] != 'X'
-				&& map->items[y][x] != 'N' && map->items[y][x] != 'S'
-				&& map->items[y][x] != 'W' && map->items[y][x] != 'E'))
+	int static count = 0;
+	char c;
+	if (count == 0)
+		c = map->items[y][x];
+	count += 1;
+	if ((y > (int)map->len || y < 0 || x >= (int)map->items_len[y]) || (map->items[y][x] != '1' && map->items[y][x] != '0' && map->items[y][x] != '\0' && map->items[y][x] != 'X' && map->items[y][x] != c))
 		return (*flag = 1, 1);
-	if (((map->items[y][x] != 'N' && map->items[y][x] != 'S'
-		&& map->items[y][x] != 'W' && map->items[y][x] != 'E')
-				|| map->items[y][x] == '0') && *flag == 0)
+	if (((map->items[y][x] == c) || map->items[y][x] == '0') && *flag == 0)
 	{
 		map->items[y][x] = 'X';
 		map_fill(map, y + 1, x, flag);
