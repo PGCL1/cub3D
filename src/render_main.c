@@ -7,20 +7,15 @@
 #include <string.h>
 #include <fcntl.h>
 #include <float.h>
-#include "cub3d.h"
+#include <time.h>
+#include <sys/time.h>
 
 static const char *res[] = {
-	"./texture/redbrick.xpm",
-	"./texture/purplestone.xpm",
-	"./texture/greystone.xpm",
-	"./texture/wood.xpm",
-	"./texture/mossy.xpm",
-	"./texture/eagle.xpm",
-	"./texture/bluestone.xpm",
-	"./texture/colorstone.xpm",
+	"./textures/redbrick.xpm",
+	"./textures/greystone.xpm",
 };
 
-//#define	LEN sizeof(res) / sizeof(res[0])
+#define	LEN sizeof(res) / sizeof(res[0])
 
 enum s_tex_pos
 {
@@ -151,7 +146,8 @@ typedef struct s_game
 	time_t	old_time;
 
 	// TODO: store here 4 textures from map file
-	t_img	textures[TEX_LEN];
+	//t_img	textures[TEX_LEN];
+	t_img	textures[LEN];
 
 	t_mlx		mlx_ctx;
 	t_map		map;
@@ -171,8 +167,6 @@ void	draw_rect(t_mlx *ctx, t_vec2 *pos, t_vec2 *size, int color)
 		y += 1;
 	}
 }
-
-static t_map map;
 
 void	draw_map(char **items, t_mlx *ctx)
 {
@@ -242,7 +236,6 @@ int	is_hit_wall(t_game *game)
 			game->map_y += game->step_y;
 			side = 1;
 		}
-
 		if (game->map.items[game->map_y][game->map_x] != '0')
 			hit = 1;
 		else
@@ -287,6 +280,8 @@ void	distance(t_game *game, t_vec2 *ray_dir)
 	else
 		game->delta_dist.y = fabs(1.0 / ray_dir->y);
 	side_distance(game, ray_dir);
+
+
 }
 
 int	draw_pos(t_game *game, int side)
@@ -328,11 +323,24 @@ void	render_texture(t_game *game, int tex_x, int side, int tex_num, int x)
 	}
 }
 
+size_t get_time(void)
+{
+	struct timeval tp;
+
+	gettimeofday(&tp, NULL);
+	return (tp.tv_sec) * (tp.tv_usec / 1000);
+}
+
+size_t old_time = 0;
+size_t curr_time = 0;
+
 int	raycast(t_game *game)
 {
-	int	x;	
+	//int	x;	
 	double camerax;	
 	t_vec2 ray_dir;
+
+	curr_time = get_time();
 
 	for (int x = 0; x < W; x += 1)
 	{
@@ -348,9 +356,6 @@ int	raycast(t_game *game)
 		int	side = is_hit_wall(game);
 		game->line_height = draw_pos(game, side);
 		int	color;
-
-		// TODO: check which direction player look at
-
 		char	tile_type = game->map.items[game->map_y][game->map_x];
 		int	texNum = (tile_type == '1') ? 0 : 1;
 		double wallX;
@@ -381,14 +386,37 @@ int	raycast(t_game *game)
 
 		double texPos = (game->draw_start - H / 2 + game->line_height / 2) * step;
 
+		(void) texPos;
+
 		render_texture(game, texX, side, texNum, x);
 
-		
-		//draw_ver_line(&game->mlx_ctx, x, game->draw_start, game->draw_end, color);
+		switch(game->map.items[game->map_y][game->map_x])
+		{
+		case '1':  color = RED;    break; //red
+		case '2':  color = GREEN;  break; //green
+		case '3':  color = BLUE;   break; //blue
+		case '4':  color = WHITE;  break; //white
+// // 		case 1:  color = RED;    break; //red
+// // 		case 2:  color = GREEN;  break; //green
+// // 		case 3:  color = BLUE;   break; //blue
+// // 		case 4:  color = WHITE;  break; //white
+		default: color = YELLOW; break; //yellow
+		}
+		if(side == 1) {color = color / 2;}
+
+		//draw_ver_line(&game->mlx_ctx, x, game->draw_start, game->draw_end, color);	
 
 	}
+
+
+
+
 	return 1;
 }
+
+
+
+
 
 int	key_hook(int keycode, void *param)
 {
@@ -396,7 +424,12 @@ int	key_hook(int keycode, void *param)
 	double	old_dir_x;
 	double	old_plane_x;
 
+	old_time = curr_time;
+	curr_time = time(NULL);
 
+	//double frame_time = (old_time - curr_time);
+
+	//printf("frame_time: %lf\n", frame_time);
 
 
 
@@ -410,22 +443,22 @@ int	key_hook(int keycode, void *param)
 	if (keycode == KEY_ARROW_RIGHT)
 	{
 		old_dir_x = game->dir.x;
-    game->dir.x = game->dir.x * cos(-ROT_SPEED) - game->dir.y * sin(-ROT_SPEED);
-    game->dir.y = old_dir_x * sin(-ROT_SPEED) + game->dir.y * cos(-ROT_SPEED);
+		game->dir.x = game->dir.x * cos(-ROT_SPEED) - game->dir.y * sin(-ROT_SPEED);
+		game->dir.y = old_dir_x * sin(-ROT_SPEED) + game->dir.y * cos(-ROT_SPEED);
 
-    old_plane_x = game->plane.x;
-    game->plane.x = game->plane.x * cos(-ROT_SPEED) - game->plane.y * sin(-ROT_SPEED);
-    game->plane.y = old_plane_x * sin(-ROT_SPEED) + game->plane.y * cos(-ROT_SPEED);
+		old_plane_x = game->plane.x;
+		game->plane.x = game->plane.x * cos(-ROT_SPEED) - game->plane.y * sin(-ROT_SPEED);
+		game->plane.y = old_plane_x * sin(-ROT_SPEED) + game->plane.y * cos(-ROT_SPEED);
 	}
 	if (keycode == KEY_ARROW_LEFT)
 	{
 		old_dir_x = game->dir.x;
-    game->dir.x = game->dir.x * cos(ROT_SPEED) - game->dir.y * sin(ROT_SPEED);
-    game->dir.y = old_dir_x * sin(ROT_SPEED) + game->dir.y * cos(ROT_SPEED);
+		game->dir.x = game->dir.x * cos(ROT_SPEED) - game->dir.y * sin(ROT_SPEED);
+		game->dir.y = old_dir_x * sin(ROT_SPEED) + game->dir.y * cos(ROT_SPEED);
 
-    old_plane_x = game->plane.x;
-    game->plane.x = game->plane.x * cos(ROT_SPEED) - game->plane.y * sin(ROT_SPEED);
-    game->plane.y = old_plane_x * sin(ROT_SPEED) + game->plane.y * cos(ROT_SPEED);
+		old_plane_x = game->plane.x;
+		game->plane.x = game->plane.x * cos(ROT_SPEED) - game->plane.y * sin(ROT_SPEED);
+		game->plane.y = old_plane_x * sin(ROT_SPEED) + game->plane.y * cos(ROT_SPEED);
 	}
 	if (keycode == KEY_ARROW_UP)
 	{
@@ -435,9 +468,13 @@ int	key_hook(int keycode, void *param)
 		int	yy = (int)(game->pos.y + game->dir.y * MOVE_SPEED);
 
 		// TODO: you swaped y and x
-		if(game->map.items[y][xx] == '0')
+// 		if(map[xx][y] == 0)
+// 			game->pos.x += game->dir.x * MOVE_SPEED;
+// 	 	if(map[x][yy] == 0)
+// 			game->pos.y += game->dir.y * MOVE_SPEED;
+		if(game->map.items[xx][y] == '0')
 			game->pos.x += game->dir.x * MOVE_SPEED;
-	 	if(game->map.items[yy][x] == '0')
+	 	if(game->map.items[x][yy] == '0')
 			game->pos.y += game->dir.y * MOVE_SPEED;
 	}
 
@@ -449,10 +486,14 @@ int	key_hook(int keycode, void *param)
 		int	yy = (int)(game->pos.y + game->dir.y * MOVE_SPEED);
 
 		// TODO: you swaped y and x
-		if(game->map.items[y][xx] == '0')
+		if(game->map.items[xx][y] == '0')
 			game->pos.x -= game->dir.x * MOVE_SPEED;
-	 	if(game->map.items[yy][x] == '0')
+	 	if(game->map.items[x][yy] == '0')
 			game->pos.y -= game->dir.y * MOVE_SPEED;
+// 		if(map[xx][y] == 0)
+// 			game->pos.x -= game->dir.x * MOVE_SPEED;
+// 	 	if(map[x][yy] == 0)
+// 			game->pos.y -= game->dir.y * MOVE_SPEED;
 		
 	}
 
@@ -488,13 +529,13 @@ int	load_texture(void *mlx, t_img *img, const char *filepath)
 	img->img = mlx_xpm_file_to_image(mlx, (char *)filepath, &img->width, &img->height);
 	if (!img->img)
 	{
-		cub_error("Error: failed to load img: %s\n", filepath);
+		printf("Error: failed to load img: %s\n", filepath);
 		return 0;
 	}
 	img->data = (uint32_t*)mlx_get_data_addr(img->img, &img->bits_per_pixel, &img->size_line, &img->endian);
 	if (!img->data)
 	{
-		cub_error("Error: could not get data image: %s\n", filepath);
+		printf("Error: could not get data image: %s\n", filepath);
 		return 0;
 	}
 	return 1;
@@ -503,33 +544,40 @@ int	load_texture(void *mlx, t_img *img, const char *filepath)
 
 int main(int argc, char **argv)
 {
+	(void) argc;
 	t_game	game;
 	
+	ft_bzero(&game, sizeof(game));
 	game.mlx_ctx.mlx = mlx_init();
 	game.mlx_ctx.win = mlx_new_window(game.mlx_ctx.mlx, W, H, "Cub3D");
 
-	size_t	size;
-	game.map.items = map_read(argv[1], &size);
-	if (!game.map.items)
-	{
-		return 1;
-	}
-	game.pos.x = 22, game.pos.y = 12;
-	game.dir.x = -1.0, game.dir.y = 0.0;
-	game.plane.x = 0.0, game.plane.y = 0.66;
-
+// 	size_t	size;
+	game.map.items = malloc(sizeof(char *)  * 25);
 	int	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
-		return 1;
-
-
-
-	for (int i = 0; i < TEX_LEN; i += 1)
 	{
-		char	*filepath = ft_strtrim(get_next_line(fd), "\n");
-		printf("%s\n", filepath);
-		if (!load_texture(game.mlx_ctx.mlx, &game.textures[i], filepath))
-		//if (!load_texture(game.mlx_ctx.mlx, &game.textures[i], res[i]))
+		printf("%s\n", strerror(errno));
+		return 1;
+	}
+
+
+	int i = 0;
+	for (;; i += 1)
+	{
+		game.map.items[i] = ft_strtrim(get_next_line(fd), "\n");
+		if (game.map.items[i] == NULL)
+			break ;
+	}
+	game.map.items[i] = NULL;
+
+	game.pos.x = 22, game.pos.y = 12;
+	game.dir.x = -1, game.dir.y = 0;
+	game.plane.x = 0.0, game.plane.y = 0.66;
+
+
+	for (size_t i = 0; i < LEN; i += 1)
+	{
+		if (!load_texture(game.mlx_ctx.mlx, &game.textures[i], res[i]))
 		{
 			printf("Error\n");
 			exit(1);

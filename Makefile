@@ -6,7 +6,7 @@
 #    By: glacroix <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 16:34:00 by glacroix          #+#    #+#              #
-#    Updated: 2024/04/04 17:31:42 by glacroix         ###   ########.fr        #
+#    Updated: 2024/04/06 17:26:08 by aabourri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,13 +27,13 @@ NAME		= cub3D
 
 #SRC & OBJS Details
 # **************************************************************************** #
-SRCS		= src/main.c\
-			  src/utils.c\
+SRCS		= src/utils.c\
 			  src/parsing/map_parsing.c\
 			  src/parsing/textures.c\
 			  src/parsing/colors.c\
 			  src/parsing/design.c\
-			  src/parsing/player.c
+			  src/parsing/player.c\
+			  src/render_main.c
 				
 OBJS		= $(SRCS:%.c=objs/%.o)
 
