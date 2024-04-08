@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 18:11:28 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/06 13:15:47 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/08 17:03:40 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <sys/types.h>
 # include <sys/uio.h>
 # include <fcntl.h>
+# include <math.h>
 
 /*------------------------------Error_msg-------------------------------------*/
 # define RESET  		"\x1B[0m"
@@ -140,6 +141,6 @@ int			map_init(t_array *map, int file);
 int			player_init(t_player *player, const t_array *map);
 int			game_init(t_game *game, int file);
 
-
+int			check_file(int argc, char *input);
 
 #endif

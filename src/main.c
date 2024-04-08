@@ -6,35 +6,35 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/08 12:09:23 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/08 16:47:25 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
-{
-	char	*pixel;
+//void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
+//{
+	//char	*pixel;
 
-	pixel = data->img_addr
-		+ (y * data->img_line_length + x * (data->img_bits_per_pixel / 8));
-	*(unsigned int *)pixel = color;
-}
+	//pixel = data->img_addr
+		//+ (y * data->img_line_length + x * (data->img_bits_per_pixel / 8));
+	//*(unsigned int *)pixel = color;
+//}
 
-int	ft_exit(void)
-{
-	ft_putstr_fd("Exited 3D, ggboiiii\n", 1);
-	exit(EXIT_SUCCESS);
-}
+//int	ft_exit(void)
+//{
+	//ft_putstr_fd("Exited 3D, ggboiiii\n", 1);
+	//exit(EXIT_SUCCESS);
+//}
 
-int	hook_key(int keycode)
-{
-	printf("keycode = %d\n", keycode);
-	if (keycode == ESC)
-		ft_exit();
-	return (0);
-}
+//int	hook_key(int keycode)
+//{
+	//printf("keycode = %d\n", keycode);
+	//if (keycode == ESC)
+		//ft_exit();
+	//return (0);
+//}
 
 //int	render(t_data *data)
 //{
@@ -74,6 +74,8 @@ int check_file(int argc, char *input)
 	return (file);
 }
 
+#if 0
+
 int main(int argc, char **argv)
 {
 	atexit(ft_leaks);
@@ -94,6 +96,9 @@ int main(int argc, char **argv)
 		free(game.data.mlx_ptr);
 		return (1);
 	}
+	//raycast
+	
+	
 	//free memory
 	mlx_hook(game.data.win_ptr, 17, 0, ft_exit, game.data.mlx_ptr);
 	mlx_hook(game.data.win_ptr, 2, 0, hook_key, game.data.mlx_ptr);
@@ -101,3 +106,5 @@ int main(int argc, char **argv)
 	free_t_array(&game.map);
 	return (0);
 }
+
+#endif

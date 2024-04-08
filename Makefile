@@ -6,7 +6,7 @@
 #    By: glacroix <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 16:34:00 by glacroix          #+#    #+#              #
-#    Updated: 2024/04/08 12:07:50 by glacroix         ###   ########.fr        #
+#    Updated: 2024/04/08 15:55:24 by glacroix         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,14 +27,15 @@ NAME		= cub3D
 
 #SRC & OBJS Details
 # **************************************************************************** #
-SRCS		= src/main.c\
-			  src/utils.c\
+SRCS		= src/utils.c\
+			  src/main.c\
 			  src/parsing/map_parsing.c\
 			  src/parsing/textures.c\
 			  src/parsing/colors.c\
 			  src/parsing/design.c\
 			  src/parsing/player.c\
 			  src/init.c \
+			  src/raycast/test.c
 			  #src/render_main.c
 				
 OBJS		= $(SRCS:%.c=objs/%.o)
@@ -60,6 +61,7 @@ $(NAME): objs $(OBJS)
 objs:
 	@mkdir -p objs/src
 	@mkdir -p objs/src/parsing
+	@mkdir -p objs/src/raycast
 
 objs/%.o: %.c
 	@$(CC) $(CFLAGS) -c $< -o $@ 
