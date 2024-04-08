@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/06 12:26:06 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/08 12:09:23 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,24 +55,34 @@ void	ft_leaks(void)
 	system("leaks -q cub3D");
 }
 
+int check_file(int argc, char *input)
+{
+	int	file;
+	int	dir;
+
+	if (argc != 2)
+		return (error_msg("program needs one arg ending in \".cub\""), -1);
+	if (ends_with(input, ".cub") != TRUE)
+		return (error_msg("first arg has to end with .cub"), -1);
+	file = open(input, O_RDONLY);
+	if (file < 0)
+		return (error_msg("file doesn't exist"), -1);
+	dir = open(input, O_DIRECTORY);
+	if (dir > 0)
+		return (error_msg("cannot use a directory as map"), -1);
+	close(dir);
+	return (file);
+}
+
 int main(int argc, char **argv)
 {
 	atexit(ft_leaks);
 	t_game	game;
 	int		file;
-	int		dir;
 
-	if (argc != 2)
-		return (error_msg("program needs one arg ending in \".cub\""),1);
-	if (ends_with(argv[1], ".cub") != TRUE)
-		return (error_msg("first arg has to end with .cub"), 2);
-	file = open(argv[1], O_RDONLY);
+	file = check_file(argc, argv[1]);
 	if (file < 0)
-		return (error_msg("file doesn't exist"), 3);
-	dir = open(argv[1], O_DIRECTORY);
-	if (dir > 0)
-		return (error_msg("cannot use a directory as map"), 4);
-	close(dir);
+		return (1);
 	if (game_init(&game, file) != 0)
 	{
 		free_t_array(&game.map);
