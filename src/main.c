@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/10 17:41:54 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/10 18:23:45 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,23 +130,22 @@ int main(int argc, char **argv)
 	file = check_file(argc, argv[1]);
 	if (file < 0)
 		return (1);
-	printf("here\n");
 	if (game_init(&game, file) != 0)
 	{
 		free_t_array(&game.map);
-		free(game.design.north_text);
-		free(game.design.south_text);
-		free(game.design.east_text);
-		free(game.design.west_text);
+		free(game.design.north_text.addi);
+		free(game.design.south_text.addi);
+		free(game.design.east_text.addi);
+		free(game.design.west_text.addi);
 		mlx_destroy_image (game.data.mlx_ptr, game.data.img );
 		free(game.data.mlx_ptr);
 		return (1);
 	}
 	printf("player.x = %d | player.y = %d\n", game.player.x, game.player.y);
 	//raycast
-	game_background_draw(&game.data, &game.window, GREY);
-	draw_rectangle(&game.data, &game.player, RED);	
-	mlx_put_image_to_window(&game.data.mlx_ptr, game.data.win_ptr, game.data.img, 0, 0);
+	//game_background_draw(&game.data, &game.window, GREY);
+	//draw_rectangle(&game.data, &game.player, RED);	
+	//mlx_put_image_to_window(&game.data.mlx_ptr, game.data.win_ptr, game.data.img, 0, 0);
 	
 	//free memory
 	mlx_hook(game.data.win_ptr, 17, 0, ft_exit, game.data.mlx_ptr);

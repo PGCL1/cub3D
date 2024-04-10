@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:37:05 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/10 17:46:31 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/10 18:23:05 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,15 +72,11 @@ char	*texture_path_cleaned(char *line)
 	return (path_cleaned);
 }
 
-void	*get_texture(void *mlx, char *line)
+void	get_texture(void *mlx, char *line, t_texture *t)
 {
-	int		width;
-	int		height;
-	void	*texture;
 	char	*path_cleaned;
 
 	path_cleaned = texture_path_cleaned(line);
-	texture = mlx_xpm_file_to_image(mlx, path_cleaned, &width, &height);
+	t->addi = mlx_xpm_file_to_image(mlx, path_cleaned, &t->width, &t->height);
 	free(path_cleaned);
-	return (texture);
 }

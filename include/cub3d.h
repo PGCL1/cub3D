@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 18:11:28 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/10 17:47:08 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/10 18:16:05 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,21 +86,21 @@ typedef struct s_vector
 	double y;
 }	t_vector;
 
-/*typedef struct s_texture*/
-/*{*/
-/*int		width;*/
-/*int		height;*/
-/*void	*addi;	*/
-/*}	t_texture;*/
+typedef struct s_texture
+{
+	int		width;
+	int		height;
+	void	*addi;	
+}	t_texture;
 
 typedef struct s_design 
 {
 	int		floor[3];
 	int		ceiling[3];
-	void	*north_text;
-	void	*south_text;
-	void	*east_text;
-	void	*west_text;
+	t_texture	north_text;
+	t_texture	south_text;
+	t_texture	east_text;
+	t_texture	west_text;
 }	t_design;
 
 typedef struct s_win
@@ -129,7 +129,7 @@ void		free_t_array(t_array *arr);
 /*------------------------------Parsing---------------------------------------*/
 
 char		*texture_path(char *line);
-void		*get_texture(void *mlx, char *line);
+void		get_texture(void *mlx, char *line, t_texture *t);
 char		*texture_path_cleaned(char *line);
 
 int			line_empty(char *line);

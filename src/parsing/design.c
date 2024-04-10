@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 15:08:30 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/10 17:46:26 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/10 18:18:55 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int	error_color(int color[])
 
 int	error_design(t_design *design)
 {
-	if (!design->north_text || !design->south_text
-		|| !design->east_text || !design->west_text)
+	if (!design->north_text.addi || !design->south_text.addi
+		|| !design->east_text.addi || !design->west_text.addi)
 		return (1);
 	if (error_color(design->floor) == TRUE || error_color(design->ceiling) == TRUE)
 		return (1);
@@ -46,13 +46,13 @@ int	colors_textures(void *mlx, char *line, t_design *design)
 	else
 	{
 		if (ft_strncmp((char *)line_meaning(line), "NO", 3) == 0)
-			design->north_text = get_texture(mlx, line);
+			get_texture(mlx, line, &design->north_text);
 		else if (ft_strncmp((char *)line_meaning(line), "SO", 3) == 0)
-			design->south_text = get_texture(mlx, line);
+			get_texture(mlx, line, &design->south_text);
 		else if (ft_strncmp((char *)line_meaning(line), "WE", 3) == 0)
-			design->west_text = get_texture(mlx, line);
+			 get_texture(mlx, line, &design->west_text);
 		else if (ft_strncmp((char *)line_meaning(line), "EA", 3) == 0)
-			design->east_text = get_texture(mlx, line);
+			 get_texture(mlx, line, &design->east_text);
 		else if (ft_strncmp((char *)line_meaning(line), "F", 2) == 0)
 			get_colors(line, design->floor);
 		else if (ft_strncmp((char *)line_meaning(line), "C", 2) == 0)
