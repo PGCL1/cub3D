@@ -500,7 +500,7 @@ int	load_texture(void *mlx, t_img *img, const char *filepath)
 	return 1;
 }
 
-#if 0
+#if 1
 int main(int argc, char **argv)
 {
 	(void) argc;

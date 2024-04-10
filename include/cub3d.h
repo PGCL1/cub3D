@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 18:11:28 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/08 17:03:40 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/10 17:47:08 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 # define RED			0X42990010
 # define GREEN			0X014421 
 # define BLACK			0X000000
+# define GREY			0X808080
 /*# define WHITE			0XFFF5EE*/
 # define BLUE			0X191970
 
@@ -78,6 +79,20 @@ typedef struct s_player
 	int		y;
 }	t_player;
 
+
+typedef struct s_vector
+{
+	double x;
+	double y;
+}	t_vector;
+
+/*typedef struct s_texture*/
+/*{*/
+/*int		width;*/
+/*int		height;*/
+/*void	*addi;	*/
+/*}	t_texture;*/
+
 typedef struct s_design 
 {
 	int		floor[3];
@@ -88,9 +103,16 @@ typedef struct s_design
 	void	*west_text;
 }	t_design;
 
+typedef struct s_win
+{
+	int h_y;
+	int w_x;
+}	t_win;
+
 typedef struct s_game
 {
 	t_data data;
+	t_win	window;
 	t_array map;
 	t_player player;
 	t_design design;
@@ -135,7 +157,7 @@ void		player_position(t_player *player, size_t i, size_t j);
 
 /*-----------------------------------Init-------------------------------------*/
 
-int			window_init(t_data *data);
+int			window_init(t_data *data, t_win *window);
 int			design_init(t_design *design, t_data *data, int file);
 int			map_init(t_array *map, int file);
 int			player_init(t_player *player, const t_array *map);

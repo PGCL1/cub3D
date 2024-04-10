@@ -6,7 +6,7 @@
 #    By: glacroix <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 16:34:00 by glacroix          #+#    #+#              #
-#    Updated: 2024/04/08 15:55:24 by glacroix         ###   ########.fr        #
+#    Updated: 2024/04/10 17:11:20 by glacroix         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,6 @@ SRCS		= src/utils.c\
 			  src/parsing/design.c\
 			  src/parsing/player.c\
 			  src/init.c \
-			  src/raycast/test.c
 			  #src/render_main.c
 				
 OBJS		= $(SRCS:%.c=objs/%.o)
