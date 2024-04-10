@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 15:13:20 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/10 18:19:53 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/10 18:48:43 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,29 +67,28 @@ int player_init(t_player *player, const t_array *map)
 	return (0);	
 }
 
-int	game_init(t_game *game, int file)
+int	structure_init(t_structure *structure, int file)
 {
 	int			flag;
 	t_array		original;
 
 	flag = 0;
-	if (window_init(&game->data, &game->window) != 0)
+	if (window_init(&structure->data, &structure->window) != 0)
 		return (1);
-	if (design_init(&game->design, &game->data, file) != 0)
+	if (design_init(&structure->design, &structure->data, file) != 0)
 		return (1);
-	if (map_init(&game->map, file) != 0)
+	if (map_init(&structure->map, file) != 0)
 		return (1);
-	if (player_init(&game->player, &game->map) != 0)
+	if (player_init(&structure->player, &structure->map) != 0)
 		return (1);
-	if (map_original_copy(game->map, &original) == NULL)
+	if (map_original_copy(structure->map, &original) == NULL)
 		return (1);
-	if (map_fill(&game->map, game->player.y, game->player.x, &flag) == 1)
+	if (map_fill(&structure->map, structure->player.y, structure->player.x, &flag) == 1)
 	{
 		free_t_array(&original);
 		return (error_msg("map is not closed"), 1);
 	}
-	free_t_array(&game->map);
-	game->map = original;	
-	printf("game->map = %p | original = %p\n", &game->map, &original);
+	free_t_array(&structure->map);
+	structure->map = original;	
 	return (0);	
 }
