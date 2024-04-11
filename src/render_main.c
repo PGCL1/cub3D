@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "libft.h"
-#include <mlx.h>
+#include "../libft/libft.h"
+#include "../mlx/mlx.h"
 #include <errno.h>
 #include <string.h>
 #include <fcntl.h>
@@ -10,7 +10,7 @@
 //#include "cub3d.h"
 
 static const char *res[] = {
-	"./textures/redbrick.xpm",
+	"./textures/file.xpm",
 };
 
 //#define	LEN sizeof(res) / sizeof(res[0])
@@ -148,7 +148,7 @@ typedef struct s_game
 
 	t_mlx		mlx_ctx;
 	t_map		map;
-}	t_structure;
+}	t_setup;
 
 void	draw_rect(t_mlx *ctx, t_vec2 *pos, t_vec2 *size, int color)
 {
@@ -207,7 +207,7 @@ void draw_ver_line(t_mlx *ctx, int x, int draw_start, int draw_end, int color)
 	}
 }
 
-int	is_hit_wall(t_structure **game)
+int	is_hit_wall(t_setup **game)
 {
 	int	side;
 	int	hit = 0;
@@ -237,7 +237,7 @@ int	is_hit_wall(t_structure **game)
 	return side;
 }
 
-void	side_distance(t_structure **game, t_vec2 *ray_dir)
+void	side_distance(t_setup **game, t_vec2 *ray_dir)
 {
 	if (ray_dir->x < 0)
 	{
@@ -262,7 +262,7 @@ void	side_distance(t_structure **game, t_vec2 *ray_dir)
 	}
 }
 
-void	distance(t_structure **game, t_vec2 *ray_dir)
+void	distance(t_setup **game, t_vec2 *ray_dir)
 {
 	if (ray_dir->x == 0)
 		(*game)->delta_dist.x = 1e30;
@@ -275,7 +275,7 @@ void	distance(t_structure **game, t_vec2 *ray_dir)
 	side_distance(game, ray_dir);
 }
 
-int	draw_pos(t_structure **game, int side)
+int	draw_pos(t_setup **game, int side)
 {
 	int	line_height;
 
@@ -295,7 +295,7 @@ int	draw_pos(t_structure **game, int side)
 	return line_height;
 }
 
-void	render_texture(t_structure *game, int tex_x, int side, int tex_num, int x)
+void	render_texture(t_setup *game, int tex_x, int side, int tex_num, int x)
 {
 	int	y;
 	int	tex_y;
@@ -316,7 +316,7 @@ void	render_texture(t_structure *game, int tex_x, int side, int tex_num, int x)
 	}
 }
 
-int	raycast(t_structure *game)
+int	raycast(t_setup *game)
 {
 	//int	x;	
 	double camerax;	
@@ -335,7 +335,7 @@ int	raycast(t_structure *game)
 
 		int	side = is_hit_wall(&game);
 
-		printf("side: %d\n", side);
+	//	printf("side: %d\n", side);
 
 
 		game->line_height = draw_pos(&game, side);
@@ -380,8 +380,8 @@ int	raycast(t_structure *game)
 		render_texture(game, texX, side, texNum, x);
 
 		
-		printf("start: %d\n", game->draw_start);
-		printf("end: %d\n", game->draw_end);
+		/*printf("start: %d\n", game->draw_start);*/
+		/*printf("end: %d\n", game->draw_end);*/
 
 
 		draw_ver_line(&game->mlx_ctx, x, game->draw_start, game->draw_end, color);
@@ -392,7 +392,8 @@ int	raycast(t_structure *game)
 
 int	key_hook(int keycode, void *param)
 {
-	t_structure *game = param;
+	printf("key = %d\n", keycode);
+	t_setup *game = param;
 	double	old_dir_x;
 	double	old_plane_x;
 
@@ -500,11 +501,11 @@ int	load_texture(void *mlx, t_img *img, const char *filepath)
 	return 1;
 }
 
-#if 0
+#if 1
 int main(int argc, char **argv)
 {
 	(void) argc;
-	t_structure	game;
+	t_setup	game;
 	
 	ft_bzero(&game, sizeof(game));
 	game.mlx_ctx.mlx = mlx_init();

@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/10 18:47:32 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/11 11:40:01 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,46 +117,46 @@ void	ft_leaks(void)
 	system("leaks -q cub3D");
 }
 
-int key_hook(int key, t_structure *structure)
+int key_hook(int key, t_setup *setup)
 {
-	buttons(key, &structure->player);
+	buttons(key, &setup->player);
 	return (0);
 }
 
-#if 1
+#if 0
 
 int main(int argc, char **argv)
 {
 //atexit(ft_leaks);
-	t_structure	structure;
+	t_setup	setup;
 	int		file;
 
 	file = check_file(argc, argv[1]);
 	if (file < 0)
 		return (1);
-	if (structure_init(&structure, file) != 0)
+	if (setup_init(&setup, file) != 0)
 	{
-		free_t_array(&structure.map);
-		free(structure.design.north_text.addi);
-		free(structure.design.south_text.addi);
-		free(structure.design.east_text.addi);
-		free(structure.design.west_text.addi);
-		mlx_destroy_image (structure.data.mlx_ptr, structure.data.img );
-		free(structure.data.mlx_ptr);
+		free_t_array(&setup.map);
+		free(setup.design.north_text.addi);
+		free(setup.design.south_text.addi);
+		free(setup.design.east_text.addi);
+		free(setup.design.west_text.addi);
+		mlx_destroy_image (setup.data.mlx_ptr, setup.data.img );
+		free(setup.data.mlx_ptr);
 		return (1);
 	}
-	printf("player.x = %d | player.y = %d\n", structure.player.x, structure.player.y);
+	printf("player.x = %d | player.y = %d\n", setup.player.x, setup.player.y);
 	//raycast
-	game_background_draw(&structure.data, &structure.window, GREY);
-	draw_rectangle(&structure.data, &structure.player, RED);	
-	mlx_put_image_to_window(&structure.data.mlx_ptr, structure.data.win_ptr, structure.data.img, 0, 0);
+	game_background_draw(&setup.data, &setup.window, GREY);
+	draw_rectangle(&setup.data, &setup.player, RED);	
+	mlx_put_image_to_window(&setup.data.mlx_ptr, setup.data.win_ptr, setup.data.img, 0, 0);
 	
 	//free memory
-	mlx_hook(structure.data.win_ptr, 17, 0, ft_exit, structure.data.mlx_ptr);
-	mlx_hook(structure.data.win_ptr, 2, 0, hook_key, structure.data.mlx_ptr);
-	mlx_key_hook(structure.data.win_ptr, key_hook, &structure);
-	mlx_loop(structure.data.mlx_ptr);
-	free_t_array(&structure.map);
+	mlx_hook(setup.data.win_ptr, 17, 0, ft_exit, setup.data.mlx_ptr);
+	mlx_hook(setup.data.win_ptr, 2, 0, hook_key, setup.data.mlx_ptr);
+	mlx_key_hook(setup.data.win_ptr, key_hook, &setup);
+	mlx_loop(setup.data.mlx_ptr);
+	free_t_array(&setup.map);
 	return (0);
 }
 

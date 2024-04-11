@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 15:13:20 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/10 18:48:43 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/11 11:37:06 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,28 +67,28 @@ int player_init(t_player *player, const t_array *map)
 	return (0);	
 }
 
-int	structure_init(t_structure *structure, int file)
+int	setup_init(t_setup *setup, int file)
 {
 	int			flag;
 	t_array		original;
 
 	flag = 0;
-	if (window_init(&structure->data, &structure->window) != 0)
+	if (window_init(&setup->data, &setup->window) != 0)
 		return (1);
-	if (design_init(&structure->design, &structure->data, file) != 0)
+	if (design_init(&setup->design, &setup->data, file) != 0)
 		return (1);
-	if (map_init(&structure->map, file) != 0)
+	if (map_init(&setup->map, file) != 0)
 		return (1);
-	if (player_init(&structure->player, &structure->map) != 0)
+	if (player_init(&setup->player, &setup->map) != 0)
 		return (1);
-	if (map_original_copy(structure->map, &original) == NULL)
+	if (map_original_copy(setup->map, &original) == NULL)
 		return (1);
-	if (map_fill(&structure->map, structure->player.y, structure->player.x, &flag) == 1)
+	if (map_fill(&setup->map, setup->player.y, setup->player.x, &flag) == 1)
 	{
-		free_t_array(&original);
+//		free_t_array(&original);
 		return (error_msg("map is not closed"), 1);
 	}
-	free_t_array(&structure->map);
-	structure->map = original;	
+	/*free_t_array(&setup->map);*/
+	setup->map = original;	
 	return (0);	
 }

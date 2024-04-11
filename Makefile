@@ -6,7 +6,7 @@
 #    By: glacroix <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 16:34:00 by glacroix          #+#    #+#              #
-#    Updated: 2024/04/10 17:11:20 by glacroix         ###   ########.fr        #
+#    Updated: 2024/04/11 11:27:57 by glacroix         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,25 +28,25 @@ NAME		= cub3D
 #SRC & OBJS Details
 # **************************************************************************** #
 SRCS		= src/utils.c\
-			  src/main.c\
 			  src/parsing/map_parsing.c\
 			  src/parsing/textures.c\
 			  src/parsing/colors.c\
 			  src/parsing/design.c\
 			  src/parsing/player.c\
 			  src/init.c \
-			  #src/render_main.c
+			  src/render_main.c\
+			  #src/main.c
 				
 OBJS		= $(SRCS:%.c=objs/%.o)
 
 #Execution
 # **************************************************************************** #
 LIBFT		= libft/libft.a
-CC			= gcc
+CC			= gcc 
 CFLAGS		= -Wall -Werror -Wextra -Imlx
 CFLAGS		+= -I include
 CFLAGS		+= -I libft -g3 -O2 -DSTRINGPUTX11
-MINI		= -lmlx -framework OpenGL -framework AppKit #-g3 -fsanitize=address
+MINI		= -L./mlx -lmlx -framework OpenGL -framework AppKit #-g3 -fsanitize=address
 
 #SRC Execution
 # **************************************************************************** #

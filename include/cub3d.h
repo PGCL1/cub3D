@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 18:11:28 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/10 18:49:06 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/11 11:39:15 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,14 +109,14 @@ typedef struct s_win
 	int w_x;
 }	t_win;
 
-typedef struct s_game
+typedef struct s_setup
 {
 	t_data data;
 	t_win	window;
 	t_array map;
 	t_player player;
 	t_design design;
-}	t_structure;
+}	t_setup;
 
 /*------------------------------Utils----------------------------------------*/
 void		error_msg(char *msg);
@@ -161,7 +161,7 @@ int			window_init(t_data *data, t_win *window);
 int			design_init(t_design *design, t_data *data, int file);
 int			map_init(t_array *map, int file);
 int			player_init(t_player *player, const t_array *map);
-int			structure_init(t_structure *structure, int file);
+int			setup_init(t_setup *structure, int file);
 
 int			check_file(int argc, char *input);
 
