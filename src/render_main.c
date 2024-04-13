@@ -148,7 +148,7 @@ typedef struct s_game
 
 	t_mlx		mlx_ctx;
 	t_map		map;
-}	t_setup;
+}	t_game;
 
 void	draw_rect(t_mlx *ctx, t_vec2 *pos, t_vec2 *size, int color)
 {
@@ -207,7 +207,7 @@ void draw_ver_line(t_mlx *ctx, int x, int draw_start, int draw_end, int color)
 	}
 }
 
-int	is_hit_wall(t_setup **game)
+int	is_hit_wall(t_game **game)
 {
 	int	side;
 	int	hit = 0;
@@ -237,7 +237,7 @@ int	is_hit_wall(t_setup **game)
 	return side;
 }
 
-void	side_distance(t_setup **game, t_vec2 *ray_dir)
+void	side_distance(t_game **game, t_vec2 *ray_dir)
 {
 	if (ray_dir->x < 0)
 	{
@@ -262,7 +262,7 @@ void	side_distance(t_setup **game, t_vec2 *ray_dir)
 	}
 }
 
-void	distance(t_setup **game, t_vec2 *ray_dir)
+void	distance(t_game **game, t_vec2 *ray_dir)
 {
 	if (ray_dir->x == 0)
 		(*game)->delta_dist.x = 1e30;
@@ -275,7 +275,7 @@ void	distance(t_setup **game, t_vec2 *ray_dir)
 	side_distance(game, ray_dir);
 }
 
-int	draw_pos(t_setup **game, int side)
+int	draw_pos(t_game **game, int side)
 {
 	int	line_height;
 
@@ -295,7 +295,7 @@ int	draw_pos(t_setup **game, int side)
 	return line_height;
 }
 
-void	render_texture(t_setup *game, int tex_x, int side, int tex_num, int x)
+void	render_texture(t_game *game, int tex_x, int side, int tex_num, int x)
 {
 	int	y;
 	int	tex_y;
@@ -316,7 +316,7 @@ void	render_texture(t_setup *game, int tex_x, int side, int tex_num, int x)
 	}
 }
 
-int	raycast(t_setup *game)
+int	raycast(t_game *game)
 {
 	//int	x;	
 	double camerax;	
@@ -376,8 +376,14 @@ int	raycast(t_setup *game)
 		double texPos = (game->draw_start - H / 2 + game->line_height / 2) * step;
 
 		(void)texPos;
+		
+		(void) texNum;
+		// render_texture(game, texX, side, texNum, x);
+		
+		color = RED;
 
-		render_texture(game, texX, side, texNum, x);
+		if (side)
+			color /= 2;
 
 		
 		/*printf("start: %d\n", game->draw_start);*/
@@ -393,7 +399,7 @@ int	raycast(t_setup *game)
 int	key_hook(int keycode, void *param)
 {
 	printf("key = %d\n", keycode);
-	t_setup *game = param;
+	t_game *game = param;
 	double	old_dir_x;
 	double	old_plane_x;
 
@@ -501,11 +507,11 @@ int	load_texture(void *mlx, t_img *img, const char *filepath)
 	return 1;
 }
 
-#if 1
+#if 0
 int main(int argc, char **argv)
 {
 	(void) argc;
-	t_setup	game;
+	t_game	game;
 	
 	ft_bzero(&game, sizeof(game));
 	game.mlx_ctx.mlx = mlx_init();
