@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/13 12:05:34 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/15 16:59:20 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ int key_hook(int key, t_setup *setup)
 }
 
 
-#if 1
+#if 0
 
 int main(int argc, char **argv)
 {

@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "../libft/libft.h"
-#include "../mlx/mlx.h"
+#include "libft.h"
+#include "mlx.h"
 #include <errno.h>
 #include <string.h>
 #include <fcntl.h>
@@ -69,22 +69,12 @@ typedef struct s_vec2
 	double y;
 }	t_vec2;
 
-typedef struct s_mlx
-{
-	void	*mlx;
-	void	*win;
-	size_t	screen_width;
-	size_t	screen_height;
-}	t_mlx;
 
 int	game_close(void)
 {
 	exit(0);
 	return 1;
 }
-
-
-void	render_rect(t_mlx *mlx_ctx, int x, int y, int width, int height, int color);
 
 typedef struct s_color
 {
@@ -103,7 +93,7 @@ typedef struct s_map
 typedef struct s_img
 {
 	void	*img;
-	uint32_t	*data;
+	char 	*data;
 	int	bits_per_pixel;
 	int	size_line;
 	int	endian;
@@ -114,6 +104,15 @@ typedef struct s_img
 
 }	t_img;
 
+
+typedef struct s_mlx
+{
+	void	*mlx;
+	void	*win;
+	size_t	screen_width;
+	size_t	screen_height;
+	t_img	img;
+}	t_mlx;
 
 typedef struct s_game
 {
@@ -145,6 +144,7 @@ typedef struct s_game
 
 	// TODO: store here 4 textures from map file
 	t_img	textures[1];
+	
 
 	t_mlx		mlx_ctx;
 	t_map		map;
@@ -195,6 +195,15 @@ void	draw_map(char **items, t_mlx *ctx)
 
 }
 
+void	my_mlx_pixel_put(t_mlx *data, int x, int y, int color)
+{
+	char	*pixel;
+
+	pixel = data->img.data
+		+ (y * data->img.size_line + x * (data->img.bits_per_pixel / 8));
+	*(unsigned int *)pixel = color;
+}
+
 void draw_ver_line(t_mlx *ctx, int x, int draw_start, int draw_end, int color)
 {
 	int	y;
@@ -202,7 +211,7 @@ void draw_ver_line(t_mlx *ctx, int x, int draw_start, int draw_end, int color)
 	y = draw_start;
 	while (y <= draw_end)
 	{
-		mlx_pixel_put(ctx->mlx, ctx->win, x, y, color);
+		my_mlx_pixel_put(ctx, x, y, color);
 		y += 1;
 	}
 }
@@ -316,12 +325,26 @@ void	render_texture(t_game *game, int tex_x, int side, int tex_num, int x)
 	}
 }
 
+void game_background_draw(t_mlx *data, int color)
+{
+	int i = -1;
+	int j = -1;
+
+	while (++i < H)
+	{
+		j = 0;
+		while (++j < W)
+			my_mlx_pixel_put(data, j, i, color);
+	}
+}
+
 int	raycast(t_game *game)
 {
 	//int	x;	
 	double camerax;	
 	t_vec2 ray_dir;
 
+	game_background_draw(&game->mlx_ctx, 0X000000);
 	for (int x = 0; x < W; x += 1)
 	{
 		camerax = 2 * x / (double)W - 1;
@@ -393,6 +416,7 @@ int	raycast(t_game *game)
 		draw_ver_line(&game->mlx_ctx, x, game->draw_start, game->draw_end, color);
 
 	}
+	mlx_put_image_to_window(&game->mlx_ctx.mlx, game->mlx_ctx.win, game->mlx_ctx.img.img, 0, 0);
 	return 1;
 }
 
@@ -407,7 +431,7 @@ int	key_hook(int keycode, void *param)
 
 
 
-	mlx_clear_window(game->mlx_ctx.mlx, game->mlx_ctx.win);
+	//mlx_clear_window(game->mlx_ctx.mlx, game->mlx_ctx.win);
 	if (keycode == KEY_ESC)
 	{
 		game_close();
@@ -498,7 +522,7 @@ int	load_texture(void *mlx, t_img *img, const char *filepath)
 		printf("Error: failed to load img: %s\n", filepath);
 		return 0;
 	}
-	img->data = (uint32_t*)mlx_get_data_addr(img->img, &img->bits_per_pixel, &img->size_line, &img->endian);
+	img->data = mlx_get_data_addr(img->img, &img->bits_per_pixel, &img->size_line, &img->endian);
 	if (!img->data)
 	{
 		printf("Error: could not get data image: %s\n", filepath);
@@ -507,7 +531,9 @@ int	load_texture(void *mlx, t_img *img, const char *filepath)
 	return 1;
 }
 
-#if 0
+//TODO: add keypress function to movement
+
+#if 1
 int main(int argc, char **argv)
 {
 	(void) argc;
@@ -517,6 +543,9 @@ int main(int argc, char **argv)
 	game.mlx_ctx.mlx = mlx_init();
 	game.mlx_ctx.win = mlx_new_window(game.mlx_ctx.mlx, W, H, "Cub3D");
 
+	game.mlx_ctx.img.img = mlx_new_image(game.mlx_ctx.mlx, W, H);
+	game.mlx_ctx.img.data = mlx_get_data_addr(game.mlx_ctx.img.img, &game.mlx_ctx.img.bits_per_pixel, &game.mlx_ctx.img.size_line,
+			&game.mlx_ctx.img.endian);
 	game.map.items = malloc(sizeof(char *) * (25));
 	int	fd = open(argv[1], O_RDONLY);
 
@@ -547,9 +576,6 @@ int main(int argc, char **argv)
 			exit(1);
 		}
 	}
-
-
-
 
 	mlx_loop_hook(game.mlx_ctx.mlx, raycast, &game);
 	mlx_key_hook(game.mlx_ctx.win, key_hook, &game);

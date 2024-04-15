@@ -6,7 +6,7 @@
 #    By: glacroix <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 16:34:00 by glacroix          #+#    #+#              #
-#    Updated: 2024/04/13 12:05:16 by glacroix         ###   ########.fr        #
+#    Updated: 2024/04/15 17:00:04 by glacroix         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,8 +34,8 @@ SRCS		= src/utils.c\
 			  src/parsing/design.c\
 			  src/parsing/player.c\
 			  src/init.c \
-			  src/main.c 
-			  #src/render_main.c\
+			  src/render_main.c\
+			  #src/main.c 
 				
 OBJS		= $(SRCS:%.c=objs/%.o)
 
@@ -46,14 +46,12 @@ CC			= gcc
 CFLAGS		= -Wall -Werror -Wextra -Imlx
 CFLAGS		+= -I include
 CFLAGS		+= -I libft -g3 -O2 -DSTRINGPUTX11
-MAKE_MLX	= cd ./mlx && $(MAKE) -s
-MINI		= -L./mlx -lmlx -framework OpenGL -framework AppKit #-g3 -fsanitize=address
+MINI		= -lmlx -framework OpenGL -framework AppKit #-g3 -fsanitize=address
 
 #SRC Execution
 # **************************************************************************** #
 $(NAME): objs $(OBJS)
 	@make -sC libft
-	@$(MAKE_MLX)
 	@$(CC) $(OBJS) $(LIBFT) $(MINI) -o $(NAME)
 	@echo $(MAGENTA) "\n         Cub3D Compiled!       \n" $(RESET)
 
