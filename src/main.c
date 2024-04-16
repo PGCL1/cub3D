@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/16 16:41:46 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/16 17:02:13 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,40 +31,10 @@ int check_file(int argc, char *input)
 	return (file);
 }
 
-
-void	draw_rectangle(t_data *data, t_player *player, int color)
-{
-	t_vector size = {64.0f, 64.0f};
-
-	int	y = player->y;
-	while (y < player->y + size.y)
-	{
-		int x = player->x;
-		while (x < player->x + size.x)
-		{
-			my_mlx_pixel_put(data, x, y, color);
-			x += 1;
-		}
-		y += 1;
-	}
-}
-
 int	ft_exit(void)
 {
 	ft_putstr_fd("Exited 3D, ggboiiii\n", 1);
 	exit(EXIT_SUCCESS);
-}
-
-void buttons(int key, t_player *p)
-{
-	if (key == W || key == UP)
-		p->y -= 5;
-	if (key == S || key == DOWN)
-		p->y += 5;
-	if (key == D || key == RIGHT)
-		p->x += 5;
-	if (key == A || key == LEFT)
-		p->x -= 5;
 }
 
 int	close(int keycode)
@@ -111,7 +81,7 @@ void game_init(t_setup *setup)
 }
 
 #if 1
-
+//TODO: add keypress for buttons
 //TODO: change t_texture to t_img
 int main(int argc, char **argv)
 {
