@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 18:11:28 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/16 15:21:03 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/16 16:24:10 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ typedef struct s_game
 	time_t	old_time;
 
 	// TODO: store here 4 textures from map file
-	t_img	textures[1];
+	t_img	textures[4];
 
 	t_data		*mlx_ctx;
 	t_array 	*map;
@@ -231,7 +231,7 @@ void	render_texture(t_game *game, int tex_x, int side, int tex_num, int x);
 void game_background_draw(t_data *data, int color);
 
 t_vec2	player_pos(char **items);
-int	ahmed_key_hook(int keycode, void *param);
+int	key_hook(int keycode, void *param);
 int	load_texture(void *mlx, t_img *img, const char *filepath);
 
 

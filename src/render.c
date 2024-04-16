@@ -339,7 +339,7 @@ int	raycast(t_game *game)
 	double camerax;	
 	t_vec2 ray_dir;
 
-	game_background_draw(game->mlx_ctx, 0X000000);
+	game_background_draw(game->mlx_ctx, BLACK);
 	for (int x = 0; x < w; x += 1)
 	{
 		camerax = 2 * x / (double)w - 1;
@@ -415,7 +415,7 @@ int	raycast(t_game *game)
 	return 1;
 }
 
-int	ahmed_key_hook(int keycode, void *param)
+int	key_hook(int keycode, void *param)
 {
 	printf("key = %d\n", keycode);
 	t_game *game = param;
