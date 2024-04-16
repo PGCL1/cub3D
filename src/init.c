@@ -6,23 +6,21 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 15:13:20 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/15 17:14:14 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/16 11:33:01 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int window_init(t_data *data, t_win *window)
+int window_init(t_data *data)
 {
-	window->h_y = 512;
-	window->w_x = 1024;
 	data->mlx_ptr = mlx_init();
 	if (!data->mlx_ptr)
 		return (error_msg("mlx_init() failed"), 1);
-	data->win_ptr = mlx_new_window(data->mlx_ptr, window->w_x, window->h_y, "GG boiii");
-	data->img = mlx_new_image(data->mlx_ptr, window->w_x, window->h_y);
-	data->img_addr = mlx_get_data_addr(data->img, &data->img_bits_per_pixel, &data->img_line_length,
-			&data->img_endian);
+	data->win_ptr = mlx_new_window(data->mlx_ptr, w, h, "GG boiii");
+	data->img.img = mlx_new_image(data->mlx_ptr, w, h);
+	data->img.data = mlx_get_data_addr(data->img.img, &data->img.bits_per_pixel, &data->img.size_line,
+			&data->img.endian);
 	return (0);
 }
 
@@ -73,7 +71,7 @@ int	setup_init(t_setup *setup, int file)
 	t_array		original;
 
 	flag = 0;
-	if (window_init(&setup->data, &setup->window) != 0)
+	if (window_init(&setup->data) != 0)
 		return (1);
 	if (design_init(&setup->design, &setup->data, file) != 0)
 		return (1);

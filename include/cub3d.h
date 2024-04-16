@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 18:11:28 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/12 17:28:31 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/16 15:21:03 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@
 # include <sys/uio.h>
 # include <fcntl.h>
 # include <math.h>
+# include <fcntl.h>
+# include <float.h>
+# include <errno.h>
 
 /*------------------------------Error_msg-------------------------------------*/
 # define RESET  		"\x1B[0m"
@@ -53,16 +56,9 @@
 # define PLUS				69
 # define MINUS				78
 
-typedef struct s_data
-{
-	void	*img;
-	char	*img_addr;
-	int		img_bits_per_pixel;
-	int		img_line_length;
-	int		img_endian;
-	void	*mlx_ptr;
-	void	*win_ptr;
-}				t_data;
+# define	w	1024
+# define	h	512
+
 
 typedef struct s_array
 {
@@ -103,20 +99,75 @@ typedef struct s_design
 	t_texture	west_text;
 }	t_design;
 
-typedef struct s_win
+typedef struct s_img
 {
-	int h_y;
-	int w_x;
-}	t_win;
+	void	*img;
+	char 	*data;
+	int	bits_per_pixel;
+	int	size_line;
+	int	endian;
+
+	int	width;
+	int	height;
+}	t_img;
+
+typedef struct s_data
+{
+	t_img	img;
+	void	*mlx_ptr;
+	void	*win_ptr;
+}				t_data;
+
+typedef struct s_vec2
+{
+	double x;
+	double y;
+}	t_vec2;
+
+typedef struct s_game
+{
+
+	// player position
+	t_vec2	pos;
+	// player direction
+	t_vec2	dir;
+	t_vec2	plane;
+
+	t_vec2	side_dist;
+	t_vec2	delta_dist;
+
+	double	prep_wall_dist;
+
+	int	step_x;
+	int	step_y;
+
+	int	map_x;
+	int	map_y;
+
+	int	draw_start;
+	int	draw_end;
+	int	line_height;
+
+	// TODO: calculate delta time
+	time_t	curr_time;
+	time_t	old_time;
+
+	// TODO: store here 4 textures from map file
+	t_img	textures[1];
+
+	t_data		*mlx_ctx;
+	t_array 	*map;
+}	t_game;
 
 typedef struct s_setup
 {
-	t_data data;
-	t_win	window;
-	t_array map;
-	t_player player;
-	t_design design;
+	t_data		data;
+	t_array		map;
+	t_player	player;
+	t_design	design;
+	t_game		game;
 }	t_setup;
+
 
 /*------------------------------Utils----------------------------------------*/
 void		error_msg(char *msg);
@@ -157,12 +208,39 @@ void		player_position(t_player *player, size_t i, size_t j);
 
 /*-----------------------------------Init-------------------------------------*/
 
-int			window_init(t_data *data, t_win *window);
+int			window_init(t_data *data);
 int			design_init(t_design *design, t_data *data, int file);
 int			map_init(t_array *map, int file);
 int			player_init(t_player *player, const t_array *map);
 int			setup_init(t_setup *structure, int file);
 
 int			check_file(int argc, char *input);
+
+/*-----------------------------------Render-------------------------------------*/
+
+
+int	raycast(t_game *game);
+void draw_ver_line(t_data *ctx, int x, int draw_start, int draw_end, int color);
+int	is_hit_wall(t_game **game);
+void	side_distance(t_game **game, t_vec2 *ray_dir);
+void	distance(t_game **game, t_vec2 *ray_dir);
+int	draw_pos(t_game **game, int side);
+
+void	render_texture(t_game *game, int tex_x, int side, int tex_num, int x);
+
+void game_background_draw(t_data *data, int color);
+
+t_vec2	player_pos(char **items);
+int	ahmed_key_hook(int keycode, void *param);
+int	load_texture(void *mlx, t_img *img, const char *filepath);
+
+
+void	draw_rect(t_data *ctx, t_vec2 *pos, t_vec2 *size, int color);
+void	draw_map(char **items, t_data *ctx);
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+
+
+
+
 
 #endif

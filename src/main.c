@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/15 16:59:20 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/16 15:28:39 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,27 +31,6 @@ int check_file(int argc, char *input)
 	return (file);
 }
 
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
-{
-	char	*pixel;
-
-	pixel = data->img_addr
-		+ (y * data->img_line_length + x * (data->img_bits_per_pixel / 8));
-	*(unsigned int *)pixel = color;
-}
-
-void game_background_draw(t_data *data, int color)
-{
-	int i = -1;
-	int j = -1;
-
-	while (++i < 512)
-	{
-		j = 0;
-		while (++j < 1024)
-			my_mlx_pixel_put(data, j, i, color);
-	}
-}
 
 void	draw_rectangle(t_data *data, t_player *player, int color)
 {
@@ -101,8 +80,8 @@ int	render_next_frame(t_setup *setup)
 	//	if window has been destroyed, we don't want to put the pixel ! 
 	if (setup->data.win_ptr != NULL)
 		mlx_pixel_put(setup->data.mlx_ptr, setup->data.win_ptr, 
-				setup->window.h_y / 2, setup->window.w_x / 2, RED);
-	mlx_put_image_to_window(&setup->data.mlx_ptr, setup->data.win_ptr, setup->data.img, 0, 0);
+				h / 2, w / 2, RED);
+	mlx_put_image_to_window(&setup->data.mlx_ptr, setup->data.win_ptr, setup->data.img.img, 0, 0);
 	return (0);
 }
 
@@ -122,13 +101,13 @@ int key_hook(int key, t_setup *setup)
 	game_background_draw(&setup->data, BLACK);
 	buttons(key, &setup->player);
 	draw_rectangle(&setup->data, &setup->player, RED);
-	mlx_put_image_to_window(&setup->data.mlx_ptr, setup->data.win_ptr, setup->data.img, 0, 0);
+	mlx_put_image_to_window(&setup->data.mlx_ptr, setup->data.win_ptr, setup->data.img.img, 0, 0);
 	printf("player x = %d | player y = %d\n", setup->player.x, setup->player.y);
 	return (0);
 }
 
 
-#if 0
+#if 1
 
 int main(int argc, char **argv)
 {
@@ -146,21 +125,27 @@ int main(int argc, char **argv)
 		free(setup.design.south_text.addi);
 		free(setup.design.east_text.addi);
 		free(setup.design.west_text.addi);
-		mlx_destroy_image (setup.data.mlx_ptr, setup.data.img );
+		mlx_destroy_image (setup.data.mlx_ptr, setup.data.img.img );
 		free(setup.data.mlx_ptr);
 		return (1);
 	}
-	printf("player.x = %d | player.y = %d\n", setup.player.x, setup.player.y);
+	setup.game.mlx_ctx = &setup.data;
+	setup.game.map = &setup.map;
+	setup.game.pos.x = (double)setup.player.x;
+	setup.game.pos.y = (double)setup.player.y;
+	setup.game.dir.x = -1.0, setup.game.dir.y = 0.0;
+	setup.game.plane.x = 0.0, setup.game.plane.y = 0.66;
 	//raycast
-	game_background_draw(&setup.data, BLACK);
-	draw_rectangle(&setup.data, &setup.player, RED);	
-	mlx_put_image_to_window(&setup.data.mlx_ptr, setup.data.win_ptr, setup.data.img, 0, 0);
+	//game_background_draw(&setup.data, BLACK);
+	//draw_rectangle(&setup.data, &setup.player, RED);	
+	//mlx_put_image_to_window(&setup.data.mlx_ptr, setup.data.win_ptr, setup.data.img, 0, 0);
 	
 	//free memory
+	mlx_loop_hook(setup.data.mlx_ptr, raycast, &setup.game);
+	mlx_key_hook(setup.game.mlx_ctx->win_ptr, ahmed_key_hook, &setup.game);
 	mlx_hook(setup.data.win_ptr, 17, 0, ft_exit, setup.data.mlx_ptr);
 	mlx_hook(setup.data.win_ptr, 2, 0, hook_key, setup.data.mlx_ptr);
-	mlx_key_hook(setup.data.win_ptr, key_hook, &setup);
-	mlx_loop_hook(setup.data.mlx_ptr, render_next_frame, &setup);
+	//mlx_key_hook(setup.data.win_ptr, key_hook, &setup);
 	mlx_loop(setup.data.mlx_ptr);
 	free_t_array(&setup.map);
 	return (0);

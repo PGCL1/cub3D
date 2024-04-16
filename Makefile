@@ -6,7 +6,7 @@
 #    By: glacroix <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 16:34:00 by glacroix          #+#    #+#              #
-#    Updated: 2024/04/15 17:00:04 by glacroix         ###   ########.fr        #
+#    Updated: 2024/04/16 15:31:39 by glacroix         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,8 +34,8 @@ SRCS		= src/utils.c\
 			  src/parsing/design.c\
 			  src/parsing/player.c\
 			  src/init.c \
-			  src/render_main.c\
-			  #src/main.c 
+			  src/main.c \
+			  src/render.c
 				
 OBJS		= $(SRCS:%.c=objs/%.o)
 
@@ -45,8 +45,8 @@ LIBFT		= libft/libft.a
 CC			= gcc 
 CFLAGS		= -Wall -Werror -Wextra -Imlx
 CFLAGS		+= -I include
-CFLAGS		+= -I libft -g3 -O2 -DSTRINGPUTX11
-MINI		= -lmlx -framework OpenGL -framework AppKit #-g3 -fsanitize=address
+CFLAGS		+= -I libft -g3 -O3 -DSTRINGPUTX11
+MINI		= -lmlx -framework OpenGL -framework AppKit -g3 -fsanitize=address
 
 #SRC Execution
 # **************************************************************************** #
