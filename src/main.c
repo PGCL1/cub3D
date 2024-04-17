@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/17 13:09:29 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/17 13:11:23 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,11 +106,9 @@ int main(int argc, char **argv)
 	//hooks
 	mlx_loop_hook(setup.data.mlx_ptr, raycast, &setup.game);
 	mlx_hook(setup.data.win_ptr, 17, 0, ft_exit, setup.data.mlx_ptr);
-	//mlx_hook(setup.data.win_ptr, 2, 0, close, setup.data.mlx_ptr);
 
 	//keyhooks
-	mlx_hook(setup.data.win_ptr, 2, 0, &key_press, &setup.game); /* ADDED */
-	//mlx_key_hook(setup.game.mlx_ctx->win_ptr, key_hook, &setup.game);
+	mlx_hook(setup.data.win_ptr, 2, 0, &key_press, &setup.game);
 	
 	//window loop
 	mlx_loop(setup.data.mlx_ptr);
