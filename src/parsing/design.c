@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 15:08:30 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/10 18:18:55 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/17 13:37:25 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ int	colors_textures(void *mlx, char *line, t_design *design)
 	else
 	{
 		if (ft_strncmp((char *)line_meaning(line), "NO", 3) == 0)
-			get_texture(mlx, line, &design->north_text);
+			get_texture(mlx, line, &design->textures[0]);
 		else if (ft_strncmp((char *)line_meaning(line), "SO", 3) == 0)
-			get_texture(mlx, line, &design->south_text);
+			get_texture(mlx, line, &design->textures[1]);
 		else if (ft_strncmp((char *)line_meaning(line), "WE", 3) == 0)
-			 get_texture(mlx, line, &design->west_text);
+			 get_texture(mlx, line, &design->textures[2]);
 		else if (ft_strncmp((char *)line_meaning(line), "EA", 3) == 0)
-			 get_texture(mlx, line, &design->east_text);
+			 get_texture(mlx, line, &design->textures[3]);
 		else if (ft_strncmp((char *)line_meaning(line), "F", 2) == 0)
 			get_colors(line, design->floor);
 		else if (ft_strncmp((char *)line_meaning(line), "C", 2) == 0)

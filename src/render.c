@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:48:07 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/17 12:55:03 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/17 16:02:44 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,32 +17,6 @@
 //};
 
 //#define	LEN sizeof(res) / sizeof(res[0])
-
-enum s_tex_pos
-{
-	TEX_NO	= 0,
-	TEX_SO,
-	TEX_WE,
-	TEX_EA,
-	TEX_LEN
-};
-
-
-
-
-
-//typedef struct s_vec2
-//{
-	//double x;
-	//double y;
-//}	t_vec2;
-
-
-//int	game_close(void)
-//{
-	//exit(0);
-	//return 1;
-//}
 
 //typedef struct s_color
 //{
@@ -310,7 +284,7 @@ int	raycast(t_game *game)
 		(void)texPos;
 		
 		(void) texNum;
-		// render_texture(game, texX, side, texNum, x);
+		render_texture(game, texX, side, texNum, x);
 		
 		color = RED;
 

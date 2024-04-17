@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/17 13:16:24 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/17 16:03:51 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,9 @@ void	ft_leaks(void)
 
 void game_init(t_setup *setup)
 {
+	int	i;
+
+	i = -1;
 	setup->game.mlx_ctx = &setup->data;
 	setup->game.map = &setup->map;
 	setup->game.pos.x = (double)setup->player.x;
@@ -57,10 +60,8 @@ void game_init(t_setup *setup)
 	setup->game.dir.x = -1.0, setup->game.dir.y = 0.0;
 	setup->game.plane.x = 0.0, setup->game.plane.y = 0.66;
 
-	setup->game.textures[0].img = setup->design.north_text.addi;
-	setup->game.textures[1].img = setup->design.south_text.addi;
-	setup->game.textures[2].img = setup->design.east_text.addi;
-	setup->game.textures[3].img = setup->design.west_text.addi;
+	while (++i < 4)
+		setup->game.textures[i] = setup->design.textures[i];
 }
 
 //TODO: change t_texture to t_img
@@ -70,7 +71,7 @@ void game_init(t_setup *setup)
 #if 1
 int main(int argc, char **argv)
 {
-	atexit(ft_leaks);
+	//atexit(ft_leaks);
 	t_setup	setup;
 	int		file;
 
@@ -79,11 +80,9 @@ int main(int argc, char **argv)
 		return (1);
 	if (setup_init(&setup, file) != 0)
 	{
+		//maybe close window too for leaks
 		free_t_array(&setup.map);
-		free(setup.design.north_text.addi);
-		free(setup.design.south_text.addi);
-		free(setup.design.east_text.addi);
-		free(setup.design.west_text.addi);
+		//free textures
 		mlx_destroy_image (setup.data.mlx_ptr, setup.data.img.img );
 		free(setup.data.mlx_ptr);
 		return (1);

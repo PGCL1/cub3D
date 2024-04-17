@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 18:11:28 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/17 13:08:23 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/17 16:00:48 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,15 +109,14 @@ typedef struct s_texture
 	void	*addi;	
 }	t_texture;
 
-typedef struct s_design 
+enum s_tex_pos
 {
-	int		floor[3];
-	int		ceiling[3];
-	t_texture	north_text;
-	t_texture	south_text;
-	t_texture	east_text;
-	t_texture	west_text;
-}	t_design;
+	TEX_NO	= 0,
+	TEX_SO,
+	TEX_WE,
+	TEX_EA,
+	TEX_LEN
+};
 
 typedef struct s_img
 {
@@ -130,6 +129,14 @@ typedef struct s_img
 	int	width;
 	int	height;
 }	t_img;
+
+typedef struct s_design 
+{
+	int		floor[3];
+	int		ceiling[3];
+	t_img	textures[4];
+}	t_design;
+
 
 typedef struct s_data
 {
@@ -195,7 +202,7 @@ void		free_t_array(t_array *arr);
 /*------------------------------Parsing---------------------------------------*/
 
 char		*texture_path(char *line);
-void		get_texture(void *mlx, char *line, t_texture *t);
+void		get_texture(void *mlx, char *line, t_img *img);
 char		*texture_path_cleaned(char *line);
 
 int			line_empty(char *line);
