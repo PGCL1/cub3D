@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 18:11:28 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/16 16:24:10 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/17 13:08:23 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@
 # define GREEN			0X014421 
 # define BLACK			0X000000
 # define GREY			0X808080
-/*# define WHITE			0XFFF5EE*/
 # define BLUE			0X191970
 
 /*------------------------------Shortcuts-------------------------------------*/
@@ -56,9 +55,31 @@
 # define PLUS				69
 # define MINUS				78
 
-# define	w	1024
-# define	h	512
+# define w					1024
+# define h					512
+# define MOVE_SPEED			0.3
+# define ROT_SPEED			0.1
+# define texWidth			64
+# define texHeight			texWidth
 
+#if __linux__
+	#define KEY_ESC 				0xff1b
+	#define KEY_ARROW_LEFT	0xff51
+	#define KEY_ARROW_UP		0xff52
+	#define KEY_ARROW_RIGHT	0xff53
+	#define KEY_ARROW_DOWN	0xff54
+#else
+	#define KEY_ESC					0x35
+	#define KEY_ARROW_LEFT	0x7b
+	#define KEY_ARROW_RIGHT	0x7c
+	#define KEY_ARROW_UP		0x7e
+	#define KEY_ARROW_DOWN	0x7d
+	#define KEY_W						0xd
+	#define KEY_A						0x0
+	#define KEY_D						0x2
+	#define KEY_S						0x1
+	
+#endif
 
 typedef struct s_array
 {
@@ -74,7 +95,6 @@ typedef struct s_player
 	int		x;
 	int		y;
 }	t_player;
-
 
 typedef struct s_vector
 {
@@ -118,24 +138,18 @@ typedef struct s_data
 	void	*win_ptr;
 }				t_data;
 
-typedef struct s_vec2
-{
-	double x;
-	double y;
-}	t_vec2;
 
 typedef struct s_game
 {
 
 	// player position
-	t_vec2	pos;
+	t_vector	pos;
 	// player direction
-	t_vec2	dir;
-	t_vec2	plane;
+	t_vector	dir;
+	t_vector	plane;
 
-	t_vec2	side_dist;
-	t_vec2	delta_dist;
-
+	t_vector	side_dist;
+	t_vector	delta_dist;
 	double	prep_wall_dist;
 
 	int	step_x;
@@ -157,6 +171,7 @@ typedef struct s_game
 
 	t_data		*mlx_ctx;
 	t_array 	*map;
+
 }	t_game;
 
 typedef struct s_setup
@@ -222,24 +237,27 @@ int			check_file(int argc, char *input);
 int	raycast(t_game *game);
 void draw_ver_line(t_data *ctx, int x, int draw_start, int draw_end, int color);
 int	is_hit_wall(t_game **game);
-void	side_distance(t_game **game, t_vec2 *ray_dir);
-void	distance(t_game **game, t_vec2 *ray_dir);
+void	side_distance(t_game **game, t_vector *ray_dir);
+void	distance(t_game **game, t_vector *ray_dir);
 int	draw_pos(t_game **game, int side);
 
 void	render_texture(t_game *game, int tex_x, int side, int tex_num, int x);
 
 void game_background_draw(t_data *data, int color);
 
-t_vec2	player_pos(char **items);
+t_vector	player_pos(char **items);
 int	key_hook(int keycode, void *param);
 int	load_texture(void *mlx, t_img *img, const char *filepath);
 
 
-void	draw_rect(t_data *ctx, t_vec2 *pos, t_vec2 *size, int color);
+void	draw_rect(t_data *ctx, t_vector *pos, t_vector *size, int color);
 void	draw_map(char **items, t_data *ctx);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 
 
+/*-----------------------------------Events-------------------------------------*/
+
+int	key_press(int keycode, t_game *game);
 
 
 

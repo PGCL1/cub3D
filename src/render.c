@@ -1,12 +1,15 @@
-//#include <stdio.h>
-//#include <stdlib.h>
-//#include <math.h>
-//#include "libft.h"
-//#include "mlx.h"
-//#include <errno.h>
-//#include <string.h>
-//#include <fcntl.h>
-//#include <float.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   render.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/17 11:48:07 by glacroix          #+#    #+#             */
+/*   Updated: 2024/04/17 12:55:03 by glacroix         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 //static const char *res[] = {
@@ -26,38 +29,6 @@ enum s_tex_pos
 
 
 
-#if __linux__
-	#define KEY_ESC 				0xff1b
-	#define KEY_ARROW_LEFT	0xff51
-	#define KEY_ARROW_UP		0xff52
-	#define KEY_ARROW_RIGHT	0xff53
-	#define KEY_ARROW_DOWN	0xff54
-#else
-	#define KEY_ESC					0x35
-	#define KEY_ARROW_LEFT	0x7b
-	#define KEY_ARROW_RIGHT	0x7c
-	#define KEY_ARROW_UP		0x7e
-	#define KEY_ARROW_DOWN	0x7d
-	#define KEY_W						0xd
-	#define KEY_A						0x0
-	#define KEY_D						0x2
-	#define KEY_S						0x1
-	
-#endif
-
-//#define	RED			0xe62937
-//#define GREEN		0x00e430
-//#define	BLUE		0x0079f1
-//#define YELLOW	0xfdf900
-//#define WHITE		0xFFFFFF
-
-#define	MOVE_SPEED	0.3
-#define	ROT_SPEED		0.1
-
-
-
-#define	texWidth 64
-#define	texHeight texWidth
 
 
 //typedef struct s_vec2
@@ -67,11 +38,11 @@ enum s_tex_pos
 //}	t_vec2;
 
 
-int	game_close(void)
-{
-	exit(0);
-	return 1;
-}
+//int	game_close(void)
+//{
+	//exit(0);
+	//return 1;
+//}
 
 //typedef struct s_color
 //{
@@ -87,65 +58,8 @@ int	game_close(void)
 	//int		col_size;
 //}	t_map;
 
-//typedef struct s_img
-//{
-	//void	*img;
-	//char 	*data;
-	//int	bits_per_pixel;
-	//int	size_line;
-	//int	endian;
 
-	//int	width;
-	//int	height;
-
-
-//}	t_img;
-
-
-//typedef struct s_mlx
-//{
-	//void	*mlx;
-	//void	*win;
-	//t_img	img;
-//}	t_mlx;
-
-//typedef struct s_game
-//{
-
-	//// player position
-	//t_vec2	pos;
-	//// player direction
-	//t_vec2	dir;
-	//t_vec2	plane;
-
-	//t_vec2	side_dist;
-	//t_vec2	delta_dist;
-
-	//double	prep_wall_dist;
-
-	//int	step_x;
-	//int	step_y;
-
-	//int	map_x;
-	//int	map_y;
-
-	//int	draw_start;
-	//int	draw_end;
-	//int	line_height;
-
-	//// TODO: calculate delta time
-	//time_t	curr_time;
-	//time_t	old_time;
-
-	//// TODO: store here 4 textures from map file
-	//t_img	textures[1];
-	
-
-	//t_mlx		mlx_ctx;
-	//t_map		map;
-//}	t_game;
-
-void	draw_rect(t_data *ctx, t_vec2 *pos, t_vec2 *size, int color)
+void	draw_rect(t_data *ctx, t_vector *pos, t_vector *size, int color)
 {
 	int	y = pos->y;
 	while (y < pos->y + size->y)
@@ -165,8 +79,8 @@ void	draw_rect(t_data *ctx, t_vec2 *pos, t_vec2 *size, int color)
 void	draw_map(char **items, t_data *ctx)
 {
 
-	t_vec2 size = {64.0f, 64.0f};
-	t_vec2 pos;
+	t_vector size = {64.0f, 64.0f};
+	t_vector pos;
 
 
 	int	y = 0;
@@ -180,7 +94,7 @@ void	draw_map(char **items, t_data *ctx)
 				color = 0xffffff;
 			pos.x = x * size.x;
 			pos.y = y * size.y;
-			t_vec2 size2 = {size.x - 1, size.y - 1};
+			t_vector size2 = {size.x - 1, size.y - 1};
 
 			draw_rect(ctx, &pos, &size2, color);
 			x += 1;
@@ -241,7 +155,7 @@ int	is_hit_wall(t_game **game)
 	return side;
 }
 
-void	side_distance(t_game **game, t_vec2 *ray_dir)
+void	side_distance(t_game **game, t_vector *ray_dir)
 {
 	if (ray_dir->x < 0)
 	{
@@ -266,7 +180,7 @@ void	side_distance(t_game **game, t_vec2 *ray_dir)
 	}
 }
 
-void	distance(t_game **game, t_vec2 *ray_dir)
+void	distance(t_game **game, t_vector *ray_dir)
 {
 	if (ray_dir->x == 0)
 		(*game)->delta_dist.x = 1e30;
@@ -337,7 +251,7 @@ int	raycast(t_game *game)
 {
 	//int	x;	
 	double camerax;	
-	t_vec2 ray_dir;
+	t_vector ray_dir;
 
 	game_background_draw(game->mlx_ctx, BLACK);
 	for (int x = 0; x < w; x += 1)
@@ -415,74 +329,12 @@ int	raycast(t_game *game)
 	return 1;
 }
 
-int	key_hook(int keycode, void *param)
-{
-	printf("key = %d\n", keycode);
-	t_game *game = param;
-	double	old_dir_x;
-	double	old_plane_x;
 
-	if (keycode == KEY_ESC)
-		game_close();
-
-	if (keycode == KEY_ARROW_RIGHT)
-	{
-		old_dir_x = game->dir.x;
-    game->dir.x = game->dir.x * cos(-ROT_SPEED) - game->dir.y * sin(-ROT_SPEED);
-    game->dir.y = old_dir_x * sin(-ROT_SPEED) + game->dir.y * cos(-ROT_SPEED);
-
-    old_plane_x = game->plane.x;
-    game->plane.x = game->plane.x * cos(-ROT_SPEED) - game->plane.y * sin(-ROT_SPEED);
-    game->plane.y = old_plane_x * sin(-ROT_SPEED) + game->plane.y * cos(-ROT_SPEED);
-	}
-	if (keycode == KEY_ARROW_LEFT)
-	{
-		old_dir_x = game->dir.x;
-    game->dir.x = game->dir.x * cos(ROT_SPEED) - game->dir.y * sin(ROT_SPEED);
-    game->dir.y = old_dir_x * sin(ROT_SPEED) + game->dir.y * cos(ROT_SPEED);
-
-    old_plane_x = game->plane.x;
-    game->plane.x = game->plane.x * cos(ROT_SPEED) - game->plane.y * sin(ROT_SPEED);
-    game->plane.y = old_plane_x * sin(ROT_SPEED) + game->plane.y * cos(ROT_SPEED);
-	}
-	if (keycode == KEY_ARROW_UP)
-	{
-		int	x = (int)game->pos.x;
-		int	y = (int)game->pos.y;
-		int	xx = (int)(game->pos.x + game->dir.x * MOVE_SPEED);
-		int	yy = (int)(game->pos.y + game->dir.y * MOVE_SPEED);
-
-		// TODO: you swaped y and x
-		if(game->map->items[y][xx] == '0')
-			game->pos.x += game->dir.x * MOVE_SPEED;
-	 	if(game->map->items[yy][x] == '0')
-			game->pos.y += game->dir.y * MOVE_SPEED;
-	}
-
-	if (keycode == KEY_ARROW_DOWN)
-	{
-		int	x = (int)game->pos.x;
-		int	y = (int)game->pos.y;
-		int	xx = (int)(game->pos.x + game->dir.x * MOVE_SPEED);
-		int	yy = (int)(game->pos.y + game->dir.y * MOVE_SPEED);
-
-		// TODO: you swaped y and x
-		if(game->map->items[y][xx] == '0')
-			game->pos.x -= game->dir.x * MOVE_SPEED;
-	 	if(game->map->items[yy][x] == '0')
-			game->pos.y -= game->dir.y * MOVE_SPEED;
-		
-	}
-
-
-	return 1;
-}
-
-t_vec2	player_pos(char **items)
+t_vector	player_pos(char **items)
 {
 	int	y;
 	int	x;
-	t_vec2	pos = {0};
+	t_vector	pos = {0};
 
 	y = -1;
 	while (items[++y] != NULL)

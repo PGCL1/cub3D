@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/16 17:02:13 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/17 13:09:29 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,6 @@ int	ft_exit(void)
 	exit(EXIT_SUCCESS);
 }
 
-int	close(int keycode)
-{
-	if (keycode == ESC)
-		ft_exit();
-	return (0);
-}
 
 //int	render_next_frame(t_setup *setup)
 //{
@@ -80,9 +74,11 @@ void game_init(t_setup *setup)
 	setup->game.textures[3].img = setup->design.west_text.addi;
 }
 
-#if 1
-//TODO: add keypress for buttons
 //TODO: change t_texture to t_img
+
+
+
+#if 1
 int main(int argc, char **argv)
 {
 //atexit(ft_leaks);
@@ -106,12 +102,21 @@ int main(int argc, char **argv)
 	//game init
 	game_init(&setup);
 
-	//free memory
+	
+	//hooks
 	mlx_loop_hook(setup.data.mlx_ptr, raycast, &setup.game);
-	mlx_key_hook(setup.game.mlx_ctx->win_ptr, key_hook, &setup.game);
 	mlx_hook(setup.data.win_ptr, 17, 0, ft_exit, setup.data.mlx_ptr);
-	mlx_hook(setup.data.win_ptr, 2, 0, close, setup.data.mlx_ptr);
+	//mlx_hook(setup.data.win_ptr, 2, 0, close, setup.data.mlx_ptr);
+
+	//keyhooks
+	mlx_hook(setup.data.win_ptr, 2, 0, &key_press, &setup.game); /* ADDED */
+	//mlx_key_hook(setup.game.mlx_ctx->win_ptr, key_hook, &setup.game);
+	
+	//window loop
 	mlx_loop(setup.data.mlx_ptr);
+	
+
+	//remember to free memory
 	free_t_array(&setup.map);
 	return (0);
 }

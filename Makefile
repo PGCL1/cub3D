@@ -6,7 +6,7 @@
 #    By: glacroix <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 16:34:00 by glacroix          #+#    #+#              #
-#    Updated: 2024/04/16 15:31:39 by glacroix         ###   ########.fr        #
+#    Updated: 2024/04/17 13:01:58 by glacroix         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,8 @@ SRCS		= src/utils.c\
 			  src/parsing/player.c\
 			  src/init.c \
 			  src/main.c \
-			  src/render.c
+			  src/render.c\
+			  src/events/key_hook.c
 				
 OBJS		= $(SRCS:%.c=objs/%.o)
 
@@ -61,6 +62,7 @@ objs:
 	@mkdir -p objs/src
 	@mkdir -p objs/src/parsing
 	@mkdir -p objs/src/raycast
+	@mkdir -p objs/src/events
 
 objs/%.o: %.c
 	@$(CC) $(CFLAGS) -c $< -o $@ 
