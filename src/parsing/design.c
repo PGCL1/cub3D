@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 15:08:30 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/17 13:37:25 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/17 16:23:29 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,14 @@ int	error_color(int color[])
 
 int	error_design(t_design *design)
 {
-	if (!design->north_text.addi || !design->south_text.addi
-		|| !design->east_text.addi || !design->west_text.addi)
-		return (1);
+	int	i;
+
+	i = -1;
+	while (++i < 4)
+	{
+		if (design->textures[i].img == NULL)
+			return (1);
+	}
 	if (error_color(design->floor) == TRUE || error_color(design->ceiling) == TRUE)
 		return (1);
 	return (0);

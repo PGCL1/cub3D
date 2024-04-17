@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 12:55:58 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/17 15:54:57 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/17 18:43:08 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,10 @@ static void	game_close(void)
 	exit(EXIT_SUCCESS);
 }
 
+//TODO: move left and right with A and D
 int	key_press(int keycode, t_game *game)
 {
+	printf("keycode = %d\n", keycode);
 	double	old_dir_x;
 	double	old_plane_x;
 	if (keycode == ESC)
@@ -44,7 +46,7 @@ int	key_press(int keycode, t_game *game)
 		game->plane.x = game->plane.x * cos(ROT_SPEED) - game->plane.y * sin(ROT_SPEED);
 		game->plane.y = old_plane_x * sin(ROT_SPEED) + game->plane.y * cos(ROT_SPEED);
 	}
-	if (keycode == KEY_ARROW_UP)
+	if (keycode == W)
 	{
 		int	x = (int)game->pos.x;
 		int	y = (int)game->pos.y;
@@ -56,7 +58,7 @@ int	key_press(int keycode, t_game *game)
 	 	if (game->map->items[yy][x] == '0')
 			game->pos.y += game->dir.y * MOVE_SPEED;
 	}
-	if (keycode == KEY_ARROW_DOWN)
+	if (keycode == S)
 	{
 		int	x = (int)game->pos.x;
 		int	y = (int)game->pos.y;
@@ -68,6 +70,30 @@ int	key_press(int keycode, t_game *game)
 	 	if (game->map->items[yy][x] == '0')
 			game->pos.y -= game->dir.y * MOVE_SPEED;
 		
+	}
+	if (keycode == A)
+	{
+		int x = (int)game->pos.x;
+		int y = (int)game->pos.y;
+		int xx = (int)(game->pos.x - game->dir.y * MOVE_SPEED);
+		int yy = (int)(game->pos.y + game->dir.x * MOVE_SPEED);
+
+		if (game->map->items[y][xx] == '0')
+			game->pos.x -= game->dir.y * MOVE_SPEED;
+		if (game->map->items[yy][x] == '0')
+			game->pos.y += game->dir.x * MOVE_SPEED;
+	}
+	if (keycode == D)
+	{
+		int x = (int)game->pos.x;
+		int y = (int)game->pos.y;
+		int xx = (int)(game->pos.x + game->dir.y * MOVE_SPEED);
+		int yy = (int)(game->pos.y - game->dir.x * MOVE_SPEED);
+
+		if (game->map->items[y][xx] == '0')
+			game->pos.x += game->dir.y * MOVE_SPEED;
+		if (game->map->items[yy][x] == '0')
+			game->pos.y -= game->dir.x * MOVE_SPEED;
 	}
 	return 1;
 }

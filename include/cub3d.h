@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 18:11:28 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/17 16:00:48 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/17 16:53:46 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 /*------------------------------Libraries-------------------------------------*/
 # include "../libft/libft.h"
-# include <mlx.h>
+# include "../mlx/mlx.h"
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
@@ -40,7 +40,7 @@
 # define GREY			0X808080
 # define BLUE			0X191970
 
-/*------------------------------Shortcuts-------------------------------------*/
+/*----------------------------Configurations-----------------------------------*/
 # define TRUE				1
 # define FALSE				0
 # define ESC				53
@@ -55,8 +55,8 @@
 # define PLUS				69
 # define MINUS				78
 
-# define w					1024
-# define h					512
+# define w					1920
+# define h					1080
 # define MOVE_SPEED			0.3
 # define ROT_SPEED			0.1
 # define texWidth			64
@@ -81,6 +81,7 @@
 	
 #endif
 
+/*----------------------------Structures--------------------------------------*/
 typedef struct s_array
 {
 	char	**items;
@@ -101,13 +102,6 @@ typedef struct s_vector
 	double x;
 	double y;
 }	t_vector;
-
-typedef struct s_texture
-{
-	int		width;
-	int		height;
-	void	*addi;	
-}	t_texture;
 
 enum s_tex_pos
 {
@@ -173,7 +167,6 @@ typedef struct s_game
 	time_t	curr_time;
 	time_t	old_time;
 
-	// TODO: store here 4 textures from map file
 	t_img	textures[4];
 
 	t_data		*mlx_ctx;
@@ -240,32 +233,22 @@ int			check_file(int argc, char *input);
 
 /*-----------------------------------Render-------------------------------------*/
 
+int			draw_pos(t_game **game, int side);
+int			is_hit_wall(t_game **game);
 
-int	raycast(t_game *game);
-void draw_ver_line(t_data *ctx, int x, int draw_start, int draw_end, int color);
-int	is_hit_wall(t_game **game);
-void	side_distance(t_game **game, t_vector *ray_dir);
-void	distance(t_game **game, t_vector *ray_dir);
-int	draw_pos(t_game **game, int side);
+int			raycast(t_game *game);
+void		draw_ver_line(t_data *ctx, int x, int draw_start, int draw_end, int color);
+void		game_background_draw(t_data *data, int color);
 
-void	render_texture(t_game *game, int tex_x, int side, int tex_num, int x);
+void		side_distance(t_game **game, t_vector *ray_dir);
+void		distance(t_game **game, t_vector *ray_dir);
 
-void game_background_draw(t_data *data, int color);
-
-t_vector	player_pos(char **items);
-int	key_hook(int keycode, void *param);
-int	load_texture(void *mlx, t_img *img, const char *filepath);
-
-
-void	draw_rect(t_data *ctx, t_vector *pos, t_vector *size, int color);
-void	draw_map(char **items, t_data *ctx);
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+void		render_texture(t_game *game, int tex_x, int side, int tex_num, int x);
+void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
 
 
 /*-----------------------------------Events-------------------------------------*/
 
 int	key_press(int keycode, t_game *game);
-
-
 
 #endif

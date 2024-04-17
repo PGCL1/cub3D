@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/17 16:03:51 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/17 16:34:20 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void game_init(t_setup *setup)
 	setup->game.map = &setup->map;
 	setup->game.pos.x = (double)setup->player.x;
 	setup->game.pos.y = (double)setup->player.y;
+	//don't forget player direction N || W || S || E
 	setup->game.dir.x = -1.0, setup->game.dir.y = 0.0;
 	setup->game.plane.x = 0.0, setup->game.plane.y = 0.66;
 
