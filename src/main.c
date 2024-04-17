@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/17 13:11:23 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/17 13:16:24 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,6 @@ int	ft_exit(void)
 	ft_putstr_fd("Exited 3D, ggboiiii\n", 1);
 	exit(EXIT_SUCCESS);
 }
-
-
-//int	render_next_frame(t_setup *setup)
-//{
-	////	if window has been destroyed, we don't want to put the pixel ! 
-	//if (setup->data.win_ptr != NULL)
-		//mlx_pixel_put(setup->data.mlx_ptr, setup->data.win_ptr, 
-				//h / 2, w / 2, RED);
-	//mlx_put_image_to_window(&setup->data.mlx_ptr, setup->data.win_ptr, setup->data.img.img, 0, 0);
-	//return (0);
-//}
 
 void	free_t_array(t_array *arr)
 {
@@ -81,7 +70,7 @@ void game_init(t_setup *setup)
 #if 1
 int main(int argc, char **argv)
 {
-//atexit(ft_leaks);
+	atexit(ft_leaks);
 	t_setup	setup;
 	int		file;
 

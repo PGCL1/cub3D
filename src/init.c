@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 15:13:20 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/16 16:22:18 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/17 13:22:32 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,10 @@ int	setup_init(t_setup *setup, int file)
 		return (1);
 	if (map_fill(&setup->map, setup->player.y, setup->player.x, &flag) == 1)
 	{
-//		free_t_array(&original);
+		free_t_array(&original);
 		return (error_msg("map is not closed"), 1);
 	}
-	/*free_t_array(&setup->map);*/
+	free_t_array(&setup->map);
 	setup->map = original;	
 	return (0);	
 }
