@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 15:08:30 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/18 20:34:24 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/18 21:04:36 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	error_design(t_design *design)
 			return (1);
 	}
 	if (error_color(design->floor) == TRUE
-			|| error_color(design->ceiling) == TRUE)
+		|| error_color(design->ceiling) == TRUE)
 		return (1);
 	return (0);
 }
@@ -57,9 +57,9 @@ int	colors_textures(void *mlx, char *line, t_design *design)
 		else if (ft_strncmp((char *)line_meaning(line), "SO", 3) == 0)
 			get_texture(mlx, line, &design->textures[1]);
 		else if (ft_strncmp((char *)line_meaning(line), "WE", 3) == 0)
-			 get_texture(mlx, line, &design->textures[2]);
+			get_texture(mlx, line, &design->textures[2]);
 		else if (ft_strncmp((char *)line_meaning(line), "EA", 3) == 0)
-			 get_texture(mlx, line, &design->textures[3]);
+			get_texture(mlx, line, &design->textures[3]);
 		else if (ft_strncmp((char *)line_meaning(line), "F", 2) == 0)
 			get_colors(line, design->floor);
 		else if (ft_strncmp((char *)line_meaning(line), "C", 2) == 0)
