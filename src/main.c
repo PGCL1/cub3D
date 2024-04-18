@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/18 17:10:22 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/18 20:23:09 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,8 @@ static void free_objects(int err, t_setup *s)
 	int	i;
 
 	i = -1;
-	if (err >= 1)
-	{
-		mlx_destroy_image(s->data.mlx_ptr, s->data.img.img);
-		mlx_destroy_window(s->data.mlx_ptr, s->data.win_ptr);
-	}
+	if (err >= 3)
+		free_t_array(&s->map);
 	if (err >= 2)
 	{
 		while (++i < 4)
@@ -83,8 +80,11 @@ static void free_objects(int err, t_setup *s)
 				mlx_destroy_image(s->data.mlx_ptr, s->design.textures[i].img);
 		}
 	}
-	if (err >= 3)
-		free_t_array(&s->map);
+	if (err >= 1)
+	{
+		mlx_destroy_image(s->data.mlx_ptr, s->data.img.img);
+		mlx_destroy_window(s->data.mlx_ptr, s->data.win_ptr);
+	}
 	free(s->data.mlx_ptr);
 }
 

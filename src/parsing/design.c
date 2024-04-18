@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 15:08:30 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/18 17:11:24 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/18 20:34:24 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,20 @@ int	colors_textures(void *mlx, char *line, t_design *design)
 		count += 1;
 	}
 	return (count);
+}
+
+void	init_colors(int floor[], int ceiling[])
+{
+	int	i;
+
+	i = 0;
+	while (i < 3)
+	{
+		floor[i] = -1;
+		ceiling[i] = -1;
+		i++;
+	}
+	return ;
 }
 
 t_design	assign_design(int file, t_data *data, int *count, char *line)

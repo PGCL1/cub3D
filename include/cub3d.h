@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 18:11:28 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/18 16:26:31 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/18 20:15:17 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@
 # define PLUS				69
 # define MINUS				78
 
-# define w					1920
-# define h					1080
+# define w					1024//1920
+# define h					512//1080
 # define MOVE_SPEED			0.3
 # define RO_SPEED			0.1
 # define texWidth			64
