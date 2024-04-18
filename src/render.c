@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:48:07 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/17 16:49:58 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/18 10:54:28 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,21 +207,27 @@ int	raycast(t_game *game)
 		int	color = RED;
 
 		if (side == 0 && ray_dir.x > 0)
+		{
 			texX = texWidth - texX - 1;
+		}
 		if (side == 1 && ray_dir.y < 0)
+		{
 			texX = texWidth - texX - 1;
+		}
 
 		double step = 1.0 * texHeight / game->line_height;
 
 		double texPos = (game->draw_start - h / 2 + game->line_height / 2) * step;
-	
-		(void)texPos;	
+
+		(void)texPos;
+
+		(void) texNum;
 		render_texture(game, texX, side, texNum, x);
-		
+
+		//color = RED;
 
 		if (side)
 			color /= 2;
-
 		
 		/*printf("start: %d\n", game->draw_start);*/
 		/*printf("end: %d\n", game->draw_end);*/

@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/17 16:34:20 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/18 10:32:15 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,6 @@ void game_init(t_setup *setup)
 	while (++i < 4)
 		setup->game.textures[i] = setup->design.textures[i];
 }
-
-//TODO: change t_texture to t_img
-
-
 
 #if 1
 int main(int argc, char **argv)

@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 12:55:58 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/17 18:43:08 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/18 11:21:23 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,82 +18,19 @@ static void	game_close(void)
 	exit(EXIT_SUCCESS);
 }
 
-//TODO: move left and right with A and D
 int	key_press(int keycode, t_game *game)
 {
 	printf("keycode = %d\n", keycode);
-	double	old_dir_x;
-	double	old_plane_x;
 	if (keycode == ESC)
 		game_close();
-	if (keycode == KEY_ARROW_RIGHT)
-	{
-		old_dir_x = game->dir.x;
-		game->dir.x = game->dir.x * cos(-ROT_SPEED) - game->dir.y * sin(-ROT_SPEED);
-		game->dir.y = old_dir_x * sin(-ROT_SPEED) + game->dir.y * cos(-ROT_SPEED);
-
-		old_plane_x = game->plane.x;
-		game->plane.x = game->plane.x * cos(-ROT_SPEED) - game->plane.y * sin(-ROT_SPEED);
-		game->plane.y = old_plane_x * sin(-ROT_SPEED) + game->plane.y * cos(-ROT_SPEED);
-	}
-	if (keycode == KEY_ARROW_LEFT)
-	{
-		old_dir_x = game->dir.x;
-		game->dir.x = game->dir.x * cos(ROT_SPEED) - game->dir.y * sin(ROT_SPEED);
-		game->dir.y = old_dir_x * sin(ROT_SPEED) + game->dir.y * cos(ROT_SPEED);
-
-		old_plane_x = game->plane.x;
-		game->plane.x = game->plane.x * cos(ROT_SPEED) - game->plane.y * sin(ROT_SPEED);
-		game->plane.y = old_plane_x * sin(ROT_SPEED) + game->plane.y * cos(ROT_SPEED);
-	}
+	movements_plane(keycode, game);
 	if (keycode == W)
-	{
-		int	x = (int)game->pos.x;
-		int	y = (int)game->pos.y;
-		int	xx = (int)(game->pos.x + game->dir.x * MOVE_SPEED);
-		int	yy = (int)(game->pos.y + game->dir.y * MOVE_SPEED);
-
-		if (game->map->items[y][xx] == '0')
-			game->pos.x += game->dir.x * MOVE_SPEED;
-	 	if (game->map->items[yy][x] == '0')
-			game->pos.y += game->dir.y * MOVE_SPEED;
-	}
+		movements_player_up(game);
 	if (keycode == S)
-	{
-		int	x = (int)game->pos.x;
-		int	y = (int)game->pos.y;
-		int	xx = (int)(game->pos.x + game->dir.x * MOVE_SPEED);
-		int	yy = (int)(game->pos.y + game->dir.y * MOVE_SPEED);
-
-		if (game->map->items[y][xx] == '0')
-			game->pos.x -= game->dir.x * MOVE_SPEED;
-	 	if (game->map->items[yy][x] == '0')
-			game->pos.y -= game->dir.y * MOVE_SPEED;
-		
-	}
+		movements_player_down(game);
 	if (keycode == A)
-	{
-		int x = (int)game->pos.x;
-		int y = (int)game->pos.y;
-		int xx = (int)(game->pos.x - game->dir.y * MOVE_SPEED);
-		int yy = (int)(game->pos.y + game->dir.x * MOVE_SPEED);
-
-		if (game->map->items[y][xx] == '0')
-			game->pos.x -= game->dir.y * MOVE_SPEED;
-		if (game->map->items[yy][x] == '0')
-			game->pos.y += game->dir.x * MOVE_SPEED;
-	}
+		movements_player_left(game);
 	if (keycode == D)
-	{
-		int x = (int)game->pos.x;
-		int y = (int)game->pos.y;
-		int xx = (int)(game->pos.x + game->dir.y * MOVE_SPEED);
-		int yy = (int)(game->pos.y - game->dir.x * MOVE_SPEED);
-
-		if (game->map->items[y][xx] == '0')
-			game->pos.x += game->dir.y * MOVE_SPEED;
-		if (game->map->items[yy][x] == '0')
-			game->pos.y -= game->dir.x * MOVE_SPEED;
-	}
+		movements_player_right(game);
 	return 1;
 }

@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 18:11:28 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/17 16:53:46 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/18 11:21:16 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@
 # define w					1920
 # define h					1080
 # define MOVE_SPEED			0.3
-# define ROT_SPEED			0.1
+# define RO_SPEED			0.1
 # define texWidth			64
 # define texHeight			texWidth
 
@@ -250,5 +250,12 @@ void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
 /*-----------------------------------Events-------------------------------------*/
 
 int	key_press(int keycode, t_game *game);
+
+
+void	movements_player_right(t_game *game);
+void	movements_player_left(t_game *game);
+void	movements_player_up(t_game *game);
+void	movements_player_down(t_game *game);
+void	movements_plane(int keycode, t_game *g);
 
 #endif
