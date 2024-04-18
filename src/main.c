@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/18 20:23:09 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/18 20:45:46 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,6 @@ int main(int argc, char **argv)
 	}
 	//game init
 	game_init(&setup);
-
 	
 	//hooks
 	mlx_loop_hook(setup.data.mlx_ptr, raycast, &setup.game);
@@ -119,7 +118,6 @@ int main(int argc, char **argv)
 	
 	//window loop
 	mlx_loop(setup.data.mlx_ptr);
-	
 
 	//remember to free memory
 	free_t_array(&setup.map);

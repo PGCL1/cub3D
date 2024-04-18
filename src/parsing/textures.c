@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:37:05 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/18 17:01:44 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/18 20:58:22 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char	*texture_path_cleaned(char *line)
 	size_t	i;
 	size_t	len;
 	char	*path_cleaned;
-	
+
 	len = ft_strlen(line);
 	line = texture_path(line);
 	i = 2;
@@ -72,25 +72,26 @@ char	*texture_path_cleaned(char *line)
 	return (path_cleaned);
 }
 
-void	get_texture(void *mlx, char *line, t_img *img)
+void	get_texture(void *mlx, char *line, t_img *i)
 {
 	char	*path_cleaned;
 
 	path_cleaned = texture_path_cleaned(line);
-	img->valid = 0;
-	img->img = mlx_xpm_file_to_image(mlx, path_cleaned, &img->width, &img->height);
-	if (!img->img)
+	i->valid = 0;
+	i->img = mlx_xpm_file_to_image(mlx, path_cleaned, &i->width, &i->height);
+	if (!i->img)
 	{
-		printf("path = %s | img.img = %p\n", path_cleaned, img->img);
+		printf("path = %s | i.img = %p\n", path_cleaned, i->img);
 		free(path_cleaned);
-		return;
+		return ;
 	}
-	img->data = mlx_get_data_addr(img->img, &img->bits_per_pixel, &img->size_line, &img->endian);
-	if (!img->data)
+	i->data = mlx_get_data_addr(i->img, &i->bits_per_pixel,
+			&i->size_line, &i->endian);
+	if (!i->data)
 	{
 		free(path_cleaned);
-		return;	
+		return ;
 	}
 	free(path_cleaned);
-	img->valid = 1;
+	i->valid = 1;
 }
