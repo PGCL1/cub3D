@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:25:16 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/17 13:26:20 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/18 13:31:44 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ void	*map_original_copy(t_array map, t_array *original)
 		return (NULL);
 	original->items_len = malloc(sizeof(original->items_len) * map.len);
 	if (!original->items_len)
-		return (NULL);
+		return (ft_free(original->items), NULL);
 	while (++i < original->len)
 	{
 		original->items[i] = ft_strdup(map.items[i]);

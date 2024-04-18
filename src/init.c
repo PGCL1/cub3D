@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 15:13:20 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/17 13:27:46 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/18 17:05:34 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,8 @@ int design_init(t_design *design, t_data *data, int file)
 	line = NULL;
 	count = 0;
 	*design = assign_design(file, data, &count, line);
-	if (error_design(design) == TRUE || count == -1)
+	if (error_design(design) == TRUE || count < 0)
 	{
-		//free image, window and mlx
 		close(file);
 		return (error_msg("wrong textures or colors"), 1);
 	}
@@ -48,7 +47,8 @@ int map_init(t_array *map, int file)
 	if (map_check_borders(*map) != 0)
 	{
 		ft_free(map->items);
-		free(map->items_len);	
+		free(map->items_len);
+		close(file);
 		return (error_msg("invalid map"), 1);
 	}
 	close(file);
@@ -74,17 +74,17 @@ int	setup_init(t_setup *setup, int file)
 	if (window_init(&setup->data) != 0)
 		return (1);
 	if (design_init(&setup->design, &setup->data, file) != 0)
-		return (1);
+		return (2);
 	if (map_init(&setup->map, file) != 0)
-		return (1);
+		return (3);
 	if (player_init(&setup->player, &setup->map) != 0)
-		return (1);
+		return (4);
 	if (map_original_copy(setup->map, &original) == NULL)
-		return (1);
+		return (5);
 	if (map_fill(&setup->map, setup->player.y, setup->player.x, &flag) == 1)
 	{
 		free_t_array(&original);
-		return (error_msg("map is not closed"), 1);
+		return (error_msg("map is not closed"), 6);
 	}
 	free_t_array(&setup->map);
 	setup->map = original;	

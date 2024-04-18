@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 12:55:58 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/18 11:21:23 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/18 11:24:43 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,5 @@ int	key_press(int keycode, t_game *game)
 		movements_player_left(game);
 	if (keycode == D)
 		movements_player_right(game);
-	return 1;
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:37:05 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/17 13:36:17 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/18 17:01:44 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,20 @@ void	get_texture(void *mlx, char *line, t_img *img)
 	char	*path_cleaned;
 
 	path_cleaned = texture_path_cleaned(line);
+	img->valid = 0;
 	img->img = mlx_xpm_file_to_image(mlx, path_cleaned, &img->width, &img->height);
+	if (!img->img)
+	{
+		printf("path = %s | img.img = %p\n", path_cleaned, img->img);
+		free(path_cleaned);
+		return;
+	}
 	img->data = mlx_get_data_addr(img->img, &img->bits_per_pixel, &img->size_line, &img->endian);
+	if (!img->data)
+	{
+		free(path_cleaned);
+		return;	
+	}
 	free(path_cleaned);
+	img->valid = 1;
 }

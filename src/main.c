@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/18 10:32:15 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/18 17:10:22 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,23 +65,45 @@ void game_init(t_setup *setup)
 		setup->game.textures[i] = setup->design.textures[i];
 }
 
+static void free_objects(int err, t_setup *s)
+{
+	int	i;
+
+	i = -1;
+	if (err >= 1)
+	{
+		mlx_destroy_image(s->data.mlx_ptr, s->data.img.img);
+		mlx_destroy_window(s->data.mlx_ptr, s->data.win_ptr);
+	}
+	if (err >= 2)
+	{
+		while (++i < 4)
+		{
+			if (s->design.textures[i].valid)
+				mlx_destroy_image(s->data.mlx_ptr, s->design.textures[i].img);
+		}
+	}
+	if (err >= 3)
+		free_t_array(&s->map);
+	free(s->data.mlx_ptr);
+}
+
+
 #if 1
 int main(int argc, char **argv)
 {
-	//atexit(ft_leaks);
+	atexit(ft_leaks);
 	t_setup	setup;
 	int		file;
+	int		err_init;
 
 	file = check_file(argc, argv[1]);
 	if (file < 0)
 		return (1);
-	if (setup_init(&setup, file) != 0)
+	err_init = setup_init(&setup, file);
+	if (err_init != 0)
 	{
-		//maybe close window too for leaks
-		free_t_array(&setup.map);
-		//free textures
-		mlx_destroy_image (setup.data.mlx_ptr, setup.data.img.img );
-		free(setup.data.mlx_ptr);
+		free_objects(err_init, &setup);
 		return (1);
 	}
 	//game init

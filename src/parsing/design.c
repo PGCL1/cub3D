@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 15:08:30 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/17 16:23:29 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/18 17:11:24 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,21 +33,23 @@ int	error_design(t_design *design)
 	i = -1;
 	while (++i < 4)
 	{
-		if (design->textures[i].img == NULL)
+		if (design->textures[i].valid == FALSE)
 			return (1);
 	}
-	if (error_color(design->floor) == TRUE || error_color(design->ceiling) == TRUE)
+	if (error_color(design->floor) == TRUE
+			|| error_color(design->ceiling) == TRUE)
 		return (1);
 	return (0);
 }
 
+//TODO: i don't like the -10 to exit the loop, it's ugly
 int	colors_textures(void *mlx, char *line, t_design *design)
 {
 	int	count;
 
 	count = 0;
 	if (!line_meaning(line) && line_empty(line) == FALSE)
-		return (-1);
+		return (-10);
 	else
 	{
 		if (ft_strncmp((char *)line_meaning(line), "NO", 3) == 0)
@@ -84,7 +86,7 @@ t_design	assign_design(int file, t_data *data, int *count, char *line)
 		else
 		{
 			*count += colors_textures(data->mlx_ptr, line, &design);
-			if (*count == 6 || *count == -1)
+			if (*count == 6 || *count < 0)
 			{
 				free(line);
 				break ;

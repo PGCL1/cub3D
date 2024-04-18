@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:48:07 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/18 10:54:28 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/18 13:03:03 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,12 @@ void draw_ver_line(t_data *ctx, int x, int draw_start, int draw_end, int color)
 	}
 }
 
-int	is_hit_wall(t_game **game)
+int	wall_or_not(t_game **game)
 {
 	int	side;
-	int	hit = 0;
+	int	hit_wall = 0;
 
-	// TODO: repcale hit by break
-
-	while (!hit)
+	while (!hit_wall)
 	{
 		if ((*game)->side_dist.x < (*game)->side_dist.y)
 		{
@@ -67,35 +65,35 @@ int	is_hit_wall(t_game **game)
 		}
 
 		if ((*game)->map->items[(*game)->map_y][(*game)->map_x] != '0')
-			hit = 1;
+			hit_wall = 1;
 		else
-			hit = 0;
+			hit_wall = 0;
 	}
 	return side;
 }
 
-void	side_distance(t_game **game, t_vector *ray_dir)
+void	side_distance(t_game **g, t_vector *ray_dir)
 {
 	if (ray_dir->x < 0)
 	{
-		(*game)->step_x = -1;
-		(*game)->side_dist.x = ((*game)->pos.x - (*game)->map_x) * (*game)->delta_dist.x;
+		(*g)->step_x = -1;
+		(*g)->side_dist.x = ((*g)->pos.x - (*g)->map_x) * (*g)->delta_dist.x;
 	}
 	else
 	{
-		(*game)->step_x = 1;
-		(*game)->side_dist.x = ((*game)->map_x + 1.0 - (*game)->pos.x) * (*game)->delta_dist.x;
+		(*g)->step_x = 1;
+		(*g)->side_dist.x = ((*g)->map_x + 1.0 - (*g)->pos.x) * (*g)->delta_dist.x;
 	}
 
 	if (ray_dir->y < 0)
 	{
-		(*game)->step_y = -1;
-		(*game)->side_dist.y = ((*game)->pos.y - (*game)->map_y) * (*game)->delta_dist.y;
+		(*g)->step_y = -1;
+		(*g)->side_dist.y = ((*g)->pos.y - (*g)->map_y) * (*g)->delta_dist.y;
 	}
 	else
 	{
-		(*game)->step_y = 1;
-		(*game)->side_dist.y = ((*game)->map_y + 1.0 - (*game)->pos.y) * (*game)->delta_dist.y;
+		(*g)->step_y = 1;
+		(*g)->side_dist.y = ((*g)->map_y + 1.0 - (*g)->pos.y) * (*g)->delta_dist.y;
 	}
 }
 
@@ -182,7 +180,7 @@ int	raycast(t_game *game)
 
 		distance(&game, &ray_dir);
 
-		int	side = is_hit_wall(&game);
+		int	side = wall_or_not(&game);
 
 	//	printf("side: %d\n", side);
 
@@ -204,7 +202,7 @@ int	raycast(t_game *game)
 
 		int	texX = (int)(wallX * (double)texWidth);
 
-		int	color = RED;
+		//int	color = RED;
 
 		if (side == 0 && ray_dir.x > 0)
 		{
@@ -226,14 +224,14 @@ int	raycast(t_game *game)
 
 		//color = RED;
 
-		if (side)
-			color /= 2;
+		//if (side)
+			//color /= 2;
 		
 		/*printf("start: %d\n", game->draw_start);*/
 		/*printf("end: %d\n", game->draw_end);*/
 
 
-		draw_ver_line(game->mlx_ctx, x, game->draw_start, game->draw_end, color);
+		//draw_ver_line(game->mlx_ctx, x, game->draw_start, game->draw_end, color);
 
 	}
 	mlx_put_image_to_window(&game->mlx_ctx->mlx_ptr, game->mlx_ctx->win_ptr, game->mlx_ctx->img.img, 0, 0);

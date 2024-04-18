@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 18:11:28 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/18 11:21:16 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/18 16:26:31 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@
 # define GREY			0X808080
 # define BLUE			0X191970
 
-/*----------------------------Configurations-----------------------------------*/
+/*----------------------------Configurations----------------------------------*/
 # define TRUE				1
 # define FALSE				0
 # define ESC				53
@@ -119,9 +119,9 @@ typedef struct s_img
 	int	bits_per_pixel;
 	int	size_line;
 	int	endian;
-
 	int	width;
 	int	height;
+	int valid;
 }	t_img;
 
 typedef struct s_design 
@@ -184,7 +184,7 @@ typedef struct s_setup
 }	t_setup;
 
 
-/*------------------------------Utils----------------------------------------*/
+/*------------------------------Utils-----------------------------------------*/
 void		error_msg(char *msg);
 void		*ft_realloc(void *ptr, size_t len, size_t size);
 void		ms_array_append(t_array *arr, char *item);
@@ -231,7 +231,7 @@ int			setup_init(t_setup *structure, int file);
 
 int			check_file(int argc, char *input);
 
-/*-----------------------------------Render-------------------------------------*/
+/*-----------------------------------Render-----------------------------------*/
 
 int			draw_pos(t_game **game, int side);
 int			is_hit_wall(t_game **game);
@@ -247,10 +247,9 @@ void		render_texture(t_game *game, int tex_x, int side, int tex_num, int x);
 void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
 
 
-/*-----------------------------------Events-------------------------------------*/
+/*-----------------------------------Events-----------------------------------*/
 
-int	key_press(int keycode, t_game *game);
-
+int		key_press(int keycode, t_game *game);
 
 void	movements_player_right(t_game *game);
 void	movements_player_left(t_game *game);
