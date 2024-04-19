@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 18:11:28 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/18 20:15:17 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/19 16:45:15 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,13 +115,13 @@ enum s_tex_pos
 typedef struct s_img
 {
 	void	*img;
-	char 	*data;
-	int	bits_per_pixel;
-	int	size_line;
-	int	endian;
-	int	width;
-	int	height;
-	int valid;
+	char	*data;
+	int		bits_per_pixel;
+	int		size_line;
+	int		endian;
+	int		width;
+	int		height;
+	int		valid;
 }	t_img;
 
 typedef struct s_design 
@@ -130,7 +130,6 @@ typedef struct s_design
 	int		ceiling[3];
 	t_img	textures[4];
 }	t_design;
-
 
 typedef struct s_data
 {

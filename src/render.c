@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:48:07 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/18 13:03:03 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/19 18:03:19 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,16 +137,20 @@ void	render_texture(t_game *game, int tex_x, int side, int tex_num, int x)
 	double tex_pos = (game->draw_start - h / 2 + game->line_height / 2) * step;
 
 	y = game->draw_start;
+	(void) tex_num;
+	(void) side;
 	while (y <= game->draw_end)
 	{
 		tex_y = (int)tex_pos & (texHeight - 1);
 		tex_pos  += step;
-		color = game->textures[tex_num].data[texHeight * tex_y + tex_x];
-		if (side == 1)
-			color = (color >> 1) & 0x7f7f7f;
+		color = game->textures[0].data[texHeight * tex_y + tex_x];
+		//if (side == 1)
+			//color = (color >> 1) & 0x7f7f7f;
+		//mlx_pixel_put(game->mlx_ctx->mlx_ptr, game->mlx_ctx->win_ptr, x, y, color);
 		my_mlx_pixel_put(game->mlx_ctx, x, y, color);
 		y += 1;
 	}
+	//mlx_put_image_to_window(&game->mlx_ctx->mlx_ptr, game->mlx_ctx->win_ptr, game->mlx_ctx->img.img, 0, 0);
 }
 
 void game_background_draw(t_data *data, int color)

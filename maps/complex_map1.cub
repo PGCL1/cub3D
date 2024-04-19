@@ -1,17 +1,10 @@
-
-
-F 220,100,0         
-
-
-
-C 0,30,0
-
-
 NO ./textures/purplestone.xpm     
-WE ./textures/redstone.xpm
-EA ./textures/file.xpm            
+EA ./textures/redstone.xpm
+WE ./textures/file.xpm            
 SO ./textures/file.xpm
 
+F 220,100,0         
+C 0,30,0
 
         1111111111111111111111111
         1110000000110000000000001

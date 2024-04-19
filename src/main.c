@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/18 20:45:46 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/19 17:58:29 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,11 @@ int check_file(int argc, char *input)
 		return (error_msg("file doesn't exist"), -1);
 	dir = open(input, O_DIRECTORY);
 	if (dir > 0)
+	{
+		close(file);
+		close(dir);
 		return (error_msg("cannot use a directory as map"), -1);
+	}
 	close(dir);
 	return (file);
 }
@@ -61,8 +65,14 @@ void game_init(t_setup *setup)
 	setup->game.dir.x = -1.0, setup->game.dir.y = 0.0;
 	setup->game.plane.x = 0.0, setup->game.plane.y = 0.66;
 
+	//printf("%p\n", &setup->design.textures[0]);
 	while (++i < 4)
 		setup->game.textures[i] = setup->design.textures[i];
+	//mlx_put_image_to_window(setup->data.mlx_ptr, setup->data.win_ptr, setup->game.textures[0].img, 0, 128);
+	//mlx_put_image_to_window(setup->data.mlx_ptr, setup->data.win_ptr, setup->game.textures[1].img, 64, 128);
+	//mlx_put_image_to_window(setup->data.mlx_ptr, setup->data.win_ptr, setup->game.textures[2].img, 64 * 2, 128);
+	//mlx_put_image_to_window(setup->data.mlx_ptr, setup->data.win_ptr, setup->game.textures[3].img, 64 *3, 128);
+	//printf("%p\n", &setup->game.textures[0]);
 }
 
 static void free_objects(int err, t_setup *s)
@@ -108,6 +118,14 @@ int main(int argc, char **argv)
 	}
 	//game init
 	game_init(&setup);
+
+
+	//mlx_put_image_to_window(setup.data.mlx_ptr, setup.data.win_ptr, setup.design.textures[0].img, 0, 0);
+	//mlx_put_image_to_window(setup.data.mlx_ptr, setup.data.win_ptr, setup.design.textures[1].img, 64, 0);
+	//mlx_put_image_to_window(setup.data.mlx_ptr, setup.data.win_ptr, setup.design.textures[2].img, 64 * 2, 0);
+	//mlx_put_image_to_window(setup.data.mlx_ptr, setup.data.win_ptr, setup.design.textures[3].img, 64 *3, 0);
+
+
 	
 	//hooks
 	mlx_loop_hook(setup.data.mlx_ptr, raycast, &setup.game);
