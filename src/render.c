@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:48:07 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/19 22:44:51 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/20 13:06:12 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,27 +22,6 @@
 	//unsigned char g;
 	//unsigned char b;
 //}	t_color;
-
-/*void	my_mlx_pixel_put(t_data *data, int x, int y, int color)*/
-/*{*/
-/*char	*pixel;*/
-
-/*pixel = data->img.data*/
-/*+ (y * data->img.size_line + x * (data->img.bits_per_pixel / 8));*/
-/**(unsigned int *)pixel = color;*/
-/*}*/
-
-/*void draw_ver_line(t_data *ctx, int x, int draw_start, int draw_end, int color)*/
-/*{*/
-/*int	y;*/
-
-/*y = draw_start;*/
-/*while (y <= draw_end)*/
-/*{*/
-/*my_mlx_pixel_put(ctx, x, y, color);*/
-/*y += 1;*/
-/*}*/
-/*}*/
 
 int	wall_or_not(t_game **game)
 {
@@ -128,6 +107,21 @@ int	draw_pos(t_game **game, int side)
 	return line_height;
 }
 
+void render_floor_ceiling(t_game *game, int x)
+{
+	int y = 0;
+	while (y < game->draw_start)
+	{
+		game->mlx_ctx->img.data[y * w + x] = BLUE;
+		y++;
+	}
+	while (y < w)
+	{
+		game->mlx_ctx->img.data[y * w + x] = BLUE;
+		y++;
+	}
+}
+
 void	render_texture(t_game *game, int tex_x, int side, int tex_num, int x)
 {
 	int	y;
@@ -151,7 +145,6 @@ void	render_texture(t_game *game, int tex_x, int side, int tex_num, int x)
 		//my_mlx_pixel_put(game->mlx_ctx, x, y, color);
 		y += 1;
 	}
-	//mlx_put_image_to_window(&game->mlx_ctx->mlx_ptr, game->mlx_ctx->win_ptr, game->mlx_ctx->img.img, 0, 0);
 }
 
 int	raycast(t_game *game)
@@ -160,7 +153,6 @@ int	raycast(t_game *game)
 	double camerax;	
 	t_vector ray_dir;
 
-	//game_background_draw(game->mlx_ctx, BLACK);
 	mlx_clear_window(game->mlx_ctx->mlx_ptr, game->mlx_ctx->win_ptr);
 	for (int x = 0; x < w; x += 1)
 	{
@@ -213,12 +205,9 @@ int	raycast(t_game *game)
 		(void)texPos;
 
 		(void) texNum;
+		render_floor_ceiling(game, x);
 		render_texture(game, texX, side, texNum, x);
 
-		//color = RED;
-
-		//if (side)
-			//color /= 2;
 		
 		/*printf("start: %d\n", game->draw_start);*/
 		/*printf("end: %d\n", game->draw_end);*/
