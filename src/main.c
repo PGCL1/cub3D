@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/19 22:12:56 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/20 13:35:46 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ void game_init(t_setup *setup)
 	//don't forget player direction N || W || S || E
 	setup->game.dir.x = -1.0, setup->game.dir.y = 0.0;
 	setup->game.plane.x = 0.0, setup->game.plane.y = 0.66;
-
+	setup->game.floor_color = (setup->design.floor[0] << 16) | (setup->design.floor[1] << 8) | setup->design.floor[2];
+	setup->game.ceiling_color = (setup->design.ceiling[0] << 16) | (setup->design.ceiling[1] << 8) | setup->design.ceiling[2];
 	//printf("%p\n", &setup->design.textures[0]);
 	while (++i < 4)
 		setup->game.textures[i] = setup->design.textures[i];

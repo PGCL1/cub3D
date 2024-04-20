@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 18:11:28 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/19 22:40:37 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/20 13:36:26 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,8 @@ typedef struct s_game
 	time_t	old_time;
 
 	t_img	textures[4];
-
+	uint32_t	floor_color;
+	uint32_t	ceiling_color;
 	t_data		*mlx_ctx;
 	t_array 	*map;
 
