@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/19 17:58:29 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/19 22:12:56 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,7 @@ int main(int argc, char **argv)
 	
 	//window loop
 	mlx_loop(setup.data.mlx_ptr);
+	mlx_do_sync(setup.data.mlx_ptr);
 
 	//remember to free memory
 	free_t_array(&setup.map);

@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 18:11:28 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/19 16:45:15 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/19 22:40:37 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ enum s_tex_pos
 typedef struct s_img
 {
 	void	*img;
-	char	*data;
+	uint32_t	*data;
 	int		bits_per_pixel;
 	int		size_line;
 	int		endian;

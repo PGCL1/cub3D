@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:48:07 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/19 18:03:19 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/19 22:44:51 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,26 +23,26 @@
 	//unsigned char b;
 //}	t_color;
 
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
-{
-	char	*pixel;
+/*void	my_mlx_pixel_put(t_data *data, int x, int y, int color)*/
+/*{*/
+/*char	*pixel;*/
 
-	pixel = data->img.data
-		+ (y * data->img.size_line + x * (data->img.bits_per_pixel / 8));
-	*(unsigned int *)pixel = color;
-}
+/*pixel = data->img.data*/
+/*+ (y * data->img.size_line + x * (data->img.bits_per_pixel / 8));*/
+/**(unsigned int *)pixel = color;*/
+/*}*/
 
-void draw_ver_line(t_data *ctx, int x, int draw_start, int draw_end, int color)
-{
-	int	y;
+/*void draw_ver_line(t_data *ctx, int x, int draw_start, int draw_end, int color)*/
+/*{*/
+/*int	y;*/
 
-	y = draw_start;
-	while (y <= draw_end)
-	{
-		my_mlx_pixel_put(ctx, x, y, color);
-		y += 1;
-	}
-}
+/*y = draw_start;*/
+/*while (y <= draw_end)*/
+/*{*/
+/*my_mlx_pixel_put(ctx, x, y, color);*/
+/*y += 1;*/
+/*}*/
+/*}*/
 
 int	wall_or_not(t_game **game)
 {
@@ -144,26 +144,14 @@ void	render_texture(t_game *game, int tex_x, int side, int tex_num, int x)
 		tex_y = (int)tex_pos & (texHeight - 1);
 		tex_pos  += step;
 		color = game->textures[0].data[texHeight * tex_y + tex_x];
-		//if (side == 1)
-			//color = (color >> 1) & 0x7f7f7f;
+		if (side == 1)
+			color = (color >> 1) & 0x7f7f7f;
+		game->mlx_ctx->img.data[y * w + x] = color;
 		//mlx_pixel_put(game->mlx_ctx->mlx_ptr, game->mlx_ctx->win_ptr, x, y, color);
-		my_mlx_pixel_put(game->mlx_ctx, x, y, color);
+		//my_mlx_pixel_put(game->mlx_ctx, x, y, color);
 		y += 1;
 	}
 	//mlx_put_image_to_window(&game->mlx_ctx->mlx_ptr, game->mlx_ctx->win_ptr, game->mlx_ctx->img.img, 0, 0);
-}
-
-void game_background_draw(t_data *data, int color)
-{
-	int i = -1;
-	int j = -1;
-
-	while (++i < h)
-	{
-		j = 0;
-		while (++j < w)
-			my_mlx_pixel_put(data, j, i, color);
-	}
 }
 
 int	raycast(t_game *game)
@@ -172,7 +160,8 @@ int	raycast(t_game *game)
 	double camerax;	
 	t_vector ray_dir;
 
-	game_background_draw(game->mlx_ctx, BLACK);
+	//game_background_draw(game->mlx_ctx, BLACK);
+	mlx_clear_window(game->mlx_ctx->mlx_ptr, game->mlx_ctx->win_ptr);
 	for (int x = 0; x < w; x += 1)
 	{
 		camerax = 2 * x / (double)w - 1;

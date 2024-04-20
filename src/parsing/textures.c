@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:37:05 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/19 16:46:02 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/19 22:41:56 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	get_texture(void *mlx, char *line, t_img *i)
 		free(path_cleaned);
 		return ;
 	}
-	i->data = mlx_get_data_addr(i->img, &i->bits_per_pixel,
+	i->data = (uint32_t *) mlx_get_data_addr(i->img, &i->bits_per_pixel,
 			&i->size_line, &i->endian);
 	if (!i->data)
 	{

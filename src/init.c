@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 15:13:20 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/19 17:00:14 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/19 22:42:18 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	window_init(t_data *data)
 		return (error_msg("mlx_init() failed"), 1);
 	data->win_ptr = mlx_new_window(data->mlx_ptr, w, h, "GG boiii");
 	data->img.img = mlx_new_image(data->mlx_ptr, w, h);
-	data->img.data = mlx_get_data_addr(data->img.img, &data->img.bits_per_pixel,
+	data->img.data = (uint32_t *)mlx_get_data_addr(data->img.img, &data->img.bits_per_pixel,
 			&data->img.size_line, &data->img.endian);
 	return (0);
 }
