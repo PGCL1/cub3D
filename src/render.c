@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:48:07 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/20 13:42:40 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/20 16:45:30 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,11 +112,15 @@ void render_floor_ceiling(t_game *game, int x)
 	int y = 0;
 	while (y < game->draw_start)
 	{
+		if (y * w + x >= w * h)
+			break;
 		game->mlx_ctx->img.data[y * w + x] = game->floor_color;
 		y++;
 	}
 	while (y < w)
 	{
+		if (y * w + x >= w * h)
+			break;
 		game->mlx_ctx->img.data[y * w + x] = game->ceiling_color;
 		y++;
 	}

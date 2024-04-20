@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/20 13:35:46 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/20 15:02:47 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ static void free_objects(int err, t_setup *s)
 #if 1
 int main(int argc, char **argv)
 {
-	atexit(ft_leaks);
+	//atexit(ft_leaks);
 	t_setup	setup;
 	int		file;
 	int		err_init;
