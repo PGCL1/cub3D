@@ -6,20 +6,33 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/06 11:38:03 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/20 19:56:53 by aabourri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
+int check_file(int argc, char *input)
 {
-	char	*pixel;
+	int	file;
+	int	dir;
 
-	pixel = data->img_addr
-		+ (y * data->img_line_length + x * (data->img_bits_per_pixel / 8));
-	*(unsigned int *)pixel = color;
+	if (argc != 2)
+		return (error_msg("program needs one arg ending in \".cub\""), -1);
+	if (ends_with(input, ".cub") != TRUE)
+		return (error_msg("first arg has to end with .cub"), -1);
+	file = open(input, O_RDONLY);
+	if (file < 0)
+		return (error_msg("file doesn't exist"), -1);
+	dir = open(input, O_DIRECTORY);
+	if (dir > 0)
+	{
+		close(file);
+		close(dir);
+		return (error_msg("cannot use a directory as map"), -1);
+	}
+	close(dir);
+	return (file);
 }
 
 int	ft_exit(void)
@@ -28,88 +41,129 @@ int	ft_exit(void)
 	exit(EXIT_SUCCESS);
 }
 
-int	hook_key(int keycode)
-{
-	printf("keycode = %d\n", keycode);
-	if (keycode == ESC)
-		ft_exit();
-	return (0);
-}
-
-//int	render(t_data *data)
-//{
-    ///* if window has been destroyed, we don't want to put the pixel ! */
-    //if (data->win_ptr != NULL)
-        //mlx_pixel_put(data->mlx_ptr, data->win_ptr, 
-            //WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, RED_PIXEL);
-    //return (0);
-//}
 void	free_t_array(t_array *arr)
 {
 	ft_free(arr->items);
 	free(arr->items_len);
 }
 
-void	*map_original_copy(t_array map, t_array *original)
-{
-	size_t	i;
-
-	i = -1;
-	original->len = map.len;
-	original->items = malloc(sizeof(original->items) * map.len);
-	if (!original->items)
-		return (NULL);
-	original->items_len = malloc(sizeof(original->items_len) * map.len);
-	if (!original->items_len)
-		return (NULL);
-	while (++i < original->len)
-	{
-		original->items[i] = ft_strdup(map.items[i]);
-		original->items_len[i] = ft_strlen(map.items[i]);
-	}
-	return (original);
-}
-
-
 void	ft_leaks(void)
 {
 	system("leaks -q cub3D");
 }
 
+#define PI	3.14159265359
+
+double d_to_r(double d)
+{
+	return (d * PI / 180);
+}
+
+void game_init(t_setup *setup)
+{
+	int	i;
+
+	i = -1;
+	setup->game.mlx_ctx = &setup->data;
+	setup->game.map = &setup->map;
+	setup->game.pos.x = (double)setup->player.x;
+	setup->game.pos.y = (double)setup->player.y;
+
+	double orx = -1.0;
+	//double ory = 0.0;
+	if (setup->player.orientation == 'W')
+		orx = d_to_r(90);
+	else if (setup->player.orientation == 'E')
+		orx = d_to_r(-90);
+
+
+
+	/*		  N
+	 *	  W --|-- E
+	 *	  	  S
+	 *
+	 *
+	 * */
+
+
+	// TODO: don't forget player direction N || W || S || E
+	// W -> d_to_r(90)
+	// E -> d_to_r(90)
+	//
+	//
+	//setup->game.dir.x = -1.0, setup->game.dir.y = 0.0;
+	setup->game.dir.x = orx, setup->game.dir.y = 0.0;
+	setup->game.plane.x = 0.0, setup->game.plane.y = 0.66;
+	setup->game.floor_color = (setup->design.floor[0] << 16) | (setup->design.floor[1] << 8) | setup->design.floor[2];
+	setup->game.ceiling_color = (setup->design.ceiling[0] << 16) | (setup->design.ceiling[1] << 8) | setup->design.ceiling[2];
+	while (++i < 4)
+	{
+		setup->game.textures[i] = setup->design.textures[i];
+	}
+}
+
+static void free_objects(int err, t_setup *s)
+{
+	int	i;
+
+	i = -1;
+	if (err >= 3)
+		free_t_array(&s->map);
+	if (err >= 2)
+	{
+		while (++i < 4)
+		{
+			if (s->design.textures[i].valid)
+				mlx_destroy_image(s->data.mlx_ptr, s->design.textures[i].img);
+		}
+	}
+	if (err >= 1)
+	{
+		mlx_destroy_image(s->data.mlx_ptr, s->data.img.img);
+		mlx_destroy_window(s->data.mlx_ptr, s->data.win_ptr);
+	}
+	free(s->data.mlx_ptr);
+}
+
+
+#if 1
 int main(int argc, char **argv)
 {
-//	atexit(ft_leaks);
-	t_game	game;
+	atexit(ft_leaks);
+	t_setup	setup;
 	int		file;
-	int		dir;
+	int		err_init;
 
-	if (argc != 2)
-		return (error_msg("program needs one arg ending in \".cub\""),1);
-	if (ends_with(argv[1], ".cub") != TRUE)
-		return (error_msg("first arg has to end with .cub"), 2);
-	file = open(argv[1], O_RDONLY);
+	file = check_file(argc, argv[1]);
 	if (file < 0)
-		return (error_msg("file doesn't exist"), 3);
-	dir = open(argv[1], O_DIRECTORY);
-	if (dir > 0)
-		return (error_msg("cannot use a directory as map"), 4);
-	close(dir);
-	if (game_init(&game, file) != 0)
+		return (1);
+	err_init = setup_init(&setup, file);
+	if (err_init != 0)
 	{
-		free_t_array(&game.map);
-		free(game.design.north_text);
-		free(game.design.south_text);
-		free(game.design.east_text);
-		free(game.design.west_text);
-		mlx_destroy_image (game.data.mlx_ptr, game.data.img );
-		free(game.data.mlx_ptr);
+		free_objects(err_init, &setup);
 		return (1);
 	}
-	//free memory
-	mlx_hook(game.data.win_ptr, 17, 0, ft_exit, game.data.mlx_ptr);
-	mlx_hook(game.data.win_ptr, 2, 0, hook_key, game.data.mlx_ptr);
-	mlx_loop(game.data.mlx_ptr);
-	ft_free(game.map.items);
-	free(game.map.items_len);
+
+
+
+	//game init
+	game_init(&setup);
+
+
+	//hooks
+	mlx_loop_hook(setup.data.mlx_ptr, raycast, &setup.game);
+	mlx_hook(setup.data.win_ptr, 17, 0, ft_exit, setup.data.mlx_ptr);
+
+	//keyhooks
+	mlx_hook(setup.data.win_ptr, 2, 0, &key_press, &setup.game);
+	
+	//window loop
+	mlx_loop(setup.data.mlx_ptr);
+	mlx_do_sync(setup.data.mlx_ptr);
+
+	//remember to free memory
+	free_t_array(&setup.map);
 	return (0);
 }
+
+#endif

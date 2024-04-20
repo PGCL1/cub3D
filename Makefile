@@ -6,7 +6,8 @@
 #    By: glacroix <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 16:34:00 by glacroix          #+#    #+#              #
-#    Updated: 2024/04/06 17:26:08 by aabourri         ###   ########.fr        #                                                                              #
+#    Updated: 2024/04/20 16:11:06 by aabourri         ###   ########.fr        #
+#                                                                              #
 # **************************************************************************** #
 
 #Colors
@@ -32,18 +33,22 @@ SRCS		= src/utils.c\
 			  src/parsing/colors.c\
 			  src/parsing/design.c\
 			  src/parsing/player.c\
-			  src/render_main.c
+			  src/init.c \
+			  src/main.c \
+			  src/render.c\
+			  src/events/key_hook.c\
+			  src/events/movements.c
 				
 OBJS		= $(SRCS:%.c=objs/%.o)
 
 #Execution
 # **************************************************************************** #
 LIBFT		= libft/libft.a
-CC			= gcc
+CC			= gcc 
 CFLAGS		= -Wall -Werror -Wextra -Imlx
 CFLAGS		+= -I include
-CFLAGS		+= -I libft -g3 -O2 -DSTRINGPUTX11
-MINI		= -lmlx -framework OpenGL -framework AppKit #-g3 -fsanitize=address
+CFLAGS		+= -I libft -g3 -O3 -DSTRINGPUTX11
+MINI		= -L./mlx -lmlx -framework OpenGL -framework AppKit #-g3 -fsanitize=address
 
 #SRC Execution
 # **************************************************************************** #
@@ -57,6 +62,8 @@ $(NAME): objs $(OBJS)
 objs:
 	@mkdir -p objs/src
 	@mkdir -p objs/src/parsing
+	@mkdir -p objs/src/raycast
+	@mkdir -p objs/src/events
 
 objs/%.o: %.c
 	@$(CC) $(CFLAGS) -c $< -o $@ 

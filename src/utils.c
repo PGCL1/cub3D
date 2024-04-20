@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   memory.c                                           :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 12:31:54 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/04 16:54:47 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/18 21:10:51 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,28 +52,28 @@ size_t	line_len(char *item)
 	return (i);
 }
 
-void	ms_array_append(t_array *arr, char *item)
+void	ms_array_append(t_array *a, char *item)
 {
-	const size_t	size = sizeof(arr->items);
+	const size_t	size = sizeof(a->items);
 
-	if (!arr->items)
+	if (!a->items)
 		return ;
-	if (arr->cap == arr->len)
+	if (a->cap == a->len)
 	{
-		arr->cap *= 2;
-		arr->items = ft_realloc(arr->items, arr->len * size, arr->cap * size);
-		if (!arr->items)
+		a->cap *= 2;
+		a->items = ft_realloc(a->items, a->len * size, a->cap * size);
+		if (!a->items)
 			return ;
-		arr->items_len = ft_realloc(arr->items_len, arr->len * size, arr->cap * size);
-		if (!arr->items_len)
+		a->items_len = ft_realloc(a->items_len, a->len * size, a->cap * size);
+		if (!a->items_len)
 			return ;
 	}
-	arr->items[arr->len] = item;
-	arr->items_len[arr->len] = line_len(item);
-	arr->len += 1;
+	a->items[a->len] = item;
+	a->items_len[a->len] = line_len(item);
+	a->len += 1;
 }
 
-void error_msg(char *msg)
+void	error_msg(char *msg)
 {
 	ft_putstr_fd(P_RED"Error: "RESET, 2);
 	ft_putendl_fd(msg, 2);

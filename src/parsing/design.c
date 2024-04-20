@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 15:08:30 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/05 19:48:50 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/19 16:28:46 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,31 +28,38 @@ int	error_color(int color[])
 
 int	error_design(t_design *design)
 {
-	if (!design->north_text || !design->south_text
-		|| !design->east_text || !design->west_text)
-		return (1);
-	if (error_color(design->floor) == TRUE || error_color(design->ceiling) == TRUE)
+	int	i;
+
+	i = -1;
+	while (++i < 4)
+	{
+		if (design->textures[i].valid == FALSE)
+			return (1);
+	}
+	if (error_color(design->floor) == TRUE
+		|| error_color(design->ceiling) == TRUE)
 		return (1);
 	return (0);
 }
 
+//TODO: i don't like the -10 to exit the loop, it's ugly
 int	colors_textures(void *mlx, char *line, t_design *design)
 {
 	int	count;
 
 	count = 0;
 	if (!line_meaning(line) && line_empty(line) == FALSE)
-		return (-1);
+		return (-10);
 	else
 	{
 		if (ft_strncmp((char *)line_meaning(line), "NO", 3) == 0)
-			design->north_text = get_texture(mlx, line);
+			get_texture(mlx, line, &design->textures[0]);
 		else if (ft_strncmp((char *)line_meaning(line), "SO", 3) == 0)
-			design->south_text = get_texture(mlx, line);
+			get_texture(mlx, line, &design->textures[1]);
 		else if (ft_strncmp((char *)line_meaning(line), "WE", 3) == 0)
-			design->west_text = get_texture(mlx, line);
+			get_texture(mlx, line, &design->textures[2]);
 		else if (ft_strncmp((char *)line_meaning(line), "EA", 3) == 0)
-			design->east_text = get_texture(mlx, line);
+			get_texture(mlx, line, &design->textures[3]);
 		else if (ft_strncmp((char *)line_meaning(line), "F", 2) == 0)
 			get_colors(line, design->floor);
 		else if (ft_strncmp((char *)line_meaning(line), "C", 2) == 0)
@@ -60,6 +67,20 @@ int	colors_textures(void *mlx, char *line, t_design *design)
 		count += 1;
 	}
 	return (count);
+}
+
+void	init_colors(int floor[], int ceiling[])
+{
+	int	i;
+
+	i = 0;
+	while (i < 3)
+	{
+		floor[i] = -1;
+		ceiling[i] = -1;
+		i++;
+	}
+	return ;
 }
 
 t_design	assign_design(int file, t_data *data, int *count, char *line)
@@ -79,7 +100,7 @@ t_design	assign_design(int file, t_data *data, int *count, char *line)
 		else
 		{
 			*count += colors_textures(data->mlx_ptr, line, &design);
-			if (*count == 6 || *count == -1)
+			if (*count == 6 || *count < 0)
 			{
 				free(line);
 				break ;

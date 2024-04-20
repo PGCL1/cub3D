@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 18:11:28 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/06 11:53:40 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/20 17:31:38 by aabourri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,17 @@
 
 /*------------------------------Libraries-------------------------------------*/
 # include "../libft/libft.h"
-# include <mlx.h>
+# include "../mlx/mlx.h"
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <sys/types.h>
 # include <sys/uio.h>
 # include <fcntl.h>
+# include <math.h>
+# include <fcntl.h>
+# include <float.h>
+# include <errno.h>
 
 /*------------------------------Error_msg-------------------------------------*/
 # define RESET  		"\x1B[0m"
@@ -33,10 +37,10 @@
 # define RED			0X42990010
 # define GREEN			0X014421 
 # define BLACK			0X000000
-/*# define WHITE			0XFFF5EE*/
+# define GREY			0X808080
 # define BLUE			0X191970
 
-/*------------------------------Shortcuts-------------------------------------*/
+/*----------------------------Configurations----------------------------------*/
 # define TRUE				1
 # define FALSE				0
 # define ESC				53
@@ -51,17 +55,33 @@
 # define PLUS				69
 # define MINUS				78
 
-typedef struct s_data
-{
-	void	*img;
-	char	*img_addr;
-	int		img_bits_per_pixel;
-	int		img_line_length;
-	int		img_endian;
-	void	*mlx_ptr;
-	void	*win_ptr;
-}				t_data;
+# define w					1920//1024//1920
+# define h					1080//512//1080
+# define MOVE_SPEED			0.3
+# define RO_SPEED			0.1
+# define texWidth			64
+# define texHeight			texWidth
 
+#if __linux__
+	#define KEY_ESC 				0xff1b
+	#define KEY_ARROW_LEFT	0xff51
+	#define KEY_ARROW_UP		0xff52
+	#define KEY_ARROW_RIGHT	0xff53
+	#define KEY_ARROW_DOWN	0xff54
+#else
+	#define KEY_ESC					0x35
+	#define KEY_ARROW_LEFT	0x7b
+	#define KEY_ARROW_RIGHT	0x7c
+	#define KEY_ARROW_UP		0x7e
+	#define KEY_ARROW_DOWN	0x7d
+	#define KEY_W						0xd
+	#define KEY_A						0x0
+	#define KEY_D						0x2
+	#define KEY_S						0x1
+	
+#endif
+
+/*----------------------------Structures--------------------------------------*/
 typedef struct s_array
 {
 	char	**items;
@@ -77,36 +97,105 @@ typedef struct s_player
 	int		y;
 }	t_player;
 
+typedef struct s_vector
+{
+	double x;
+	double y;
+}	t_vector;
+
+enum s_tex_pos
+{
+	TEX_NO	= 0,
+	TEX_SO,
+	TEX_WE,
+	TEX_EA,
+	TEX_LEN
+};
+
+typedef struct s_img
+{
+	void	*img;
+	uint32_t	*data;
+	int		bits_per_pixel;
+	int		size_line;
+	int		endian;
+	int		width;
+	int		height;
+	int		valid;
+}	t_img;
+
 typedef struct s_design 
 {
 	int		floor[3];
 	int		ceiling[3];
-	void	*north_text;
-	void	*south_text;
-	void	*east_text;
-	void	*west_text;
+	t_img	textures[4];
 }	t_design;
+
+typedef struct s_data
+{
+	t_img	img;
+	void	*mlx_ptr;
+	void	*win_ptr;
+}				t_data;
+
 
 typedef struct s_game
 {
-	t_data data;
-	t_array map;
-	t_player player;
-	t_design design;
+	// player position
+	t_vector	pos;
+	// player direction
+	t_vector	dir;
+	t_vector	plane;
+
+	t_vector	side_dist;
+	t_vector	delta_dist;
+	double	prep_wall_dist;
+
+
+	int	step_x;
+	int	step_y;
+
+	int	map_x;
+	int	map_y;
+
+	int	draw_start;
+	int	draw_end;
+	int	line_height;
+
+	// TODO: calculate delta time
+	time_t	curr_time;
+	time_t	old_time;
+
+	t_img	textures[4];
+	uint32_t	floor_color;
+	uint32_t	ceiling_color;
+	t_data		*mlx_ctx;
+	t_array 	*map;
+
 }	t_game;
 
-/*------------------------------Utils----------------------------------------*/
-void	error_msg(char *msg);
-void	*ft_realloc(void *ptr, size_t len, size_t size);
-void	ms_array_append(t_array *arr, char *item);
-t_array	ms_array_init(void);
-size_t	line_len(char *item);
-void	free_t_array(t_array *arr);
+typedef struct s_setup
+{
+	t_data		data;
+	t_array		map;
+	t_player	player;
+	t_design	design;
+	t_game		game;
+}	t_setup;
+
+
+/*------------------------------Utils-----------------------------------------*/
+void		error_msg(char *msg);
+void		*ft_realloc(void *ptr, size_t len, size_t size);
+void		ms_array_append(t_array *arr, char *item);
+t_array		ms_array_init(void);
+size_t		line_len(char *item);
+void		free_t_array(t_array *arr);
 
 /*------------------------------Parsing---------------------------------------*/
 
 char		*texture_path(char *line);
-void		*get_texture(void *mlx, char *line);
+void		get_texture(void *mlx, char *line, t_img *img);
 char		*texture_path_cleaned(char *line);
 
 int			line_empty(char *line);
@@ -126,6 +215,7 @@ t_design	assign_design(int file, t_data *data, int *count, char *line);
 int			map_check_borders(t_array copy);
 void		map_assign(t_array *map, int file);
 int			map_fill(t_array *map, int y, int x, int *flag);
+void		*map_original_copy(t_array map, t_array *original);
 
 int			orientation(char c, char *player_orientation);
 int			player_start(t_player *player, const t_array map);
@@ -137,13 +227,34 @@ int			window_init(t_data *data);
 int			design_init(t_design *design, t_data *data, int file);
 int			map_init(t_array *map, int file);
 int			player_init(t_player *player, const t_array *map);
-int			game_init(t_game *game, int file);
+int			setup_init(t_setup *structure, int file);
 
-void		*map_original_copy(t_array map, t_array *original);
+int			check_file(int argc, char *input);
+
+/*-----------------------------------Render-----------------------------------*/
+
+int			draw_pos(t_game **game, int side);
+int			is_hit_wall(t_game **game);
+
+int			raycast(t_game *game);
+void		draw_ver_line(t_data *ctx, int x, int draw_start, int draw_end, int color);
+void		game_background_draw(t_data *data, int color);
+
+void		side_distance(t_game **game, t_vector *ray_dir);
+void		distance(t_game **game, t_vector *ray_dir);
+
+void		render_texture(t_game *game, int tex_x, int side, int tex_num, int x);
+void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
 
 
+/*-----------------------------------Events-----------------------------------*/
 
+int		key_press(int keycode, t_game *game);
 
-
+void	movements_player_right(t_game *game);
+void	movements_player_left(t_game *game);
+void	movements_player_up(t_game *game);
+void	movements_player_down(t_game *game);
+void	movements_plane(int keycode, t_game *g);
 
 #endif

@@ -1,0 +1,679 @@
+1,32c1,169
+< /* ************************************************************************** */
+< /*                                                                            */
+< /*                                                        :::      ::::::::   */
+< /*   render.c                                           :+:      :+:    :+:   */
+< /*                                                    +:+ +:+         +:+     */
+< /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
+< /*                                                +#+#+#+#+#+   +#+           */
+< /*   Created: 2024/04/17 11:48:07 by glacroix          #+#    #+#             */
+< /*   Updated: 2024/04/19 18:03:19 by glacroix         ###   ########.fr       */
+< /*                                                                            */
+< /* ************************************************************************** */
+< 
+< #include "cub3d.h"
+< 
+< //static const char *res[] = {
+< 	//"./textures/file.xpm",
+< //};
+< 
+< //typedef struct s_color
+< //{
+< 	//unsigned char r;
+< 	//unsigned char g;
+< 	//unsigned char b;
+< //}	t_color;
+< 
+< void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
+< {
+< 	char	*pixel;
+< 
+< 	pixel = data->img.data
+< 		+ (y * data->img.size_line + x * (data->img.bits_per_pixel / 8));
+< 	*(unsigned int *)pixel = color;
+---
+> #include <stdio.h>
+> #include <stdlib.h>
+> #include <math.h>
+> #include "libft.h"
+> #include <mlx.h>
+> #include <errno.h>
+> #include <string.h>
+> #include <fcntl.h>
+> #include <float.h>
+> #include <time.h>
+> #include <sys/time.h>
+> 
+> static const char *res[] = {
+> 	"./textures/redbrick.xpm",
+> 	"./textures/greystone.xpm",
+> };
+> 
+> #define	LEN sizeof(res) / sizeof(res[0])
+> 
+> enum s_tex_pos
+> {
+> 	TEX_NO	= 0,
+> 	TEX_SO,
+> 	TEX_WE,
+> 	TEX_EA,
+> 	TEX_LEN
+> };
+> 
+> 
+> 
+> #if __linux__
+> 	#define KEY_ESC 				0xff1b
+> 	#define KEY_ARROW_LEFT	0xff51
+> 	#define KEY_ARROW_UP		0xff52
+> 	#define KEY_ARROW_RIGHT	0xff53
+> 	#define KEY_ARROW_DOWN	0xff54
+> #else
+> 	#define KEY_ESC					0x35
+> 	#define KEY_ARROW_LEFT	0x7b
+> 	#define KEY_ARROW_RIGHT	0x7c
+> 	#define KEY_ARROW_UP		0x7e
+> 	#define KEY_ARROW_DOWN	0x7d
+> 	#define KEY_W						0xd
+> 	#define KEY_A						0x0
+> 	#define KEY_D						0x2
+> 	#define KEY_S						0x1
+> 	
+> #endif
+> 
+> #define	RED			0xe62937
+> #define GREEN		0x00e430
+> #define	BLUE		0x0079f1
+> #define YELLOW	0xfdf900
+> #define WHITE		0xFFFFFF
+> 
+> #define	W	1024
+> #define	H	512
+> 
+> #define	MOVE_SPEED	0.3
+> #define	ROT_SPEED		0.1
+> 
+> 
+> 
+> #define	texWidth 64
+> #define	texHeight texWidth
+> 
+> 
+> typedef struct s_vec2
+> {
+> 	double x;
+> 	double y;
+> }	t_vec2;
+> 
+> typedef struct s_mlx
+> {
+> 	void	*mlx;
+> 	void	*win;
+> 	size_t	screen_width;
+> 	size_t	screen_height;
+> }	t_mlx;
+> 
+> int	game_close(void)
+> {
+> 	exit(0);
+> 	return 1;
+> }
+> 
+> 
+> void	render_rect(t_mlx *mlx_ctx, int x, int y, int width, int height, int color);
+> 
+> typedef struct s_color
+> {
+> 	unsigned char r;
+> 	unsigned char g;
+> 	unsigned char b;
+> }	t_color;
+> 
+> typedef struct s_map
+> {
+> 	char	**items;
+> 	int		row_size;
+> 	int		col_size;
+> }	t_map;
+> 
+> 
+> typedef struct s_img
+> {
+> 	void	*img;
+> 	char	*data;
+> 	int	bits_per_pixel;
+> 	int	size_line;
+> 	int	endian;
+> 
+> 	int	width;
+> 	int	height;
+> 
+> 
+> }	t_img;
+> 
+> 
+> typedef struct s_game
+> {
+> 
+> 	// player position
+> 	t_vec2	pos;
+> 	// player direction
+> 	t_vec2	dir;
+> 	t_vec2	plane;
+> 
+> 	t_vec2	side_dist;
+> 	t_vec2	delta_dist;
+> 
+> 	double	prep_wall_dist;
+> 
+> 	int	step_x;
+> 	int	step_y;
+> 
+> 	int	map_x;
+> 	int	map_y;
+> 
+> 	int	draw_start;
+> 	int	draw_end;
+> 	int	line_height;
+> 
+> 	// TODO: calculate delta time
+> 	time_t	curr_time;
+> 	time_t	old_time;
+> 
+> 	// TODO: store here 4 textures from map file
+> 	//t_img	textures[TEX_LEN];
+> 	t_img	textures[LEN];
+> 
+> 	t_mlx		mlx_ctx;
+> 	t_map		map;
+> }	t_game;
+> 
+> void	draw_rect(t_mlx *ctx, t_vec2 *pos, t_vec2 *size, int color)
+> {
+> 	int	y = pos->y;
+> 	while (y < pos->y + size->y)
+> 	{
+> 		int x = pos->x;
+> 		while (x < pos->x + size->x)
+> 		{
+> 			mlx_pixel_put(ctx->mlx, ctx->win, x, y, color);
+> 			x += 1;
+> 		}
+> 		y += 1;
+> 	}
+35c172,200
+< void draw_ver_line(t_data *ctx, int x, int draw_start, int draw_end, int color)
+---
+> void	draw_map(char **items, t_mlx *ctx)
+> {
+> 
+> 	t_vec2 size = {64.0f, 64.0f};
+> 	t_vec2 pos;
+> 
+> 
+> 	int	y = 0;
+> 	while (items[y])
+> 	{
+> 		int x = 0;
+> 		while (items[y][x] && items[y][x] != '\n')
+> 		{
+> 			int	color = 0x0;
+> 			if (items[y][x] == '1')
+> 				color = 0xffffff;
+> 			pos.x = x * size.x;
+> 			pos.y = y * size.y;
+> 			t_vec2 size2 = {size.x - 1, size.y - 1};
+> 
+> 			draw_rect(ctx, &pos, &size2, color);
+> 			x += 1;
+> 		}
+> 		y += 1;
+> 	}
+> 
+> }
+> 
+> void draw_ver_line(t_mlx *ctx, int x, int draw_start, int draw_end, int color)
+42c207
+< 		my_mlx_pixel_put(ctx, x, y, color);
+---
+> 		mlx_pixel_put(ctx->mlx, ctx->win, x, y, color);
+47c212,219
+< int	wall_or_not(t_game **game)
+---
+> 
+> 
+> void	draw_player(t_game *game)
+> {
+> 	(void) game;
+> }
+> 
+> int	is_hit_wall(t_game *game)
+50c222,224
+< 	int	hit_wall = 0;
+---
+> 	int	hit = 0;
+> 
+> 	// TODO: repcale hit by break
+52c226
+< 	while (!hit_wall)
+---
+> 	while (!hit)
+54c228
+< 		if ((*game)->side_dist.x < (*game)->side_dist.y)
+---
+> 		if (game->side_dist.x < game->side_dist.y)
+56,57c230,231
+< 			(*game)->side_dist.x += (*game)->delta_dist.x;
+< 			(*game)->map_x += (*game)->step_x;
+---
+> 			game->side_dist.x += game->delta_dist.x;
+> 			game->map_x += game->step_x;
+62,63c236,237
+< 			(*game)->side_dist.y += (*game)->delta_dist.y;
+< 			(*game)->map_y += (*game)->step_y;
+---
+> 			game->side_dist.y += game->delta_dist.y;
+> 			game->map_y += game->step_y;
+66,68c240,241
+< 
+< 		if ((*game)->map->items[(*game)->map_y][(*game)->map_x] != '0')
+< 			hit_wall = 1;
+---
+> 		if (game->map.items[game->map_y][game->map_x] != '0')
+> 			hit = 1;
+70c243
+< 			hit_wall = 0;
+---
+> 			hit = 0;
+75c248
+< void	side_distance(t_game **g, t_vector *ray_dir)
+---
+> void	side_distance(t_game *game, t_vec2 *ray_dir)
+79,80c252,253
+< 		(*g)->step_x = -1;
+< 		(*g)->side_dist.x = ((*g)->pos.x - (*g)->map_x) * (*g)->delta_dist.x;
+---
+> 		game->step_x = -1;
+> 		game->side_dist.x = (game->pos.x - game->map_x) * game->delta_dist.x;
+84,85c257,258
+< 		(*g)->step_x = 1;
+< 		(*g)->side_dist.x = ((*g)->map_x + 1.0 - (*g)->pos.x) * (*g)->delta_dist.x;
+---
+> 		game->step_x = 1;
+> 		game->side_dist.x = (game->map_x + 1.0 - game->pos.x) * game->delta_dist.x;
+90,91c263,264
+< 		(*g)->step_y = -1;
+< 		(*g)->side_dist.y = ((*g)->pos.y - (*g)->map_y) * (*g)->delta_dist.y;
+---
+> 		game->step_y = -1;
+> 		game->side_dist.y = (game->pos.y - game->map_y) * game->delta_dist.y;
+95,96c268,269
+< 		(*g)->step_y = 1;
+< 		(*g)->side_dist.y = ((*g)->map_y + 1.0 - (*g)->pos.y) * (*g)->delta_dist.y;
+---
+> 		game->step_y = 1;
+> 		game->side_dist.y = (game->map_y + 1.0 - game->pos.y) * game->delta_dist.y;
+100c273
+< void	distance(t_game **game, t_vector *ray_dir)
+---
+> void	distance(t_game *game, t_vec2 *ray_dir)
+103c276
+< 		(*game)->delta_dist.x = 1e30;
+---
+> 		game->delta_dist.x = 1e30;
+105c278
+< 		(*game)->delta_dist.x = fabs(1.0 / ray_dir->x);
+---
+> 		game->delta_dist.x = fabs(1.0 / ray_dir->x);
+107c280
+< 		(*game)->delta_dist.y = 1e30;
+---
+> 		game->delta_dist.y = 1e30;
+109c282
+< 		(*game)->delta_dist.y = fabs(1.0 / ray_dir->y);
+---
+> 		game->delta_dist.y = fabs(1.0 / ray_dir->y);
+110a284,285
+> 
+> 
+113c288
+< int	draw_pos(t_game **game, int side)
+---
+> int	draw_pos(t_game *game, int side)
+118c293
+< 		(*game)->prep_wall_dist = ((*game)->side_dist.x - (*game)->delta_dist.x);
+---
+> 		game->prep_wall_dist = (game->side_dist.x - game->delta_dist.x);
+120,127c295,302
+< 		(*game)->prep_wall_dist = ((*game)->side_dist.y - (*game)->delta_dist.y);
+< 	line_height = (int)(h / (*game)->prep_wall_dist);
+< 	(*game)->draw_start = (int)(-line_height / 2 + h / 2);
+< 	if ((*game)->draw_start < 0)
+< 		(*game)->draw_start = 0;
+< 	(*game)->draw_end = (int)(line_height / 2 + h / 2);
+< 	if ((*game)->draw_end >= h)
+< 		(*game)->draw_end = h - 1;
+---
+> 		game->prep_wall_dist = (game->side_dist.y - game->delta_dist.y);
+> 	line_height = (int)(H / game->prep_wall_dist);
+> 	game->draw_start = (int)(-line_height / 2 + H / 2);
+> 	if (game->draw_start < 0)
+> 		game->draw_start = 0;
+> 	game->draw_end = (int)(line_height / 2 + H / 2);
+> 	if (game->draw_end >= H)
+> 		game->draw_end = H - 1;
+137c312
+< 	double tex_pos = (game->draw_start - h / 2 + game->line_height / 2) * step;
+---
+> 	double tex_pos = (game->draw_start - H / 2 + game->line_height / 2) * step;
+140,141d314
+< 	(void) tex_num;
+< 	(void) side;
+146,150c319,322
+< 		color = game->textures[0].data[texHeight * tex_y + tex_x];
+< 		//if (side == 1)
+< 			//color = (color >> 1) & 0x7f7f7f;
+< 		//mlx_pixel_put(game->mlx_ctx->mlx_ptr, game->mlx_ctx->win_ptr, x, y, color);
+< 		my_mlx_pixel_put(game->mlx_ctx, x, y, color);
+---
+> 		color = game->textures[tex_num].data[texHeight * tex_y + tex_x];
+> 		if (side == 1)
+> 			color = (color >> 1) & 0x7f7f7f;
+> 		mlx_pixel_put(game->mlx_ctx.mlx, game->mlx_ctx.win, x, y, color);
+153d324
+< 	//mlx_put_image_to_window(&game->mlx_ctx->mlx_ptr, game->mlx_ctx->win_ptr, game->mlx_ctx->img.img, 0, 0);
+156c327
+< void game_background_draw(t_data *data, int color)
+---
+> size_t get_time(void)
+158,159c329
+< 	int i = -1;
+< 	int j = -1;
+---
+> 	struct timeval tp;
+161,166c331,332
+< 	while (++i < h)
+< 	{
+< 		j = 0;
+< 		while (++j < w)
+< 			my_mlx_pixel_put(data, j, i, color);
+< 	}
+---
+> 	gettimeofday(&tp, NULL);
+> 	return (tp.tv_sec) * (tp.tv_usec / 1000);
+168a335,337
+> size_t old_time = 0;
+> size_t curr_time = 0;
+> 
+173c342,344
+< 	t_vector ray_dir;
+---
+> 	t_vec2 ray_dir;
+> 
+> 	curr_time = get_time();
+175,176c346
+< 	game_background_draw(game->mlx_ctx, BLACK);
+< 	for (int x = 0; x < w; x += 1)
+---
+> 	for (int x = 0; x < W; x += 1)
+178c348
+< 		camerax = 2 * x / (double)w - 1;
+---
+> 		camerax = 2 * x / (double)W - 1;
+185,192c355
+< 		distance(&game, &ray_dir);
+< 
+< 		int	side = wall_or_not(&game);
+< 
+< 	//	printf("side: %d\n", side);
+< 
+< 
+< 		game->line_height = draw_pos(&game, side);
+---
+> 		distance(game, &ray_dir);
+194,196c357,360
+< 		// TODO: check which direction player look at
+< 
+< 		char	tile_type = game->map->items[game->map_y][game->map_x];
+---
+> 		int	side = is_hit_wall(game);
+> 		game->line_height = draw_pos(game, side);
+> 		int	color;
+> 		char	tile_type = game->map.items[game->map_y][game->map_x];
+200a365
+> 		{
+201a367
+> 		}
+202a369
+> 		{
+203a371
+> 		}
+209,210d376
+< 		//int	color = RED;
+< 
+222c388
+< 		double texPos = (game->draw_start - h / 2 + game->line_height / 2) * step;
+---
+> 		double texPos = (game->draw_start - H / 2 + game->line_height / 2) * step;
+224c390
+< 		(void)texPos;
+---
+> 		(void) texPos;
+226d391
+< 		(void) texNum;
+229c394,480
+< 		//color = RED;
+---
+> 		switch(game->map.items[game->map_y][game->map_x])
+> 		{
+> 		case '1':  color = RED;    break; //red
+> 		case '2':  color = GREEN;  break; //green
+> 		case '3':  color = BLUE;   break; //blue
+> 		case '4':  color = WHITE;  break; //white
+> // // 		case 1:  color = RED;    break; //red
+> // // 		case 2:  color = GREEN;  break; //green
+> // // 		case 3:  color = BLUE;   break; //blue
+> // // 		case 4:  color = WHITE;  break; //white
+> 		default: color = YELLOW; break; //yellow
+> 		}
+> 		if(side == 1) {color = color / 2;}
+> 
+> 		//draw_ver_line(&game->mlx_ctx, x, game->draw_start, game->draw_end, color);	
+> 
+> 	}
+> 
+> 
+> 
+> 
+> 	return 1;
+> }
+> 
+> 
+> 
+> 
+> 
+> int	key_hook(int keycode, void *param)
+> {
+> 	t_game *game = param;
+> 	double	old_dir_x;
+> 	double	old_plane_x;
+> 
+> 	old_time = curr_time;
+> 	curr_time = time(NULL);
+> 
+> 	//double frame_time = (old_time - curr_time);
+> 
+> 	//printf("frame_time: %lf\n", frame_time);
+> 
+> 
+> 
+> 	mlx_clear_window(game->mlx_ctx.mlx, game->mlx_ctx.win);
+> 	if (keycode == KEY_ESC)
+> 	{
+> 		game_close();
+> 	}
+> 
+> 
+> 	if (keycode == KEY_ARROW_RIGHT)
+> 	{
+> 		old_dir_x = game->dir.x;
+> 		game->dir.x = game->dir.x * cos(-ROT_SPEED) - game->dir.y * sin(-ROT_SPEED);
+> 		game->dir.y = old_dir_x * sin(-ROT_SPEED) + game->dir.y * cos(-ROT_SPEED);
+> 
+> 		old_plane_x = game->plane.x;
+> 		game->plane.x = game->plane.x * cos(-ROT_SPEED) - game->plane.y * sin(-ROT_SPEED);
+> 		game->plane.y = old_plane_x * sin(-ROT_SPEED) + game->plane.y * cos(-ROT_SPEED);
+> 	}
+> 	if (keycode == KEY_ARROW_LEFT)
+> 	{
+> 		old_dir_x = game->dir.x;
+> 		game->dir.x = game->dir.x * cos(ROT_SPEED) - game->dir.y * sin(ROT_SPEED);
+> 		game->dir.y = old_dir_x * sin(ROT_SPEED) + game->dir.y * cos(ROT_SPEED);
+> 
+> 		old_plane_x = game->plane.x;
+> 		game->plane.x = game->plane.x * cos(ROT_SPEED) - game->plane.y * sin(ROT_SPEED);
+> 		game->plane.y = old_plane_x * sin(ROT_SPEED) + game->plane.y * cos(ROT_SPEED);
+> 	}
+> 	if (keycode == KEY_ARROW_UP)
+> 	{
+> 		int	x = (int)game->pos.x;
+> 		int	y = (int)game->pos.y;
+> 		int	xx = (int)(game->pos.x + game->dir.x * MOVE_SPEED);
+> 		int	yy = (int)(game->pos.y + game->dir.y * MOVE_SPEED);
+> 
+> 		// TODO: you swaped y and x
+> // 		if(map[xx][y] == 0)
+> // 			game->pos.x += game->dir.x * MOVE_SPEED;
+> // 	 	if(map[x][yy] == 0)
+> // 			game->pos.y += game->dir.y * MOVE_SPEED;
+> 		if(game->map.items[xx][y] == '0')
+> 			game->pos.x += game->dir.x * MOVE_SPEED;
+> 	 	if(game->map.items[x][yy] == '0')
+> 			game->pos.y += game->dir.y * MOVE_SPEED;
+> 	}
+231,232c482,497
+< 		//if (side)
+< 			//color /= 2;
+---
+> 	if (keycode == KEY_ARROW_DOWN)
+> 	{
+> 		int	x = (int)game->pos.x;
+> 		int	y = (int)game->pos.y;
+> 		int	xx = (int)(game->pos.x + game->dir.x * MOVE_SPEED);
+> 		int	yy = (int)(game->pos.y + game->dir.y * MOVE_SPEED);
+> 
+> 		// TODO: you swaped y and x
+> 		if(game->map.items[xx][y] == '0')
+> 			game->pos.x -= game->dir.x * MOVE_SPEED;
+> 	 	if(game->map.items[x][yy] == '0')
+> 			game->pos.y -= game->dir.y * MOVE_SPEED;
+> // 		if(map[xx][y] == 0)
+> // 			game->pos.x -= game->dir.x * MOVE_SPEED;
+> // 	 	if(map[x][yy] == 0)
+> // 			game->pos.y -= game->dir.y * MOVE_SPEED;
+234,235c499,500
+< 		/*printf("start: %d\n", game->draw_start);*/
+< 		/*printf("end: %d\n", game->draw_end);*/
+---
+> 	}
+> 
+236a502,503
+> 	return 1;
+> }
+238c505,509
+< 		//draw_ver_line(game->mlx_ctx, x, game->draw_start, game->draw_end, color);
+---
+> t_vec2	player_pos(char **items)
+> {
+> 	int	y;
+> 	int	x;
+> 	t_vec2	pos = {0};
+239a511,540
+> 	y = -1;
+> 	while (items[++y] != NULL)
+> 	{
+> 		x = -1;
+> 		while (items[y][++x] != '\0')
+> 		{
+> 			if (items[y][x] == 'N')
+> 			{
+> 				pos.x = x;
+> 				pos.y = y;
+> 				return pos;
+> 			}
+> 		}
+> 	}
+> 	return pos;
+> }
+> 
+> int	load_texture(void *mlx, t_img *img, const char *filepath)
+> {
+> 	img->img = mlx_xpm_file_to_image(mlx, (char *)filepath, &img->width, &img->height);
+> 	if (!img->img)
+> 	{
+> 		printf("Error: failed to load img: %s\n", filepath);
+> 		return 0;
+> 	}
+> 	img->data = (uint32_t*)mlx_get_data_addr(img->img, &img->bits_per_pixel, &img->size_line, &img->endian);
+> 	if (!img->data)
+> 	{
+> 		printf("Error: could not get data image: %s\n", filepath);
+> 		return 0;
+241d541
+< 	mlx_put_image_to_window(&game->mlx_ctx->mlx_ptr, game->mlx_ctx->win_ptr, game->mlx_ctx->img.img, 0, 0);
+243a544,597
+> 
+> 
+> int main(int argc, char **argv)
+> {
+> 	(void) argc;
+> 	t_game	game;
+> 	
+> 	ft_bzero(&game, sizeof(game));
+> 	game.mlx_ctx.mlx = mlx_init();
+> 	game.mlx_ctx.win = mlx_new_window(game.mlx_ctx.mlx, W, H, "Cub3D");
+> 
+> // 	size_t	size;
+> 	game.map.items = malloc(sizeof(char *)  * 25);
+> 	int	fd = open(argv[1], O_RDONLY);
+> 	if (fd == -1)
+> 	{
+> 		printf("%s\n", strerror(errno));
+> 		return 1;
+> 	}
+> 
+> 
+> 	int i = 0;
+> 	for (;; i += 1)
+> 	{
+> 		game.map.items[i] = ft_strtrim(get_next_line(fd), "\n");
+> 		if (game.map.items[i] == NULL)
+> 			break ;
+> 	}
+> 	game.map.items[i] = NULL;
+> 
+> 	game.pos.x = 22, game.pos.y = 12;
+> 	game.dir.x = -1, game.dir.y = 0;
+> 	game.plane.x = 0.0, game.plane.y = 0.66;
+> 
+> 
+> 	for (size_t i = 0; i < LEN; i += 1)
+> 	{
+> 		if (!load_texture(game.mlx_ctx.mlx, &game.textures[i], res[i]))
+> 		{
+> 			printf("Error\n");
+> 			exit(1);
+> 		}
+> 	}
+> 
+> 
+> 
+> 
+> 	mlx_loop_hook(game.mlx_ctx.mlx, raycast, &game);
+> 	mlx_key_hook(game.mlx_ctx.win, key_hook, &game);
+> 	mlx_hook(game.mlx_ctx.win, 17, (1 << 17), game_close, NULL);
+> 	mlx_loop(game.mlx_ctx.mlx);
+> 
+> 	return 0;
+> }
+\ No newline at end of file
