@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 11:14:38 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/18 11:55:35 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/20 17:51:30 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ void	movements_player_up(t_game *game)
 	y = (int)game->pos.y;
 	xx = (int)(game->pos.x + game->dir.x * MOVE_SPEED);
 	yy = (int)(game->pos.y + game->dir.y * MOVE_SPEED);
-	if (game->map->items[y][xx] == '0')
+	if (game->map->items[y][xx] != '1')
 		game->pos.x += game->dir.x * MOVE_SPEED;
-	if (game->map->items[yy][x] == '0')
+	if (game->map->items[yy][x] != '1')
 		game->pos.y += game->dir.y * MOVE_SPEED;
 }
 
@@ -65,9 +65,9 @@ void	movements_player_down(t_game *game)
 	y = (int)game->pos.y;
 	xx = (int)(game->pos.x + game->dir.x * MOVE_SPEED);
 	yy = (int)(game->pos.y + game->dir.y * MOVE_SPEED);
-	if (game->map->items[y][xx] == '0')
+	if (game->map->items[y][xx] != '1')
 		game->pos.x -= game->dir.x * MOVE_SPEED;
-	if (game->map->items[yy][x] == '0')
+	if (game->map->items[yy][x] != '1')
 		game->pos.y -= game->dir.y * MOVE_SPEED;
 }
 
@@ -82,9 +82,9 @@ void	movements_player_left(t_game *game)
 	y = (int)game->pos.y;
 	xx = (int)(game->pos.x - game->dir.y * MOVE_SPEED);
 	yy = (int)(game->pos.y + game->dir.x * MOVE_SPEED);
-	if (game->map->items[y][xx] == '0')
+	if (game->map->items[y][xx] != '1')
 		game->pos.x -= game->dir.y * MOVE_SPEED;
-	if (game->map->items[yy][x] == '0')
+	if (game->map->items[yy][x] != '1')
 		game->pos.y += game->dir.x * MOVE_SPEED;
 }
 
@@ -99,8 +99,8 @@ void	movements_player_right(t_game *game)
 	y = (int)game->pos.y;
 	xx = (int)(game->pos.x + game->dir.y * MOVE_SPEED);
 	yy = (int)(game->pos.y - game->dir.x * MOVE_SPEED);
-	if (game->map->items[y][xx] == '0')
+	if (game->map->items[y][xx] != '1')
 		game->pos.x += game->dir.y * MOVE_SPEED;
-	if (game->map->items[yy][x] == '0')
+	if (game->map->items[yy][x] != '1')
 		game->pos.y -= game->dir.x * MOVE_SPEED;
 }

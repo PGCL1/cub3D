@@ -6,22 +6,11 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:48:07 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/20 16:45:30 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/20 17:55:06 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-//static const char *res[] = {
-	//"./textures/file.xpm",
-//};
-
-//typedef struct s_color
-//{
-	//unsigned char r;
-	//unsigned char g;
-	//unsigned char b;
-//}	t_color;
 
 int	wall_or_not(t_game **game)
 {
@@ -89,21 +78,24 @@ void	distance(t_game **game, t_vector *ray_dir)
 	side_distance(game, ray_dir);
 }
 
-int	draw_pos(t_game **game, int side)
+//TODO: not so pretty change the 0.1
+int	draw_pos(t_game **g, int side)
 {
 	int	line_height;
 
 	if (side == 0)
-		(*game)->prep_wall_dist = ((*game)->side_dist.x - (*game)->delta_dist.x);
+		(*g)->prep_wall_dist = ((*g)->side_dist.x - (*g)->delta_dist.x);
 	else
-		(*game)->prep_wall_dist = ((*game)->side_dist.y - (*game)->delta_dist.y);
-	line_height = (int)(h / (*game)->prep_wall_dist);
-	(*game)->draw_start = (int)(-line_height / 2 + h / 2);
-	if ((*game)->draw_start < 0)
-		(*game)->draw_start = 0;
-	(*game)->draw_end = (int)(line_height / 2 + h / 2);
-	if ((*game)->draw_end >= h)
-		(*game)->draw_end = h - 1;
+		(*g)->prep_wall_dist = ((*g)->side_dist.y - (*g)->delta_dist.y);
+	if ((*g)->prep_wall_dist == 0.0)
+		(*g)->prep_wall_dist = 0.1;
+	line_height = (int)(h / (*g)->prep_wall_dist);
+	(*g)->draw_start = (int)(-line_height / 2 + h / 2);
+	if ((*g)->draw_start < 0)
+		(*g)->draw_start = 0;
+	(*g)->draw_end = (int)(line_height / 2 + h / 2);
+	if ((*g)->draw_end >= h)
+		(*g)->draw_end = h - 1;
 	return line_height;
 }
 
@@ -144,9 +136,9 @@ void	render_texture(t_game *game, int tex_x, int side, int tex_num, int x)
 		color = game->textures[0].data[texHeight * tex_y + tex_x];
 		if (side == 1)
 			color = (color >> 1) & 0x7f7f7f;
+		if (y * w + x >= w * h)
+			break;
 		game->mlx_ctx->img.data[y * w + x] = color;
-		//mlx_pixel_put(game->mlx_ctx->mlx_ptr, game->mlx_ctx->win_ptr, x, y, color);
-		//my_mlx_pixel_put(game->mlx_ctx, x, y, color);
 		y += 1;
 	}
 }
@@ -191,8 +183,6 @@ int	raycast(t_game *game)
 
 		int	texX = (int)(wallX * (double)texWidth);
 
-		//int	color = RED;
-
 		if (side == 0 && ray_dir.x > 0)
 		{
 			texX = texWidth - texX - 1;
@@ -211,14 +201,6 @@ int	raycast(t_game *game)
 		(void) texNum;
 		render_floor_ceiling(game, x);
 		render_texture(game, texX, side, texNum, x);
-
-		
-		/*printf("start: %d\n", game->draw_start);*/
-		/*printf("end: %d\n", game->draw_end);*/
-
-
-		//draw_ver_line(game->mlx_ctx, x, game->draw_start, game->draw_end, color);
-
 	}
 	mlx_put_image_to_window(&game->mlx_ctx->mlx_ptr, game->mlx_ctx->win_ptr, game->mlx_ctx->img.img, 0, 0);
 	return 1;
