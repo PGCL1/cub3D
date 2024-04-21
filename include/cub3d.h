@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 18:11:28 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/20 13:36:26 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/21 14:09:09 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,7 @@ typedef struct s_game
 	// player direction
 	t_vector	dir;
 	t_vector	plane;
+	t_vector	ray_dir;
 
 	t_vector	side_dist;
 	t_vector	delta_dist;

@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 11:48:07 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/20 17:55:06 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/21 14:23:45 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,14 @@ void	side_distance(t_game **g, t_vector *ray_dir)
 
 void	distance(t_game **game, t_vector *ray_dir)
 {
-	if (ray_dir->x == 0)
+	if ((*game)->ray_dir.x == 0)
 		(*game)->delta_dist.x = 1e30;
 	else
-		(*game)->delta_dist.x = fabs(1.0 / ray_dir->x);
-	if (ray_dir->y == 0)
+		(*game)->delta_dist.x = fabs(1.0 / (*game)->ray_dir.x);
+	if ((*game)->ray_dir.y == 0)
 		(*game)->delta_dist.y = 1e30;
 	else
-		(*game)->delta_dist.y = fabs(1.0 / ray_dir->y);
+		(*game)->delta_dist.y = fabs(1.0 / (*game)->ray_dir.y);
 	side_distance(game, ray_dir);
 }
 
@@ -118,6 +118,21 @@ void render_floor_ceiling(t_game *game, int x)
 	}
 }
 
+uint32_t	orientation_texture(t_game *game, int side, int tex_x, int tex_y)
+{
+	uint32_t color = 0;
+
+	if (side == 0 && game->ray_dir.x < 0)
+		color = game->textures[0].data[texHeight * tex_y + tex_x];
+	else if (side == 0 && game->ray_dir.x > 0)
+		color = game->textures[1].data[texHeight * tex_y + tex_x];
+	else if (side == 1 && game->ray_dir.y < 0)
+		color = game->textures[2].data[texHeight * tex_y + tex_x];
+	else if (side == 1 && game->ray_dir.y > 0)
+		color = game->textures[3].data[texHeight * tex_y + tex_x];
+	return (color);
+}
+
 void	render_texture(t_game *game, int tex_x, int side, int tex_num, int x)
 {
 	int	y;
@@ -133,7 +148,7 @@ void	render_texture(t_game *game, int tex_x, int side, int tex_num, int x)
 	{
 		tex_y = (int)tex_pos & (texHeight - 1);
 		tex_pos  += step;
-		color = game->textures[0].data[texHeight * tex_y + tex_x];
+		color = orientation_texture(game, side, tex_x, tex_y);
 		if (side == 1)
 			color = (color >> 1) & 0x7f7f7f;
 		if (y * w + x >= w * h)
@@ -147,19 +162,18 @@ int	raycast(t_game *game)
 {
 	//int	x;	
 	double camerax;	
-	t_vector ray_dir;
 
 	mlx_clear_window(game->mlx_ctx->mlx_ptr, game->mlx_ctx->win_ptr);
 	for (int x = 0; x < w; x += 1)
 	{
 		camerax = 2 * x / (double)w - 1;
-		ray_dir.x = game->dir.x + game->plane.x * camerax;
-		ray_dir.y = game->dir.y + game->plane.y * camerax;
+		game->ray_dir.x = game->dir.x + game->plane.x * camerax;
+		game->ray_dir.y = game->dir.y + game->plane.y * camerax;
 
 		game->map_x = (int)game->pos.x;
 		game->map_y = (int)game->pos.y;
 
-		distance(&game, &ray_dir);
+		distance(&game, &game->ray_dir);
 
 		int	side = wall_or_not(&game);
 
@@ -175,19 +189,19 @@ int	raycast(t_game *game)
 		double wallX;
 
 		if (side == 0)
-			wallX = game->pos.y + game->prep_wall_dist * ray_dir.y;
+			wallX = game->pos.y + game->prep_wall_dist * game->ray_dir.y;
 		else
-			wallX = game->pos.x + game->prep_wall_dist * ray_dir.x;
+			wallX = game->pos.x + game->prep_wall_dist * game->ray_dir.x;
 
 		wallX -= floor(wallX);
 
 		int	texX = (int)(wallX * (double)texWidth);
 
-		if (side == 0 && ray_dir.x > 0)
+		if (side == 0 && game->ray_dir.x > 0)
 		{
 			texX = texWidth - texX - 1;
 		}
-		if (side == 1 && ray_dir.y < 0)
+		if (side == 1 && game->ray_dir.y < 0)
 		{
 			texX = texWidth - texX - 1;
 		}
