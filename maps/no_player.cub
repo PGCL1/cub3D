@@ -1,0 +1,14 @@
+F 220,100, 0  
+C 102, 191, 255
+
+NO ./textures/greystone.xpm     
+WE ./textures/redbrick.xpm
+EA ./textures/bluestone.xpm            
+SO ./textures/purplestone.xpm
+
+        1111111
+111111110000001
+100000000000011
+100000000000001
+ 11100000000001
+111111111111111

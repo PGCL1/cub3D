@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 16:50:12 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/05 19:50:36 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/22 19:48:03 by aabourri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	orientation(char c, char *player_orientation)
 	return (0);
 }
 
-void	player_position(t_player *player, size_t i, size_t j)
+void	player_position(t_player *player, int i, int j)
 {
 	player->x = j;
 	player->y = i;
@@ -54,13 +54,13 @@ int	player_start(t_player *player, const t_array map)
 			{
 				count += 1;
 				if (count > 1)
-					return (error_msg("only one player is allowed"), 1);
+					return (1);
 				player_position(player, i, j);
 				if (orientation(map.items[i][j], &player->orientation) == FALSE)
-					return (error_msg("player orientation is wrong"), 1);
+					return (1);
 				map.items[i][j] = '0';
 			}
 		}
 	}
-	return (0);
+	return (count == 0);
 }

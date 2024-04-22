@@ -6,7 +6,7 @@
 #    By: glacroix <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 16:34:00 by glacroix          #+#    #+#              #
-#    Updated: 2024/04/18 11:20:26 by glacroix         ###   ########.fr        #
+#    Updated: 2024/04/22 19:21:39 by aabourri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,9 @@ SRCS		= src/utils.c\
 			  src/main.c \
 			  src/render.c\
 			  src/events/key_hook.c\
-			  src/events/movements.c
+			  src/events/movements.c\
+			  src/render_layout.c\
+			  src/utils2.c
 				
 OBJS		= $(SRCS:%.c=objs/%.o)
 

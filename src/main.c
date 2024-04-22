@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/22 18:34:48 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/22 20:11:39 by aabourri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,24 +34,6 @@ int	check_file(int argc, char *input)
 	close(dir);
 	return (file);
 }
-
-int	ft_exit(void)
-{
-	ft_putstr_fd("Exited 3D, ggboiiii\n", 1);
-	exit(EXIT_SUCCESS);
-}
-
-void	free_t_array(t_array *arr)
-{
-	ft_free(arr->items);
-	free(arr->items_len);
-}
-
-/* void	ft_leaks(void)
-{
-	//system("leaks -groupByType -fullContent -outputGraph aa cub3D");
-	system("leaks -q cub3D");
-} */
 
 void	set_orientation(t_vector *dir, t_vector *plane, char or)
 {
@@ -101,21 +83,8 @@ static void	free_objects(int err, t_setup *s)
 	int	i;
 
 	i = -1;
-	if (err >= 3)
+	if (err >= 4)
 		free_t_array(&s->map);
-	if (err >= 2)
-	{
-		while (++i < 4)
-		{
-			if (s->design.textures[i].valid)
-				mlx_destroy_image(s->data.mlx_ptr, s->design.textures[i].img);
-		}
-	}
-	if (err >= 1)
-	{
-		mlx_destroy_image(s->data.mlx_ptr, s->data.img.img);
-		mlx_destroy_window(s->data.mlx_ptr, s->data.win_ptr);
-	}
 	exit(1);
 }
 

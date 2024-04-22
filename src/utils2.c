@@ -1,27 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memchr.c                                        :+:      :+:    :+:   */
+/*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: aabourri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/20 15:41:11 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/22 19:49:58 by aabourri         ###   ########.fr       */
+/*   Created: 2024/04/22 19:20:08 by aabourri          #+#    #+#             */
+/*   Updated: 2024/04/22 19:20:25 by aabourri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include "cub3d.h"
 
-void	*ft_memchr(const void *s, int c, size_t n)
+int	ft_exit(void)
 {
-	size_t	i;
+	ft_putstr_fd("Exited 3D, ggboiiii\n", 1);
+	exit(EXIT_SUCCESS);
+}
 
-	i = 0;
-	while (i < n)
-	{
-		if ((((unsigned char *)s)[0]) == (unsigned char) c)
-			return ((unsigned char *)s + i);
-		i++;
-	}
-	return (0);
+void	free_t_array(t_array *arr)
+{
+	ft_free(arr->items);
+	free(arr->items_len);
 }
