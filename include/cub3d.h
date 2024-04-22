@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 18:11:28 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/20 17:31:38 by aabourri         ###   ########.fr       */
+/*   Updated: 2024/04/21 15:42:44 by aabourri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@
 # define PLUS				69
 # define MINUS				78
 
-# define w					1920//1024//1920
-# define h					1080//512//1080
+# define w					1920
+# define h					1080
 # define MOVE_SPEED			0.3
 # define RO_SPEED			0.1
 # define texWidth			64
@@ -141,16 +141,17 @@ typedef struct s_data
 
 typedef struct s_game
 {
+
 	// player position
 	t_vector	pos;
 	// player direction
 	t_vector	dir;
 	t_vector	plane;
+	t_vector	ray_dir;
 
 	t_vector	side_dist;
 	t_vector	delta_dist;
 	double	prep_wall_dist;
-
 
 	int	step_x;
 	int	step_y;
@@ -243,18 +244,11 @@ void		game_background_draw(t_data *data, int color);
 void		side_distance(t_game **game, t_vector *ray_dir);
 void		distance(t_game **game, t_vector *ray_dir);
 
-void		render_texture(t_game *game, int tex_x, int side, int tex_num, int x);
+void		render_texture(t_game *game, int tex_x, int side, int x);
 void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
 
 
 /*-----------------------------------Events-----------------------------------*/
 
 int		key_press(int keycode, t_game *game);
-
-void	movements_player_right(t_game *game);
-void	movements_player_left(t_game *game);
-void	movements_player_up(t_game *game);
-void	movements_player_down(t_game *game);
-void	movements_plane(int keycode, t_game *g);
-
 #endif

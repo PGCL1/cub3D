@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 16:50:12 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/20 18:59:50 by aabourri         ###   ########.fr       */
+/*   Updated: 2024/04/22 13:52:35 by aabourri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ int	player_start(t_player *player, const t_array map)
 				player_position(player, i, j);
 				if (orientation(map.items[i][j], &player->orientation) == FALSE)
 					return (error_msg("player orientation is wrong"), 1);
-				// NOTE: make player position as floor to ignore rendering player position.
 				map.items[i][j] = '0';
 			}
 		}

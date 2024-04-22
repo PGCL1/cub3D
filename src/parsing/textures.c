@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:37:05 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/19 22:41:56 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/21 16:10:01 by aabourri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ char	*texture_path_cleaned(char *line)
 	len = ft_strlen(line);
 	line = texture_path(line);
 	i = 2;
+	printf("line -> %s\n", line);
 	while (i < len && ft_isspace(line[i]))
 		i++;
 	path_cleaned = ft_strtrim(&line[i], " \n");

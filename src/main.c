@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/20 19:56:53 by aabourri         ###   ########.fr       */
+/*   Updated: 2024/04/21 16:30:43 by aabourri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	ft_leaks(void)
 	system("leaks -q cub3D");
 }
 
-#define PI	3.14159265359
+#define PI 3.14159265359
 
 double d_to_r(double d)
 {
@@ -69,31 +69,35 @@ void game_init(t_setup *setup)
 	setup->game.pos.x = (double)setup->player.x;
 	setup->game.pos.y = (double)setup->player.y;
 
-	double orx = -1.0;
-	//double ory = 0.0;
 	if (setup->player.orientation == 'W')
-		orx = d_to_r(90);
+	{
+		setup->game.dir.x = 0;
+		setup->game.dir.y = -1;
+		setup->game.plane.x = 0.66;
+		setup->game.plane.y = 0;
+	}
 	else if (setup->player.orientation == 'E')
-		orx = d_to_r(-90);
-
-
-
-	/*		  N
-	 *	  W --|-- E
-	 *	  	  S
-	 *
-	 *
-	 * */
-
-
-	// TODO: don't forget player direction N || W || S || E
-	// W -> d_to_r(90)
-	// E -> d_to_r(90)
-	//
-	//
-	//setup->game.dir.x = -1.0, setup->game.dir.y = 0.0;
-	setup->game.dir.x = orx, setup->game.dir.y = 0.0;
-	setup->game.plane.x = 0.0, setup->game.plane.y = 0.66;
+	{
+		setup->game.dir.x = 0;
+		setup->game.dir.y = 1;
+		setup->game.plane.x = -0.66;
+		setup->game.plane.y = 0;
+	}
+	else if (setup->player.orientation == 'N')
+	{
+		setup->game.dir.x = -1;
+		setup->game.dir.y = 0;
+		setup->game.plane.x = 0;
+		setup->game.plane.y = -0.66;
+	}
+	else if (setup->player.orientation == 'S')
+	{
+		setup->game.dir.x = 1;
+		setup->game.dir.y = 0;
+		setup->game.plane.x = 0;
+		setup->game.plane.y = 0.66;
+	}
+	
 	setup->game.floor_color = (setup->design.floor[0] << 16) | (setup->design.floor[1] << 8) | setup->design.floor[2];
 	setup->game.ceiling_color = (setup->design.ceiling[0] << 16) | (setup->design.ceiling[1] << 8) | setup->design.ceiling[2];
 	while (++i < 4)
@@ -102,8 +106,9 @@ void game_init(t_setup *setup)
 	}
 }
 
-static void free_objects(int err, t_setup *s)
+void free_objects(int err, t_setup *s)
 {
+	(void) err;
 	int	i;
 
 	i = -1;
@@ -114,7 +119,9 @@ static void free_objects(int err, t_setup *s)
 		while (++i < 4)
 		{
 			if (s->design.textures[i].valid)
+			{
 				mlx_destroy_image(s->data.mlx_ptr, s->design.textures[i].img);
+			}
 		}
 	}
 	if (err >= 1)
@@ -140,16 +147,14 @@ int main(int argc, char **argv)
 	err_init = setup_init(&setup, file);
 	if (err_init != 0)
 	{
+
 		free_objects(err_init, &setup);
 		return (1);
 	}
-
-
-
 	//game init
 	game_init(&setup);
 
-
+	
 	//hooks
 	mlx_loop_hook(setup.data.mlx_ptr, raycast, &setup.game);
 	mlx_hook(setup.data.win_ptr, 17, 0, ft_exit, setup.data.mlx_ptr);
