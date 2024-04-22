@@ -12,7 +12,7 @@
 
 #include "cub3d.h"
 
-int check_file(int argc, char *input)
+int	check_file(int argc, char *input)
 {
 	int	file;
 	int	dir;
@@ -47,21 +47,21 @@ void	free_t_array(t_array *arr)
 	free(arr->items_len);
 }
 
-void	ft_leaks(void)
+/* void	ft_leaks(void)
 {
 	//system("leaks -groupByType -fullContent -outputGraph aa cub3D");
 	system("leaks -q cub3D");
-}
+} */
 
 void	set_orientation(t_vector *dir, t_vector *plane, char or)
 {
-	int i;
-	const char ors[4] = {'W', 'E', 'N', 'S'};
-	const double values[4][4] = {
-		{0, -1, 0.66, 0},
-		{0, 1, -0.66, 0},
-		{-1, 0, 0, -0.66},
-		{1, 0, 0, 0.66},
+	int				i;
+	const char		ors[4] = {'W', 'E', 'N', 'S'};
+	const double	values[4][4] = {
+	{0, -1, 0.66, 0},
+	{0, 1, -0.66, 0},
+	{-1, 0, 0, -0.66},
+	{1, 0, 0, 0.66},
 	};
 
 	i = -1;
@@ -78,20 +78,22 @@ void	set_orientation(t_vector *dir, t_vector *plane, char or)
 	}
 }
 
-void game_init(t_setup *setup)
+void	game_init(t_setup *s)
 {
 	int	i;
 
 	i = -1;
-	setup->game.mlx_ctx = &setup->data;
-	setup->game.map = &setup->map;
-	setup->game.pos.x = (double)setup->player.x;
-	setup->game.pos.y = (double)setup->player.y;
-	set_orientation(&setup->game.dir, &setup->game.plane, setup->player.orientation);
-	setup->game.floor_color = (setup->design.floor[0] << 16) | (setup->design.floor[1] << 8) | setup->design.floor[2];
-	setup->game.ceiling_color = (setup->design.ceiling[0] << 16) | (setup->design.ceiling[1] << 8) | setup->design.ceiling[2];
+	s->game.mlx_ctx = &s->data;
+	s->game.map = &s->map;
+	s->game.pos.x = (double)s->player.x;
+	s->game.pos.y = (double)s->player.y;
+	set_orientation(&s->game.dir, &s->game.plane, s->player.orientation);
+	s->game.floor_color = (s->design.floor[0] << 16)
+		| (s->design.floor[1] << 8) | s->design.floor[2];
+	s->game.ceiling_color = (s->design.ceiling[0] << 16)
+		| (s->design.ceiling[1] << 8) | s->design.ceiling[2];
 	while (++i < 4)
-		setup->game.textures[i] = setup->design.textures[i];
+		s->game.textures[i] = s->design.textures[i];
 }
 
 static void free_objects(int err, t_setup *s)
@@ -121,7 +123,7 @@ static void free_objects(int err, t_setup *s)
 #if 1
 int main(int argc, char **argv)
 {
-	atexit(ft_leaks);
+	//atexit(ft_leaks);
 	t_setup	setup;
 	int		file;
 	int		err_init;
