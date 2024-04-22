@@ -181,7 +181,6 @@ int	raycast(t_game *game)
 
 		int	side = wall_or_not(&game);
 
-	//	printf("side: %d\n", side);
 
 
 		game->line_height = draw_pos(&game, side);

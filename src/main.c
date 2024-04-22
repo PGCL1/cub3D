@@ -49,6 +49,7 @@ void	free_t_array(t_array *arr)
 
 void	ft_leaks(void)
 {
+	//system("leaks -groupByType -fullContent -outputGraph aa cub3D");
 	system("leaks -q cub3D");
 }
 
@@ -113,14 +114,14 @@ static void free_objects(int err, t_setup *s)
 		mlx_destroy_image(s->data.mlx_ptr, s->data.img.img);
 		mlx_destroy_window(s->data.mlx_ptr, s->data.win_ptr);
 	}
-	free(s->data.mlx_ptr);
+	exit(1);
 }
 
 
 #if 1
 int main(int argc, char **argv)
 {
-	//atexit(ft_leaks);
+	atexit(ft_leaks);
 	t_setup	setup;
 	int		file;
 	int		err_init;
@@ -137,14 +138,6 @@ int main(int argc, char **argv)
 	//game init
 	game_init(&setup);
 
-
-	//mlx_put_image_to_window(setup.data.mlx_ptr, setup.data.win_ptr, setup.design.textures[0].img, 0, 0);
-	//mlx_put_image_to_window(setup.data.mlx_ptr, setup.data.win_ptr, setup.design.textures[1].img, 64, 0);
-	//mlx_put_image_to_window(setup.data.mlx_ptr, setup.data.win_ptr, setup.design.textures[2].img, 64 * 2, 0);
-	//mlx_put_image_to_window(setup.data.mlx_ptr, setup.data.win_ptr, setup.design.textures[3].img, 64 *3, 0);
-
-
-	
 	//hooks
 	mlx_loop_hook(setup.data.mlx_ptr, raycast, &setup.game);
 	mlx_hook(setup.data.win_ptr, 17, 0, ft_exit, setup.data.mlx_ptr);

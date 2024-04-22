@@ -20,7 +20,7 @@ static void	game_close(void)
 
 int	key_press(int keycode, t_game *game)
 {
-	printf("keycode = %d\n", keycode);
+//	printf("keycode = %d\n", keycode);
 	if (keycode == ESC)
 		game_close();
 	movements_plane(keycode, game);

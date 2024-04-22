@@ -81,7 +81,6 @@ void	get_texture(void *mlx, char *line, t_img *i)
 	i->img = mlx_xpm_file_to_image(mlx, path_cleaned, &i->width, &i->height);
 	if (!i->img)
 	{
-		printf("path = %s | i.img = %p\n", path_cleaned, i->img);
 		free(path_cleaned);
 		return ;
 	}

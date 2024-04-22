@@ -84,7 +84,7 @@ SRCS 	=  srcs/ft_bzero.c\
 		srcs/get_next_line_utils_bonus.c\
 		srcs/get_next_line_bonus.c\
 		srcs/ft_isspace.c\
-		srcs/ft_free.c		
+		srcs/ft_free.c\
 
 OBJS 	= $(SRCS:%.c=objs/%.o)
 
