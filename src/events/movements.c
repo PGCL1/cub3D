@@ -20,20 +20,20 @@ void	movements_plane(int keycode, t_game *g)
 	if (keycode == KEY_ARROW_RIGHT)
 	{
 		old_dir_x = g->dir.x;
-		g->dir.x = g->dir.x * cos(-RO_SPEED) - g->dir.y * sin(-RO_SPEED);
-		g->dir.y = old_dir_x * sin(-RO_SPEED) + g->dir.y * cos(-RO_SPEED);
-		old_plane_x = g->plane.x;
-		g->plane.x = g->plane.x * cos(-RO_SPEED) - g->plane.y * sin(-RO_SPEED);
-		g->plane.y = old_plane_x * sin(-RO_SPEED) + g->plane.y * cos(-RO_SPEED);
-	}
-	if (keycode == KEY_ARROW_LEFT)
-	{
-		old_dir_x = g->dir.x;
 		g->dir.x = g->dir.x * cos(RO_SPEED) - g->dir.y * sin(RO_SPEED);
 		g->dir.y = old_dir_x * sin(RO_SPEED) + g->dir.y * cos(RO_SPEED);
 		old_plane_x = g->plane.x;
 		g->plane.x = g->plane.x * cos(RO_SPEED) - g->plane.y * sin(RO_SPEED);
 		g->plane.y = old_plane_x * sin(RO_SPEED) + g->plane.y * cos(RO_SPEED);
+	}
+	if (keycode == KEY_ARROW_LEFT)
+	{
+		old_dir_x = g->dir.x;
+		g->dir.x = g->dir.x * cos(-RO_SPEED) - g->dir.y * sin(-RO_SPEED);
+		g->dir.y = old_dir_x * sin(-RO_SPEED) + g->dir.y * cos(-RO_SPEED);
+		old_plane_x = g->plane.x;
+		g->plane.x = g->plane.x * cos(-RO_SPEED) - g->plane.y * sin(-RO_SPEED);
+		g->plane.y = old_plane_x * sin(-RO_SPEED) + g->plane.y * cos(-RO_SPEED);
 	}
 }
 
@@ -80,12 +80,12 @@ void	movements_player_left(t_game *game)
 
 	x = (int)game->pos.x;
 	y = (int)game->pos.y;
-	xx = (int)(game->pos.x - game->dir.y * MOVE_SPEED);
-	yy = (int)(game->pos.y + game->dir.x * MOVE_SPEED);
+	xx = (int)(game->pos.x + game->dir.y * MOVE_SPEED);
+	yy = (int)(game->pos.y - game->dir.x * MOVE_SPEED);
 	if (game->map->items[y][xx] != '1')
-		game->pos.x -= game->dir.y * MOVE_SPEED;
+		game->pos.x += game->dir.y * MOVE_SPEED;
 	if (game->map->items[yy][x] != '1')
-		game->pos.y += game->dir.x * MOVE_SPEED;
+		game->pos.y -= game->dir.x * MOVE_SPEED;
 }
 
 void	movements_player_right(t_game *game)
@@ -97,10 +97,10 @@ void	movements_player_right(t_game *game)
 
 	x = (int)game->pos.x;
 	y = (int)game->pos.y;
-	xx = (int)(game->pos.x + game->dir.y * MOVE_SPEED);
-	yy = (int)(game->pos.y - game->dir.x * MOVE_SPEED);
+	xx = (int)(game->pos.x - game->dir.y * MOVE_SPEED);
+	yy = (int)(game->pos.y + game->dir.x * MOVE_SPEED);
 	if (game->map->items[y][xx] != '1')
-		game->pos.x += game->dir.y * MOVE_SPEED;
+		game->pos.x -= game->dir.y * MOVE_SPEED;
 	if (game->map->items[yy][x] != '1')
-		game->pos.y -= game->dir.x * MOVE_SPEED;
+		game->pos.y += game->dir.x * MOVE_SPEED;
 }

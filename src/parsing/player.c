@@ -58,6 +58,7 @@ int	player_start(t_player *player, const t_array map)
 				player_position(player, i, j);
 				if (orientation(map.items[i][j], &player->orientation) == FALSE)
 					return (error_msg("player orientation is wrong"), 1);
+				map.items[i][j] = '0';
 			}
 		}
 	}

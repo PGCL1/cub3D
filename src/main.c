@@ -56,7 +56,7 @@ void	set_orientation(t_vector *dir, t_vector *plane, char or)
 {
 	int i;
 	const char ors[4] = {'W', 'E', 'N', 'S'};
-	const double t[4][4] = {
+	const double values[4][4] = {
 		{0, -1, 0.66, 0},
 		{0, 1, -0.66, 0},
 		{-1, 0, 0, -0.66},
@@ -68,10 +68,10 @@ void	set_orientation(t_vector *dir, t_vector *plane, char or)
 	{
 		if (ors[i] == or)
 		{
-			dir->x = t[i][0];
-			dir->y = t[i][1];
-			plane->x = t[i][2];
-			plane->y = t[i][3];
+			dir->x = values[i][0];
+			dir->y = values[i][1];
+			plane->x = values[i][2];
+			plane->y = values[i][3];
 			break ;
 		}
 	}
@@ -86,9 +86,6 @@ void game_init(t_setup *setup)
 	setup->game.map = &setup->map;
 	setup->game.pos.x = (double)setup->player.x;
 	setup->game.pos.y = (double)setup->player.y;
-
-
-
 	set_orientation(&setup->game.dir, &setup->game.plane, setup->player.orientation);
 	setup->game.floor_color = (setup->design.floor[0] << 16) | (setup->design.floor[1] << 8) | setup->design.floor[2];
 	setup->game.ceiling_color = (setup->design.ceiling[0] << 16) | (setup->design.ceiling[1] << 8) | setup->design.ceiling[2];

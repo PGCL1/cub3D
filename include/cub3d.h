@@ -55,8 +55,8 @@
 # define PLUS				69
 # define MINUS				78
 
-# define w					1024//1920
-# define h					512//1080
+# define w					1920
+# define h					1080
 # define MOVE_SPEED			0.3
 # define RO_SPEED			0.1
 # define texWidth			64
