@@ -31,11 +31,15 @@ int	wall_or_not(t_game **game)
 			(*game)->map_y += (*game)->step_y;
 			side = 1;
 		}
-
-		if ((*game)->map->items[(*game)->map_y][(*game)->map_x] != '0')
-			hit_wall = 1;
+		if ((*game)->map_y >= 0 && (*game)->map_y < (int)(*game)->map->len)
+		{
+			if ((*game)->map->items[(*game)->map_y][(*game)->map_x] != '0')
+				hit_wall = 1;
+			else
+				hit_wall = 0;
+		}
 		else
-			hit_wall = 0;
+			hit_wall = 1;
 	}
 	return side;
 }
