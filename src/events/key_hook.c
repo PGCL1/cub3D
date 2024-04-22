@@ -6,7 +6,7 @@
 /*   By: glacroix <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 12:55:58 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/18 11:24:43 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/22 18:35:25 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ static void	game_close(void)
 
 int	key_press(int keycode, t_game *game)
 {
-//	printf("keycode = %d\n", keycode);
 	if (keycode == ESC)
 		game_close();
 	movements_plane(keycode, game);

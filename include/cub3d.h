@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 18:11:28 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/21 14:09:09 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/04/22 18:38:25 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 # include <fcntl.h>
 # include <math.h>
 # include <fcntl.h>
-# include <float.h>
 # include <errno.h>
 
 /*------------------------------Error_msg-------------------------------------*/

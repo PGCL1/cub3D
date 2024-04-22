@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/22 15:25:32 by aabourri         ###   ########.fr       */
+/*   Updated: 2024/04/22 18:34:48 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void	game_init(t_setup *s)
 		s->game.textures[i] = s->design.textures[i];
 }
 
-static void free_objects(int err, t_setup *s)
+static void	free_objects(int err, t_setup *s)
 {
 	int	i;
 
@@ -119,14 +119,11 @@ static void free_objects(int err, t_setup *s)
 	exit(1);
 }
 
-
-#if 1
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-	//atexit(ft_leaks);
-	t_setup	setup;
-	int		file;
-	int		err_init;
+	t_setup		setup;
+	int			file;
+	int			err_init;
 
 	file = check_file(argc, argv[1]);
 	if (file < 0)
@@ -137,23 +134,12 @@ int main(int argc, char **argv)
 		free_objects(err_init, &setup);
 		return (1);
 	}
-	//game init
 	game_init(&setup);
-
-	//hooks
 	mlx_loop_hook(setup.data.mlx_ptr, raycast, &setup.game);
 	mlx_hook(setup.data.win_ptr, 17, 0, ft_exit, setup.data.mlx_ptr);
-
-	//keyhooks
 	mlx_hook(setup.data.win_ptr, 2, 0, &key_press, &setup.game);
-	
-	//window loop
 	mlx_loop(setup.data.mlx_ptr);
 	mlx_do_sync(setup.data.mlx_ptr);
-
-	//remember to free memory
 	free_t_array(&setup.map);
 	return (0);
 }
-
-#endif
