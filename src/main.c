@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:26:32 by glacroix          #+#    #+#             */
-/*   Updated: 2024/04/22 20:11:39 by aabourri         ###   ########.fr       */
+/*   Updated: 2024/04/30 10:54:45 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,6 @@ void	game_init(t_setup *s)
 
 static void	free_objects(int err, t_setup *s)
 {
-	int	i;
-
-	i = -1;
 	if (err >= 4)
 		free_t_array(&s->map);
 	exit(1);

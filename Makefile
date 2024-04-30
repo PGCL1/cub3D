@@ -6,7 +6,7 @@
 #    By: glacroix <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/18 16:34:00 by glacroix          #+#    #+#              #
-#    Updated: 2024/04/22 19:21:39 by aabourri         ###   ########.fr        #
+#    Updated: 2024/04/30 11:02:57 by glacroix         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,7 +56,8 @@ MINI		= -L./mlx -lmlx -framework OpenGL -framework AppKit #-g3 -fsanitize=addres
 # **************************************************************************** #
 $(NAME): objs $(OBJS)
 	@make -sC libft
-	@$(CC) $(OBJS) $(LIBFT) $(MINI) -o $(NAME)
+	@make -sC ./mlx
+	@$(CC) $(OBJS) $(LIBFT) $(MLX) $(MINI) -o $(NAME)
 	@echo $(MAGENTA) "\n         Cub3D Compiled!       \n" $(RESET)
 
 #Makefile Cmds
@@ -73,11 +74,13 @@ objs/%.o: %.c
 all: $(NAME)
 
 clean:
-	@make clean -sC libft
+	@make clean -sC ./libft
+	@make clean -sC ./mlx
 	@rm -rf objs
 
 fclean: clean
-	@make fclean -sC libft
+	@make fclean -sC ./libft
+	@make clean -sC ./mlx
 	@rm -f $(NAME)
 	@echo $(RED) "\n >>>>>>>> Deleted all *.o and *.a! <<<<<<<< \n" $(RESET)
 
