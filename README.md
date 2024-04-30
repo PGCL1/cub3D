@@ -29,4 +29,4 @@ cd cub3D && make
 ```
 ## Some visuals 
 
-![]()
+![](gif/cub3d.mov)
