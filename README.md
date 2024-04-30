@@ -30,3 +30,8 @@ cd cub3D && make
 ## Some visuals 
 
 ![](gif/cub3d.gif)
+
+> [!IMPORTANT]
+> The gameplay is much faster than what this gif shows.
+>
+> Thank you for reading! Peace G.
