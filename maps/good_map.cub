@@ -1,7 +1,7 @@
 
 
-F 126,36, 92  
-C 121,206,184
+F 255, 1, 255
+C 217, 142, 40
 
 
 NO ./textures/greystone.xpm     
