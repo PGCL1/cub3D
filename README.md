@@ -20,13 +20,15 @@ This is the interesting part so to speak. Raycasting is a method by which one ca
 
 To create the raycaster, we made use of the DDA algorithm, here's a great video about it [Youtube link](https://www.youtube.com/watch?v=W5P8GlaEOSI).
 
-## Installation
+## Installation for Mac
 
 ```bash
 git clone git@github.com:PGCL1/cub3D.git
 cd cub3D && make
 ./cub3D [maps/all_floor.cub]
 ```
+I might add configuration for Linux in the future.
+
 ## Some visuals 
 
 ![](gif/cub3d.gif)
