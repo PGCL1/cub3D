@@ -1,6 +1,6 @@
 # Cub3d
 
-Cub3d is our project attempting to be the most simplistic version of Wolfenstein 3D developed by John Carmak and John Romero. In it, you will find a 3D world seen from a FPS view, meaning you cannot see the player. The game initself is comprised of 4 sets of walls, each of them having their own texture depending on their orientation (North, South, West, East).<br />
+Cub3d is our project attempting to be a simple version of Wolfenstein 3D developed by John Carmak and John Romero. In it, you will find a 3D world seen from a FPS view, meaning you cannot see the player. The game in itself is comprised of 4 sets of walls, each of them having their own texture depending on their orientation (North, South, West, East).<br />
 
 Our player, just like the set of walls can also be orientated towards a particular orientation. The player can move sideways, front and back. Wall colisions are enabled so that the player may not go through a wall.<br />
 
